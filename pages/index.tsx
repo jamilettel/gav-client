@@ -1,11 +1,9 @@
-import type { NextPage } from 'next'
+import Button from '@/components/buttons/Button';
 
-const Home: NextPage = () => {
-  return (
-    <div>
-        Hello world
-    </div>
-  )
+export default function Home() {
+    return (
+        <div>
+            <Button primary={false}>Connect</Button>
+        </div>
+    );
 }
-
-export default Home

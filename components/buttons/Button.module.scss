@@ -1,0 +1,25 @@
+@import 'base';
+
+.button {
+    padding: 15px 35px;
+    background: $secondary;
+    color: white;
+    width: fit-content;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(1.1);
+    }
+
+    &:focus {
+        filter: brightness(1.1);
+        outline: solid 1px #aaa;
+    }
+}
+
+.primary {
+    background: $primary;
+}
