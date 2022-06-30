@@ -33,3 +33,11 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+.log
+
+tmp*
+
+*~
+\#*\#
+.*~undo-tree~
