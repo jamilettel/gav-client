@@ -5,7 +5,7 @@ export default function Button(props: {
     children?: React.ReactNode
     className?: string
     primary?: boolean
-    onClick?: () => void
+    onClick?: () => void,
 }) {
     let className = styles.button + ' ' + props.className ?? ''
     if (props.primary === true) className += ' ' + styles.primary

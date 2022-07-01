@@ -1,9 +1,7 @@
-import Button from '@/components/buttons/Button';
+import App from '@/modules/App';
 
 export default function Home() {
     return (
-        <div>
-            <Button primary={false}>Connect</Button>
-        </div>
+        <App/>
     );
 }
