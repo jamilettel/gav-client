@@ -9,17 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "net": "^1.0.2",
     "next": "12.2.0",
     "node-sass": "^7.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "websocket": "^1.0.34"
+    "tls": "^0.0.1"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "@types/websocket": "^1.0.5",
+    "@types/ws": "^8.5.3",
     "@zeit/next-sass": "^1.0.1",
     "eslint": "8.18.0",
     "eslint-config-next": "12.2.0",

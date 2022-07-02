@@ -12,7 +12,6 @@ const nextConfig = {
             path.join(__dirname, 'styles')
         ],
     },
-
 };
 
 module.exports = nextConfig;
