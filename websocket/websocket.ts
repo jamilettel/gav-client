@@ -3,10 +3,8 @@ import {
     CommandBuiltinArgs,
     CommandHandler,
     Service,
-    SessionData,
-    SessionDescribeData,
-    SessionListData,
 } from '@/websocket/websocket-types'
+import WSBuiltinHandler from '@/websocket/WSBuiltinHandler'
 
 export default class WebsocketHandler {
     ws: WebSocket | null = null
@@ -14,33 +12,24 @@ export default class WebsocketHandler {
     sessions: string[] = []
     session: string | null = null
     protocol: string | null = null
+    data: any = {}
 
-    handlers: CommandHandler[] = [
+    handlersBuiltin: CommandHandler[] = [
         {
             info: 'session_list',
-            handler: (data: any) => this.updateSessionList(data),
+            handler: WSBuiltinHandler.updateSessionList,
         },
         {
             info: 'session',
-            handler: (data: any) => this.updateSession(data),
+            handler: WSBuiltinHandler.updateSession,
         },
         {
             info: 'session_describe',
-            handler: (data: any) => this.updateProtocol(data),
+            handler: WSBuiltinHandler.updateProtocol,
         },
     ]
 
-    updateSessionList(data: SessionListData) {
-        this.sessions = data.sessions
-    }
-
-    updateSession(data: SessionData) {
-        this.session = data.session
-    }
-
-    updateProtocol(data: SessionDescribeData) {
-        this.protocol = data.command_protocol
-    }
+    handlersProtocol: CommandHandler[] = []
 
     connect(url: string) {
         try {
@@ -56,7 +45,14 @@ export default class WebsocketHandler {
                 try {
                     const data = JSON.parse(ws.data)
                     if (typeof data.info === 'string') {
-                        this.handlers.find(value => value.info === data.info)?.handler(data)
+                        let handler =
+                            this.handlersBuiltin.find(
+                                (h) => h.info === data.info
+                            ) ??
+                            this.handlersProtocol.find(
+                                (h) => h.info === data.info
+                            )
+                        handler?.handler(this, data)
                         if (this.onUpdate) this.onUpdate()
                     }
                 } catch (e) {}

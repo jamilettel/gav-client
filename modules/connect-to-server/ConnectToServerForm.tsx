@@ -21,7 +21,9 @@ export default function ConnectToServerForm(props: {
             <TextInput onChange={setUrl} value={url} />
             <br />
             <br />
-            <Button primary={true} />
+            <Button primary={true}>
+                Connect
+            </Button>
         </Form>
     )
 }

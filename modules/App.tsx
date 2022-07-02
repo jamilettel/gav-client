@@ -1,3 +1,4 @@
+import ChooseSessionForm from '@/modules/choose-session/ChooseSessionForm';
 import ConnectToServerForm from '@/modules/connect-to-server/ConnectToServerForm';
 import WebsocketHandler from '@/websocket/websocket';
 import { useState } from 'react';
@@ -22,10 +23,17 @@ export default function App() {
                 <ConnectToServerForm onSubmit={onSubmit} />
             </div>
         )
+    } else if (websocket.session === null) {
+        return (
+            <div>
+                Protocol: {websocket.protocol}
+                <ChooseSessionForm websocket={websocket} />
+            </div>
+        )
     } else {
         return (
             <div>
-                {websocket.protocol}
+                Protocol: {websocket.protocol}
             </div>
         )
     }
