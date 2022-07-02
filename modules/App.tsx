@@ -2,17 +2,21 @@ import ConnectToServerForm from '@/modules/connect-to-server/ConnectToServerForm
 import WebsocketHandler from '@/websocket/websocket';
 import { useState } from 'react';
 
-
+function getWebsocket(): WebsocketHandler {
+    const [update, setUpdate] = useState(false)
+    const [websocket] = useState(new WebsocketHandler)
+    websocket.onUpdate = () => setUpdate(!update)
+    return websocket
+}
 
 export default function App() {
-    const [connected, setConnected] = useState(false)
-    const [websocket] = useState(new WebsocketHandler(setConnected))
+    const websocket = getWebsocket()
 
     function onSubmit(url: string) {
         websocket.connect(url)
     }
 
-    if (!connected) {
+    if (!websocket.isConnected()) {
         return (
             <div>
                 <ConnectToServerForm onSubmit={onSubmit} />
@@ -21,7 +25,7 @@ export default function App() {
     } else {
         return (
             <div>
-                connected!
+                {websocket.protocol}
             </div>
         )
     }
