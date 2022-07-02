@@ -27,11 +27,22 @@ type InfoAllData = {
     info: 'all'
     data: {
         generation: number
-        all_stats: [{ [key: string]: string }]
-        settings: {
-            [key: string]: Setting
-        }
+        all_stats: { [key: string]: string }[]
+        settings: { [key: string]: Setting }
     }
+}
+
+type InfoOneGen = {
+    info: 'one-gen'
+    data: {
+        generation: number
+        gen_stats: { [key: string]: string }
+    }
+}
+
+type InfoSettingsUpdate = {
+    info: 'settings-update'
+    settings: { [key: string]: Setting }
 }
 
 const GenericHandlers: CommandHandler[] = [
@@ -42,6 +53,21 @@ const GenericHandlers: CommandHandler[] = [
             ;(wsh.data as GenericProtocolData).generation_stats =
                 data.data.all_stats
             ;(wsh.data as GenericProtocolData).settings = data.data.settings
+        },
+    },
+    {
+        info: 'one-gen',
+        handler: (wsh, data: InfoOneGen) => {
+            ;(wsh.data as GenericProtocolData).generation = data.data.generation
+            ;(wsh.data as GenericProtocolData).generation_stats?.push(
+                data.data.gen_stats
+            )
+        },
+    },
+    {
+        info: 'settings-update',
+        handler: (wsh, data: InfoSettingsUpdate) => {
+            ;(wsh.data as GenericProtocolData).settings = data.settings
         },
     },
 ]

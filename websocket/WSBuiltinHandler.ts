@@ -1,16 +1,19 @@
+import GenericHandlers from '@/websocket/GenericHandler'
 import WebsocketHandler from '@/websocket/websocket'
-import { CommandHandler, SessionData, SessionDescribeData, SessionListData } from '@/websocket/websocket-types'
+import {
+    CommandHandler,
+    SessionData,
+    SessionDescribeData,
+    SessionListData,
+} from '@/websocket/websocket-types'
 
 type ProtocolHandler = {
-    protocol: string,
-    handlers: CommandHandler[],
+    protocol: string
+    handlers: CommandHandler[]
 }
 
 const PROTOCOL_HANDLERS: ProtocolHandler[] = [
-    {
-        protocol: 'generic',
-        handlers: []
-    }
+    { protocol: 'generic', handlers: GenericHandlers },
 ]
 
 export default class WSBuiltinHandler {
@@ -24,7 +27,8 @@ export default class WSBuiltinHandler {
 
     static updateProtocol(wsh: WebsocketHandler, data: SessionDescribeData) {
         wsh.protocol = data.command_protocol
-        wsh.handlersProtocol = PROTOCOL_HANDLERS.find(ph => ph.protocol === wsh.protocol)?.handlers ?? []
+        wsh.handlersProtocol =
+            PROTOCOL_HANDLERS.find((ph) => ph.protocol === wsh.protocol)
+                ?.handlers ?? []
     }
-
 }

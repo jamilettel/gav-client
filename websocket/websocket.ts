@@ -74,6 +74,15 @@ export default class WebsocketHandler {
         )
     }
 
+    command(command: string, args?: any) {
+        this.ws?.send(
+            JSON.stringify({
+                ...args,
+                command,
+            } as CommandBuiltin)
+        )
+    }
+
     isConnected(): boolean {
         return this.ws?.OPEN === 1 ?? false
     }

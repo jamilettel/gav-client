@@ -1,5 +1,6 @@
 import ChooseSessionForm from '@/modules/choose-session/ChooseSessionForm';
 import ConnectToServerForm from '@/modules/connect-to-server/ConnectToServerForm';
+import Generic from '@/modules/generic/Generic';
 import WebsocketHandler from '@/websocket/websocket';
 import { useState } from 'react';
 
@@ -34,6 +35,7 @@ export default function App() {
         return (
             <div>
                 Protocol: {websocket.protocol}
+                <Generic websocket={websocket} />
             </div>
         )
     }
