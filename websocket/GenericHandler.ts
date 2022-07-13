@@ -29,8 +29,18 @@ type InfoAllData = {
     info: 'all'
     data: {
         generation: number
-        all_stats: { [key: string]: string }[]
-        settings: { [key: string]: Setting }
+        // each element represents one generation
+        all_stats: {
+            // graph name
+            [key: string]: {
+                // line name & value
+                [key: string]: number
+            }
+        }[]
+        settings: {
+            // setting name & value
+            [key: string]: Setting
+        }
     }
 }
 
@@ -38,7 +48,7 @@ type InfoOneGen = {
     info: 'one-gen'
     data: {
         generation: number
-        gen_stats: { [key: string]: string }
+        gen_stats: { [key: string]: { [key: string]: number } }
     }
 }
 
