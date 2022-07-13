@@ -4,8 +4,10 @@ import WebsocketHandler from '@/websocket/websocket'
 import { useEffect } from 'react'
 
 type GraphData = {
-    graph: string
-    data: string[]
+    name: string
+    data: {
+        [key: string]: number[]
+    }
 }
 
 function getStats(data: GenericProtocolData): GraphData[] {
@@ -14,18 +16,18 @@ function getStats(data: GenericProtocolData): GraphData[] {
     const graphData: GraphData[] = []
     for (const element in first) {
         graphData.push({
-            graph: element,
-            data: [],
+            name: element,
+            data: {},
         })
     }
-    /* for (const genData in data.generation_stats) {
-     *     graphData.forEach((gd) => {
-     *         gd.data.push(genData[gd.graph])
-     *     })
-     * } */
     data.generation_stats?.forEach((gs) => {
         graphData.forEach((gd) => {
-            gd.data.push(gs[gd.graph])
+            for (const stat in gs[gd.name]) {
+                if (gd.data[stat] === undefined)
+                    gd.data[stat] = [gs[gd.name][stat]]
+                else
+                    gd.data[stat].push(gs[gd.name][stat])
+            }
         })
     })
     return graphData
@@ -51,10 +53,13 @@ export default function Generic(props: { websocket: WebsocketHandler }) {
                 <h2>Stats:</h2>
                 {stats.map((stat, i) => (
                     <div key={`${i}-graphs`}>
-                        <h3>{stat.graph}</h3>
-                        {stat.data.map((value, j) => (
-                            <div key={`${i}-${j}-values`}>{value}</div>
-                        ))}
+                        <h3>{stat.name}</h3>
+                        {/* {stat.data.map((value, j) => (
+                            <div key={`${i}-${j}-values`}>
+                            {JSON.stringify(value)}
+                            </div>
+                            ))} */}
+                        {JSON.stringify(stat.data)}
                     </div>
                 ))}
             </div>

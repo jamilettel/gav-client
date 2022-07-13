@@ -19,7 +19,9 @@ export type GenericProtocolData = {
         [key: string]: Setting
     }
     generation_stats?: {
-        [key: string]: string
+        [key: string]: {
+            [key: string]: number
+        }
     }[]
 }
 
