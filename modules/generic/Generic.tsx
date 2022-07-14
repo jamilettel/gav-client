@@ -27,6 +27,10 @@ const colors = [
         borderColor: 'rgb(99, 255, 132)',
         backgroundColor: 'rgba(99, 255, 132, 0.5)',
     },
+    {
+        borderColor: 'rgb(235, 162, 235)',
+        backgroundColor: 'rgba(235, 162, 235, 0.5)',
+    },
 ]
 
 Chart.register(
@@ -120,6 +124,7 @@ export default function Generic(props: { websocket: WebsocketHandler }) {
                 },
             },
             x: {
+                beginAtZero: true,
                 grid: {
                     color: '#444',
                 },
@@ -133,16 +138,17 @@ export default function Generic(props: { websocket: WebsocketHandler }) {
     return (
         <div>
             <h2>Generations: {data.generation}</h2>
+            <h2>Actions:</h2>
             <Button onClick={runOneGen}>Run one generation</Button>
             <div>
-                <h2>Stats:</h2>
+                <h2>Statistics:</h2>
                 {stats.map((stat, i) => (
                     <div key={`${i}-graphs`}>
                         <h3>{stat.name}</h3>
                         <Line
                             options={options}
                             data={{
-                                labels: range(data.generation ?? 0),
+                                labels: range(data.generation ?? 0, 1),
                                 datasets: getDatasets(stat.data),
                             }}
                         />

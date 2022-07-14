@@ -37,7 +37,6 @@ export default function App() {
     } else if (websocket.session === null) {
         return (
             <div>
-                Protocol: {websocket.protocol}
                 <ChooseSessionForm websocket={websocket} />
             </div>
         )

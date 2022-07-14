@@ -1,0 +1,19 @@
+@import 'base';
+
+.protocol {
+    text-align: center;
+    color: $outline;
+}
+
+.form {
+    text-align: center;
+    margin-top: auto;
+    height: 75%;
+
+    .input {
+        text-align: left;
+        margin: auto;
+        margin-bottom: 30px;
+        width: 600px;
+    }
+}

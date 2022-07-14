@@ -1,5 +1,7 @@
 @import 'base';
 
+$border-size: 50px;
+
 html,
 body {
   padding: 0;
@@ -7,6 +9,10 @@ body {
   font-family: 'Comfortaa';
   background: $background;
   color: $text;
+}
+
+h1, h2, h3 {
+    font-weight: normal;
 }
 
 button {
@@ -21,4 +27,62 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    background: $foreground;
+    width: 1200px;
+    padding: 50px;
+    max-width: 80%;
+    margin: auto;
+    height: 100vh;
+    position: relative;
+    transition: 200ms ease-in-out;
+}
+
+.border-after, .border-before {
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: $border-size;
+
+    background: $foreground;
+
+    top: 0;
+
+    &::before {
+        width: 200%;
+        position: absolute;
+        background: $background;
+        border-radius: 100%;
+        content: ' ';
+        min-height: 110vh;
+    }
+}
+
+.border-after {
+    right: 0;
+    transform: translateX(100%);
+    &::before {
+        transform: translate(50%, -4.5%);
+        right: 0;
+    }
+}
+
+.border-before {
+    left: 0;
+    transform: translateX(-100%);
+    &::before {
+        transform: translate(-50%, -4.5%);
+        left: 0;
+    }
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    font-size: 32pt;
+    font-weight: normal;
 }

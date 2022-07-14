@@ -1,0 +1,15 @@
+.form {
+    text-align: center;
+    margin-top: auto;
+    height: 75%;
+
+    .inputWrapper {
+        text-align: left;
+        width: 600px;
+        margin: auto;
+        .input {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+    }
+}

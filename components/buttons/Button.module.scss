@@ -1,14 +1,15 @@
 @import 'base';
 
 .button {
-    padding: 10px 35px;
+    padding: 12px 35px;
     background: $secondary;
     color: white;
     width: fit-content;
     border: none;
     border-radius: 10px;
     outline: none;
-    font-size: 16pt;
+    font-size: 18pt;
+    font-weight: lighter;
 
     &:hover {
         cursor: pointer;
@@ -17,7 +18,7 @@
 
     &:focus {
         filter: brightness(1.1);
-        outline: solid 1px #aaa;
+        outline: solid 1px $outline;
     }
 }
 
