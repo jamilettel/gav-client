@@ -1,6 +1,7 @@
 import Button from '@/components/buttons/Button'
 import Form from '@/components/form/Form'
 import TextInput from '@/components/input/TextInput'
+import SimplePage from '@/components/layout/SimplePage'
 import { useState } from 'react'
 import styles from './ConnectToServerForm.module.scss'
 
@@ -17,8 +18,7 @@ export default function ConnectToServerForm(props: {
             : undefined
 
     return (
-        <div className="content-wrapper">
-            <div className="border-before" />
+        <SimplePage>
             <h1 className="title">Generic Algorithm Visualizer</h1>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.inputWrapper}>
@@ -33,7 +33,6 @@ export default function ConnectToServerForm(props: {
                 </div>
                 <Button primary={true}>Connect</Button>
             </Form>
-            <div className="border-after" />
-        </div>
+        </SimplePage>
     )
 }

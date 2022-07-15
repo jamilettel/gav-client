@@ -1,6 +1,7 @@
 import Button from '@/components/buttons/Button'
 import Form from '@/components/form/Form'
 import TextInput from '@/components/input/TextInput'
+import SimplePage from '@/components/layout/SimplePage'
 import WebsocketHandler from '@/websocket/websocket'
 import { useState } from 'react'
 import styles from './ChooseSessionForm.module.scss'
@@ -18,8 +19,7 @@ export default function ChooseSessionForm(props: {
     }
 
     return (
-        <div className="content-wrapper">
-            <div className="border-before" />
+        <SimplePage>
             <h1 className="title">Generic Algorithm Visualizer</h1>
             <p className={styles.protocol}>Protocol: {props.websocket.protocol}</p>
             <Form onSubmit={onSubmit} className={styles.form}>
@@ -29,7 +29,6 @@ export default function ChooseSessionForm(props: {
                 </div>
                 <Button primary={true}>Join session</Button>
             </Form>
-            <div className="border-after" />
-        </div>
+        </SimplePage>
     )
 }

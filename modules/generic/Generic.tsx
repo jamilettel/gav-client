@@ -84,8 +84,6 @@ function getDatasets(data: {
         })
         i++
     }
-    console.log(`Datasets:`)
-    console.log(datasets)
     return datasets
 }
 

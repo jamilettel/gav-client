@@ -1,0 +1,56 @@
+@import 'base';
+
+$border-size: 50px;
+
+.contentWrapper {
+    display: flex;
+    flex-direction: column;
+    background: $foreground;
+    width: 1200px;
+    padding: 50px;
+    max-width: 80%;
+    margin: auto;
+    height: 100vh;
+    position: relative;
+    transition: 200ms ease-in-out;
+}
+
+.borderAfter, .borderBefore {
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: $border-size;
+
+    background: $foreground;
+
+    top: 0;
+
+    &::before {
+        width: 200%;
+        position: absolute;
+        background: $background;
+        border-radius: 100%;
+        content: ' ';
+        min-height: 110vh;
+        border: solid 2px $foreground-light;
+        box-sizing: border-box;
+    }
+}
+
+.borderAfter {
+    right: 0;
+    transform: translateX(100%);
+    &::before {
+        transform: translate(50%, -4.5%);
+        right: 0;
+    }
+}
+
+.borderBefore {
+    left: 0;
+    transform: translateX(-100%);
+    &::before {
+        transform: translate(-50%, -4.5%);
+        left: 0;
+    }
+}

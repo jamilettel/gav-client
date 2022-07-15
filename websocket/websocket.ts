@@ -31,6 +31,14 @@ export default class WebsocketHandler {
 
     handlersProtocol: CommandHandler[] = []
 
+    reset() {
+        this.ws = null
+        this.data = {}
+        this.protocol = null
+        this.session = null
+        this.sessions = []
+    }
+
     connect(url: string) {
         try {
             this.ws = new WebSocket(url)
@@ -59,9 +67,12 @@ export default class WebsocketHandler {
             }
 
             this.ws.onclose = () => {
-                this.ws = null
+                this.reset()
                 if (this.onUpdate) this.onUpdate()
             }
+
+
+
         } catch {}
     }
 
