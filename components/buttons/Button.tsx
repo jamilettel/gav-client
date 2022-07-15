@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from './Button.module.scss'
 
-export default function Button(props: {
+export interface ButtonProps {
     children?: React.ReactNode
     className?: string
     primary?: boolean
-    onClick?: () => void,
-}) {
+    onClick?: () => void
+    tooltip?: string
+}
+
+export default function Button(props: ButtonProps) {
     let className = styles.button + ' ' + props.className ?? ''
     if (props.primary === true) className += ' ' + styles.primary
 
@@ -17,6 +20,7 @@ export default function Button(props: {
             className={className}
             onClick={props.onClick}
             onMouseDown={onMouseDown}
+            title={props.tooltip}
         >
             {props.children ?? 'Button'}
         </button>

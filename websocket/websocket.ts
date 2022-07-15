@@ -1,3 +1,4 @@
+import { LS_SERVER_URL } from '@/utils/constants'
 import {
     CommandBuiltin,
     CommandBuiltinArgs,
@@ -31,6 +32,10 @@ export default class WebsocketHandler {
 
     handlersProtocol: CommandHandler[] = []
 
+    disconnect() {
+        this.ws?.close()
+    }
+
     reset() {
         this.ws = null
         this.data = {}
@@ -44,6 +49,7 @@ export default class WebsocketHandler {
             this.ws = new WebSocket(url)
 
             this.ws.onopen = () => {
+                localStorage.setItem(LS_SERVER_URL, url)
                 console.log('connected to server ' + url)
                 this.builtinCommand('describe')
                 if (this.onUpdate) this.onUpdate()

@@ -1,3 +1,4 @@
+import { LS_SESSION_NAME } from '@/utils/constants'
 import GenericHandlers from '@/websocket/GenericHandler'
 import WebsocketHandler from '@/websocket/websocket'
 import {
@@ -23,6 +24,7 @@ export default class WSBuiltinHandler {
 
     static updateSession(wsh: WebsocketHandler, data: SessionData) {
         wsh.session = data.session
+        localStorage.setItem(LS_SESSION_NAME, data.session)
     }
 
     static updateProtocol(wsh: WebsocketHandler, data: SessionDescribeData) {
