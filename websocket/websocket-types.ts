@@ -6,7 +6,10 @@ export interface Command {
 
 export type Service = 'join-or-create' | 'delete' | 'list' | 'info' | 'describe'
 
-export type CommandHandler = { info: string; handler: (wsh: WebsocketHandler, data: any) => any }
+export type CommandHandler = {
+    info: string
+    handler: (wsh: WebsocketHandler, data: any) => any
+}
 
 export type CommandBuiltinArgs = {
     name?: string
@@ -17,16 +20,17 @@ export type CommandBuiltin = {
 } & CommandBuiltinArgs
 
 export type SessionListData = {
-    info: 'session_list',
+    info: 'session_list'
     sessions: string[]
 }
 
 export type SessionData = {
-    info: 'session',
+    info: 'session'
     session: string | null
 }
 
 export type SessionDescribeData = {
-    info: 'session',
+    info: 'session'
+    title: string
     command_protocol: string
 }

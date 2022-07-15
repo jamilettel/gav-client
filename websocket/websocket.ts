@@ -14,6 +14,8 @@ export default class WebsocketHandler {
     session: string | null = null
     protocol: string | null = null
     data: any = {}
+    url: string | null = null
+    title?: string
 
     handlersBuiltin: CommandHandler[] = [
         {
@@ -26,7 +28,7 @@ export default class WebsocketHandler {
         },
         {
             info: 'session_describe',
-            handler: WSBuiltinHandler.updateProtocol,
+            handler: WSBuiltinHandler.updateServerInfo,
         },
     ]
 
@@ -42,6 +44,7 @@ export default class WebsocketHandler {
         this.protocol = null
         this.session = null
         this.sessions = []
+        this.url = null
     }
 
     connect(url: string) {
@@ -51,6 +54,7 @@ export default class WebsocketHandler {
             this.ws.onopen = () => {
                 localStorage.setItem(LS_SERVER_URL, url)
                 console.log('connected to server ' + url)
+                this.url = url
                 this.builtinCommand('describe')
                 if (this.onUpdate) this.onUpdate()
             }

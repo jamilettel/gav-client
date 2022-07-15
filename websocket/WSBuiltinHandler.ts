@@ -24,11 +24,12 @@ export default class WSBuiltinHandler {
 
     static updateSession(wsh: WebsocketHandler, data: SessionData) {
         wsh.session = data.session
-        localStorage.setItem(LS_SESSION_NAME, data.session)
+        localStorage.setItem(LS_SESSION_NAME, data.session ?? '')
     }
 
-    static updateProtocol(wsh: WebsocketHandler, data: SessionDescribeData) {
+    static updateServerInfo(wsh: WebsocketHandler, data: SessionDescribeData) {
         wsh.protocol = data.command_protocol
+        wsh.title = data.title
         wsh.handlersProtocol =
             PROTOCOL_HANDLERS.find((ph) => ph.protocol === wsh.protocol)
                 ?.handlers ?? []

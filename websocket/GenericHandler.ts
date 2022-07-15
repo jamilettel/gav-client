@@ -17,7 +17,7 @@ export type GenericProtocolData = {
     generation?: number
     settings?: {
         [key: string]: Setting
-    }
+    },
     generation_stats?: {
         [key: string]: {
             [key: string]: number

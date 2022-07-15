@@ -33,7 +33,7 @@ export default function ChooseSessionForm(props: {
                 <div className={styles.separator}>
                     <DisconnectButton tooltip="Disconnect" onClick={disconnect} />
                 </div>
-                <h1 className="title">Generic Algorithm Visualizer</h1>
+                <h1 className="title">{ props.websocket.title ?? 'Generic Algorithm Visualizer'}</h1>
                 <div className={styles.separator} />
             </div>
             <p className={styles.protocol}>Protocol: {props.websocket.protocol}</p>
