@@ -2,10 +2,10 @@
 
 .button {
     padding: 12px 35px;
-    background: $secondary;
+    background: $foreground;
+    border: solid 1px $secondary;
     color: white;
     width: fit-content;
-    border: none;
     border-radius: 10px;
     outline: none;
     font-size: 18pt;
@@ -29,4 +29,5 @@
 
 .primary {
     background: $primary;
+    border: none;
 }
