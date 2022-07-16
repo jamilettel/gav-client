@@ -1,52 +1,49 @@
 import ChooseSessionForm from '@/modules/choose-session/ChooseSessionForm'
 import ConnectToServerForm from '@/modules/connect-to-server/ConnectToServerForm'
 import Generic from '@/modules/generic/Generic'
-import WebsocketHandler from '@/websocket/websocket'
-import { useState } from 'react'
-
-function getWebsocket(): WebsocketHandler {
-    const [update, setUpdate] = useState(false)
-    const [websocket] = useState(new WebsocketHandler())
-    websocket.onUpdate = () => setUpdate(!update)
-    return websocket
-}
+import { useAppDispatch, useAppSelector } from '@/utils/store'
+import { getProtocol, getSession } from '@/websocket/builtinSlice'
+import { connectWS, isWebsocketConnected } from '@/websocket/connectionSlice'
 
 const PROTOCOL_PROVIDERS: {
     protocol: string
-    provider: (ws: WebsocketHandler) => React.ReactNode
+    provider: () => React.ReactNode
 }[] = [
     {
         protocol: 'generic',
-        provider: (ws) => <Generic websocket={ws} />,
+        provider: () => <Generic />,
     },
 ]
 
 export default function App() {
-    const websocket = getWebsocket()
+    const dispatch = useAppDispatch()
+    const connected = useAppSelector(isWebsocketConnected)
+    const session = useAppSelector(getSession)
+    const protocol = useAppSelector(getProtocol)
 
     function onSubmit(url: string) {
-        websocket.connect(url)
+        dispatch(connectWS({ url, dispatch }))
     }
 
-    if (!websocket.isConnected()) {
+    if (!connected) {
         return (
             <div>
                 <ConnectToServerForm onSubmit={onSubmit} />
             </div>
         )
-    } else if (websocket.session === null) {
+    } else if (session === undefined) {
         return (
             <div>
-                <ChooseSessionForm websocket={websocket} />
+                <ChooseSessionForm />
             </div>
         )
     } else {
         return (
             <div>
-                Protocol: {websocket.protocol}
+                Protocol: {protocol}
                 {PROTOCOL_PROVIDERS.find(
-                    (pp) => pp.protocol === websocket.protocol
-                )?.provider(websocket) ?? <></>}
+                    (pp) => pp.protocol === protocol
+                )?.provider() ?? <></>}
             </div>
         )
     }

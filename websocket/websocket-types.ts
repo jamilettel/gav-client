@@ -1,4 +1,4 @@
-import WebsocketHandler from '@/websocket/websocket'
+import { AppDispatch } from '@/utils/store'
 
 export interface Command {
     command: string
@@ -8,7 +8,7 @@ export type Service = 'join-or-create' | 'delete' | 'list' | 'info' | 'describe'
 
 export type CommandHandler = {
     info: string
-    handler: (wsh: WebsocketHandler, data: any) => any
+    handler: (dispatch: AppDispatch, data: any) => any
 }
 
 export type CommandBuiltinArgs = {

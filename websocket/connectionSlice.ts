@@ -1,0 +1,60 @@
+import { AppDispatch, RootState } from '@/utils/store'
+import { configureWebsocket } from '@/websocket/websocket'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+type ConnectionState = {
+    ws?: WebSocket
+    url?: string
+    connected: boolean
+    status: 'idle' | 'loading' | 'failed'
+}
+
+const initialState: ConnectionState = {
+    status: 'idle',
+    connected: false,
+}
+
+interface PayloadConnect {
+    url: string
+    dispatch: AppDispatch
+}
+
+const connectionSlice = createSlice({
+    name: 'connection',
+    initialState: initialState,
+    reducers: {
+        connectWS: (state, action: PayloadAction<PayloadConnect>) => {
+            const url = action.payload.url
+            const dispatch = action.payload.dispatch
+            try {
+                state.status = 'loading'
+                state.ws = new WebSocket(url)
+                state.url = url
+                configureWebsocket(state.ws, url, dispatch)
+            } catch {
+                state.status = 'failed'
+            }
+        },
+        setConnectionStatus: (state, action: PayloadAction<boolean>) => {
+            const connected = action.payload
+            state.status = connected ? 'idle' : 'failed'
+            state.connected = connected
+        },
+        resetWS: (state) => {
+            state.ws?.close()
+            return initialState
+        },
+        sendWS: (state, action: PayloadAction<string>) => {
+            state.ws?.send(action.payload)
+        },
+    },
+})
+
+export const isWebsocketConnected = (state: RootState) =>
+    state.connection.connected
+
+export const getWebsocket = (state: RootState) => state.connection.ws
+
+export const { connectWS, resetWS, sendWS, setConnectionStatus } =
+    connectionSlice.actions
+export default connectionSlice.reducer

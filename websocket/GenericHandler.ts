@@ -17,7 +17,7 @@ export type GenericProtocolData = {
     generation?: number
     settings?: {
         [key: string]: Setting
-    },
+    }
     generation_stats?: {
         [key: string]: {
             [key: string]: number
@@ -61,25 +61,25 @@ const GenericHandlers: CommandHandler[] = [
     {
         info: 'all',
         handler: (wsh, data: InfoAllData) => {
-            ;(wsh.data as GenericProtocolData).generation = data.data.generation
-            ;(wsh.data as GenericProtocolData).generation_stats =
-                data.data.all_stats
-            ;(wsh.data as GenericProtocolData).settings = data.data.settings
+            // ;(wsh.data as GenericProtocolData).generation = data.data.generation
+            // ;(wsh.data as GenericProtocolData).generation_stats =
+            //     data.data.all_stats
+            // ;(wsh.data as GenericProtocolData).settings = data.data.settings
         },
     },
     {
         info: 'one-gen',
         handler: (wsh, data: InfoOneGen) => {
-            ;(wsh.data as GenericProtocolData).generation = data.data.generation
-            ;(wsh.data as GenericProtocolData).generation_stats?.push(
-                data.data.gen_stats
-            )
+            // ;(wsh.data as GenericProtocolData).generation = data.data.generation
+            // ;(wsh.data as GenericProtocolData).generation_stats?.push(
+            //     data.data.gen_stats
+            // )
         },
     },
     {
         info: 'settings-update',
         handler: (wsh, data: InfoSettingsUpdate) => {
-            ;(wsh.data as GenericProtocolData).settings = data.settings
+            // ;(wsh.data as GenericProtocolData).settings = data.settings
         },
     },
 ]

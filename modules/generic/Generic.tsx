@@ -1,6 +1,5 @@
 import Button from '@/components/buttons/Button'
 import { GenericProtocolData } from '@/websocket/GenericHandler'
-import WebsocketHandler from '@/websocket/websocket'
 import { useEffect } from 'react'
 import {
     Chart,
@@ -95,64 +94,65 @@ function range(size: number, startAt = 0): number[] {
     return arr
 }
 
-export default function Generic(props: { websocket: WebsocketHandler }) {
-    useEffect(() => {
-        props.websocket.command('info')
-    }, [])
+export default function Generic() {
+    /* useEffect(() => {
+     *     props.websocket.command('info')
+     * }, [])
 
-    const runOneGen = () => props.websocket.command('run-one-gen')
+     * const runOneGen = () => props.websocket.command('run-one-gen')
 
-    const data = props.websocket.data as GenericProtocolData
+     * const data = props.websocket.data as GenericProtocolData
 
-    const stats = getStats(data)
+     * const stats = getStats(data)
 
-    const options = {
-        scale: {
-            font: {
-                family: 'Comfortaa',
-            },
-        },
-        scales: {
-            y: {
-                grid: {
-                    color: '#444',
-                },
-                ticks: {
-                    color: '#fff',
-                },
-            },
-            x: {
-                beginAtZero: true,
-                grid: {
-                    color: '#444',
-                },
-                ticks: {
-                    color: '#fff',
-                },
-            },
-        },
-    }
+     * const options = {
+     *     scale: {
+     *         font: {
+     *             family: 'Comfortaa',
+     *         },
+     *     },
+     *     scales: {
+     *         y: {
+     *             grid: {
+     *                 color: '#444',
+     *             },
+     *             ticks: {
+     *                 color: '#fff',
+     *             },
+     *         },
+     *         x: {
+     *             beginAtZero: true,
+     *             grid: {
+     *                 color: '#444',
+     *             },
+     *             ticks: {
+     *                 color: '#fff',
+     *             },
+     *         },
+     *     },
+     * }
 
-    return (
-        <div>
-            <h2>Generations: {data.generation}</h2>
-            <h2>Actions:</h2>
-            <Button onClick={runOneGen}>Run one generation</Button>
-            <div>
-                <h2>Statistics:</h2>
-                {stats.map((stat, i) => (
-                    <div key={`${i}-graphs`}>
-                        <h3>{stat.name}</h3>
-                        <Line
-                            options={options}
-                            data={{
-                                labels: range(data.generation ?? 0, 1),
-                                datasets: getDatasets(stat.data),
-                            }}
-                        />
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+     * return (
+     *     <div>
+     *         <h2>Generations: {data.generation}</h2>
+     *         <h2>Actions:</h2>
+     *         <Button onClick={runOneGen}>Run one generation</Button>
+     *         <div>
+     *             <h2>Statistics:</h2>
+     *             {stats.map((stat, i) => (
+     *                 <div key={`${i}-graphs`}>
+     *                     <h3>{stat.name}</h3>
+     *                     <Line
+     *                         options={options}
+     *                         data={{
+     *                             labels: range(data.generation ?? 0, 1),
+     *                             datasets: getDatasets(stat.data),
+     *                         }}
+     *                     />
+     *                 </div>
+     *             ))}
+     *         </div>
+     *     </div>
+     * ) */
+    return <></>
 }

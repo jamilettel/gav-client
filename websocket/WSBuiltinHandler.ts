@@ -1,37 +1,28 @@
 import { LS_SESSION_NAME } from '@/utils/constants'
-import GenericHandlers from '@/websocket/GenericHandler'
-import WebsocketHandler from '@/websocket/websocket'
+import { AppDispatch } from '@/utils/store'
 import {
-    CommandHandler,
+    updateServerInfo,
+    updateSession,
+    updateSessionList,
+} from '@/websocket/builtinSlice'
+
+import {
     SessionData,
     SessionDescribeData,
     SessionListData,
 } from '@/websocket/websocket-types'
 
-type ProtocolHandler = {
-    protocol: string
-    handlers: CommandHandler[]
-}
-
-const PROTOCOL_HANDLERS: ProtocolHandler[] = [
-    { protocol: 'generic', handlers: GenericHandlers },
-]
-
 export default class WSBuiltinHandler {
-    static updateSessionList(wsh: WebsocketHandler, data: SessionListData) {
-        wsh.sessions = data.sessions
+    static updateSessionList(dispatch: AppDispatch, data: SessionListData) {
+        dispatch(updateSessionList(data.sessions))
     }
 
-    static updateSession(wsh: WebsocketHandler, data: SessionData) {
-        wsh.session = data.session
+    static updateSession(dispatch: AppDispatch, data: SessionData) {
+        dispatch(updateSession(data.session ?? undefined))
         localStorage.setItem(LS_SESSION_NAME, data.session ?? '')
     }
 
-    static updateServerInfo(wsh: WebsocketHandler, data: SessionDescribeData) {
-        wsh.protocol = data.command_protocol
-        wsh.title = data.title
-        wsh.handlersProtocol =
-            PROTOCOL_HANDLERS.find((ph) => ph.protocol === wsh.protocol)
-                ?.handlers ?? []
+    static updateServerInfo(dispatch: AppDispatch, data: SessionDescribeData) {
+        dispatch(updateServerInfo(data))
     }
 }
