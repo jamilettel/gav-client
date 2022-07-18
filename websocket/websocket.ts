@@ -5,6 +5,7 @@ import {
     sendWS,
     setConnectionStatus,
 } from '@/websocket/connectionSlice'
+import GenericHandlers from '@/websocket/GenericHandler'
 import {
     Command,
     CommandBuiltin,
@@ -13,6 +14,15 @@ import {
     Service,
 } from '@/websocket/websocket-types'
 import WSBuiltinHandler from '@/websocket/WSBuiltinHandler'
+
+type ProtocolHandler = {
+    protocol: string
+    handlers: CommandHandler[]
+}
+
+const PROTOCOL_HANDLERS: ProtocolHandler[] = [
+    { protocol: 'generic', handlers: GenericHandlers },
+]
 
 const handlersBuiltin: CommandHandler[] = [
     {
@@ -41,23 +51,40 @@ export function configureWebsocket(
         dispatch(setConnectionStatus(true))
     }
 
-    ws.onmessage = (msg) => {
-        try {
-            const data = JSON.parse(msg.data)
-            if (typeof data.info === 'string') {
-                let handler = handlersBuiltin.find((h) => h.info === data.info)
-                // ?? handlersProtocol.find((h) => h.info === data.info)
-                handler?.handler(dispatch, data)
-            }
-        } catch (e) {}
-    }
-
     ws.onclose = () => {
         dispatch(resetWS())
     }
 
     ws.onerror = () => {
         dispatch(resetWS())
+    }
+
+    // configures onmessage
+    configureWebsocketProtocol(ws, '', dispatch)
+}
+
+export function configureWebsocketProtocol(
+    ws: WebSocket,
+    protocol: string,
+    dispatch: AppDispatch
+) {
+    const protocolHandler = PROTOCOL_HANDLERS.find(
+        (p) => p.protocol === protocol
+    )?.handlers
+
+    ws.onmessage = (msg) => {
+        try {
+            const data = JSON.parse(msg.data)
+            const info = data.info
+            if (typeof info === 'string') {
+                const handler =
+                    handlersBuiltin.find((h) => h.info === info) ??
+                    protocolHandler?.find((h) => h.info === info)
+                handler?.handler(dispatch, data)
+            }
+        } catch (e) {
+            console.log(e)
+        }
     }
 }
 

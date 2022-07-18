@@ -5,6 +5,7 @@ import {
     updateSession,
     updateSessionList,
 } from '@/websocket/builtinSlice'
+import { setProtocolWS } from '@/websocket/connectionSlice'
 
 import {
     SessionData,
@@ -24,5 +25,6 @@ export default class WSBuiltinHandler {
 
     static updateServerInfo(dispatch: AppDispatch, data: SessionDescribeData) {
         dispatch(updateServerInfo(data))
+        dispatch(setProtocolWS({ protocol: data.command_protocol, dispatch }))
     }
 }

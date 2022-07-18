@@ -1,6 +1,11 @@
+import {
+    addGenDataGeneric,
+    setAllDataGeneric,
+    updateSettingsGeneric,
+} from '@/modules/generic/genericSlice'
 import { CommandHandler } from '@/websocket/websocket-types'
 
-type Setting =
+export type Setting =
     | {
           type: 'number'
           value: number
@@ -25,7 +30,7 @@ export type GenericProtocolData = {
     }[]
 }
 
-type InfoAllData = {
+export type InfoAllData = {
     info: 'all'
     data: {
         generation: number
@@ -44,7 +49,7 @@ type InfoAllData = {
     }
 }
 
-type InfoOneGen = {
+export type InfoOneGen = {
     info: 'one-gen'
     data: {
         generation: number
@@ -52,7 +57,7 @@ type InfoOneGen = {
     }
 }
 
-type InfoSettingsUpdate = {
+export type InfoSettingsUpdate = {
     info: 'settings-update'
     settings: { [key: string]: Setting }
 }
@@ -60,26 +65,18 @@ type InfoSettingsUpdate = {
 const GenericHandlers: CommandHandler[] = [
     {
         info: 'all',
-        handler: (wsh, data: InfoAllData) => {
-            // ;(wsh.data as GenericProtocolData).generation = data.data.generation
-            // ;(wsh.data as GenericProtocolData).generation_stats =
-            //     data.data.all_stats
-            // ;(wsh.data as GenericProtocolData).settings = data.data.settings
-        },
+        handler: (dispatch, data: InfoAllData) =>
+            dispatch(setAllDataGeneric(data)),
     },
     {
         info: 'one-gen',
-        handler: (wsh, data: InfoOneGen) => {
-            // ;(wsh.data as GenericProtocolData).generation = data.data.generation
-            // ;(wsh.data as GenericProtocolData).generation_stats?.push(
-            //     data.data.gen_stats
-            // )
-        },
+        handler: (dispatch, data: InfoOneGen) =>
+            dispatch(addGenDataGeneric(data)),
     },
     {
         info: 'settings-update',
-        handler: (wsh, data: InfoSettingsUpdate) => {
-            // ;(wsh.data as GenericProtocolData).settings = data.settings
+        handler: (dispatch, data: InfoSettingsUpdate) => {
+            dispatch(updateSettingsGeneric(data))
         },
     },
 ]

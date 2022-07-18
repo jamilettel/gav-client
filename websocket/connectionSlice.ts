@@ -1,5 +1,8 @@
 import { AppDispatch, RootState } from '@/utils/store'
-import { configureWebsocket } from '@/websocket/websocket'
+import {
+    configureWebsocket,
+    configureWebsocketProtocol,
+} from '@/websocket/websocket'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type ConnectionState = {
@@ -16,6 +19,11 @@ const initialState: ConnectionState = {
 
 interface PayloadConnect {
     url: string
+    dispatch: AppDispatch
+}
+
+interface PayloadProtocol {
+    protocol: string
     dispatch: AppDispatch
 }
 
@@ -40,12 +48,21 @@ const connectionSlice = createSlice({
             state.status = connected ? 'idle' : 'failed'
             state.connected = connected
         },
-        resetWS: (state) => {
+        disconnectWS: (state) => {
             state.ws?.close()
+        },
+        resetWS: () => {
             return initialState
         },
         sendWS: (state, action: PayloadAction<string>) => {
             state.ws?.send(action.payload)
+        },
+        setProtocolWS: (state, action: PayloadAction<PayloadProtocol>) => {
+            configureWebsocketProtocol(
+                state.ws!,
+                action.payload.protocol,
+                action.payload.dispatch
+            )
         },
     },
 })
@@ -55,6 +72,12 @@ export const isWebsocketConnected = (state: RootState) =>
 
 export const getWebsocket = (state: RootState) => state.connection.ws
 
-export const { connectWS, resetWS, sendWS, setConnectionStatus } =
-    connectionSlice.actions
+export const {
+    connectWS,
+    resetWS,
+    sendWS,
+    setConnectionStatus,
+    setProtocolWS,
+    disconnectWS,
+} = connectionSlice.actions
 export default connectionSlice.reducer

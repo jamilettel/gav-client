@@ -12,6 +12,14 @@ import {
     CategoryScale,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import {
+    getGenericGeneration,
+    getGenericGraphData,
+    GraphData,
+} from '@/modules/generic/genericSlice'
+import { sendCommand } from '@/websocket/websocket'
+import { useAppDispatch } from '@/utils/store'
+import { useSelector } from 'react-redux'
 
 const colors = [
     {
@@ -41,35 +49,6 @@ Chart.register(
     Legend
 )
 
-type GraphData = {
-    name: string
-    data: {
-        [key: string]: number[]
-    }
-}
-
-function getStats(data: GenericProtocolData): GraphData[] {
-    const first = data.generation_stats?.at(0)
-    if (first === undefined) return []
-    const graphData: GraphData[] = []
-    for (const element in first) {
-        graphData.push({
-            name: element,
-            data: {},
-        })
-    }
-    data.generation_stats?.forEach((gs) => {
-        graphData.forEach((gd) => {
-            for (const stat in gs[gd.name]) {
-                if (gd.data[stat] === undefined)
-                    gd.data[stat] = [gs[gd.name][stat]]
-                else gd.data[stat].push(gs[gd.name][stat])
-            }
-        })
-    })
-    return graphData
-}
-
 function getDatasets(data: {
     [key: string]: number[]
 }): ChartDataset<'line', number[]>[] {
@@ -95,64 +74,63 @@ function range(size: number, startAt = 0): number[] {
 }
 
 export default function Generic() {
-    /* useEffect(() => {
-     *     props.websocket.command('info')
-     * }, [])
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        sendCommand(dispatch, 'info')
+    }, [])
 
-     * const runOneGen = () => props.websocket.command('run-one-gen')
+    const runOneGen = () => sendCommand(dispatch, 'run-one-gen')
 
-     * const data = props.websocket.data as GenericProtocolData
+    const data = useSelector(getGenericGraphData)
+    const generation = useSelector(getGenericGeneration)
 
-     * const stats = getStats(data)
+    const options = {
+        scale: {
+            font: {
+                family: 'Comfortaa',
+            },
+        },
+        scales: {
+            y: {
+                grid: {
+                    color: '#444',
+                },
+                ticks: {
+                    color: '#fff',
+                },
+            },
+            x: {
+                beginAtZero: true,
+                grid: {
+                    color: '#444',
+                },
+                ticks: {
+                    color: '#fff',
+                },
+            },
+        },
+    }
 
-     * const options = {
-     *     scale: {
-     *         font: {
-     *             family: 'Comfortaa',
-     *         },
-     *     },
-     *     scales: {
-     *         y: {
-     *             grid: {
-     *                 color: '#444',
-     *             },
-     *             ticks: {
-     *                 color: '#fff',
-     *             },
-     *         },
-     *         x: {
-     *             beginAtZero: true,
-     *             grid: {
-     *                 color: '#444',
-     *             },
-     *             ticks: {
-     *                 color: '#fff',
-     *             },
-     *         },
-     *     },
-     * }
-
-     * return (
-     *     <div>
-     *         <h2>Generations: {data.generation}</h2>
-     *         <h2>Actions:</h2>
-     *         <Button onClick={runOneGen}>Run one generation</Button>
-     *         <div>
-     *             <h2>Statistics:</h2>
-     *             {stats.map((stat, i) => (
-     *                 <div key={`${i}-graphs`}>
-     *                     <h3>{stat.name}</h3>
-     *                     <Line
-     *                         options={options}
-     *                         data={{
-     *                             labels: range(data.generation ?? 0, 1),
-     *                             datasets: getDatasets(stat.data),
-     *                         }}
-     *                     />
-     *                 </div>
-     *             ))}
-     *         </div>
-     *     </div>
-     * ) */
-    return <></>
+    return (
+        <div>
+            <h2>Generations: {generation}</h2>
+            <h2>Actions:</h2>
+            <Button onClick={runOneGen}>Run one generation</Button>
+            <div>
+                <h2>Statistics:</h2>
+                {data?.map((stat, i) => (
+                    <div key={`${i}-graphs`}>
+                        <h3>{stat.name}</h3>
+                        <Line
+                            options={options}
+                            data={{
+                                labels: range(generation ?? 0, 1),
+                                datasets: getDatasets(stat.data),
+                            }}
+                        />
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
 }
