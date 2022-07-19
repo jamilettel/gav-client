@@ -6,7 +6,8 @@
     left: 0;
     height: 100px;
     width: 100%;
-    background: $background;
+    background: rgba($background, 0.9);
+    backdrop-filter: blur(2px);
     border-top: 2px $foreground-light solid;
     padding-left: 70px;
     display: flex;
