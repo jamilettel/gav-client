@@ -25,7 +25,7 @@ export default function IconButton(
         >
             <Image
                 src={props.iconUrl}
-                layout={props.layout ?? 'fill'}
+                layout={props.layout ?? 'fixed'}
                 height={props.height}
                 width={props.width}
             />

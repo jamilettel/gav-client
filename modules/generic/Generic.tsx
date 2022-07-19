@@ -19,6 +19,9 @@ import { sendCommand } from '@/websocket/websocket'
 import { useAppDispatch } from '@/utils/store'
 import { useSelector } from 'react-redux'
 import NavbarPage from '@/components/layout/NavbarPage'
+import SessionPage from '@/components/layout/SessionPage'
+import ActionBarGeneric from '@/modules/generic/bar/ActionBar'
+import styles from './Generic.module.scss'
 
 const colors = [
     {
@@ -38,6 +41,33 @@ const colors = [
         backgroundColor: 'rgba(235, 162, 235, 0.5)',
     },
 ]
+
+const options = {
+    scale: {
+        font: {
+            family: 'Comfortaa',
+        },
+    },
+    scales: {
+        y: {
+            grid: {
+                color: '#444',
+            },
+            ticks: {
+                color: '#fff',
+            },
+        },
+        x: {
+            beginAtZero: true,
+            grid: {
+                color: '#444',
+            },
+            ticks: {
+                color: '#fff',
+            },
+        },
+    },
+}
 
 Chart.register(
     CategoryScale,
@@ -78,58 +108,30 @@ export default function Generic() {
         sendCommand(dispatch, 'info')
     }, [])
 
-    const runOneGen = () => sendCommand(dispatch, 'run-one-gen')
-
     const data = useSelector(getGenericGraphData)
     const generation = useSelector(getGenericGeneration)
 
-    const options = {
-        scale: {
-            font: {
-                family: 'Comfortaa',
-            },
-        },
-        scales: {
-            y: {
-                grid: {
-                    color: '#444',
-                },
-                ticks: {
-                    color: '#fff',
-                },
-            },
-            x: {
-                beginAtZero: true,
-                grid: {
-                    color: '#444',
-                },
-                ticks: {
-                    color: '#fff',
-                },
-            },
-        },
-    }
-
     return (
-        <NavbarPage>
-            <h2>Generations: {generation}</h2>
-            <h2>Actions:</h2>
-            <Button onClick={runOneGen}>Run one generation</Button>
-            <div>
-                <h2>Statistics:</h2>
-                {data?.map((stat, i) => (
-                    <div key={`${i}-graphs`}>
-                        <h3>{stat.name}</h3>
-                        <Line
-                            options={options}
-                            data={{
-                                labels: range(generation ?? 0, 1),
-                                datasets: getDatasets(stat.data),
-                            }}
-                        />
-                    </div>
-                ))}
-            </div>
+        <NavbarPage className={styles.navbar}>
+            <SessionPage>
+                <h2>Generations: {generation}</h2>
+                <div>
+                    <h2>Statistics:</h2>
+                    {data?.map((stat, i) => (
+                        <div key={`${i}-graphs`}>
+                            <h3>{stat.name}</h3>
+                            <Line
+                                options={options}
+                                data={{
+                                    labels: range(generation ?? 0, 1),
+                                    datasets: getDatasets(stat.data),
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </SessionPage>
+            <ActionBarGeneric />
         </NavbarPage>
     )
 }

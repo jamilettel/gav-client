@@ -8,7 +8,7 @@ import {
 import { setProtocolWS } from '@/websocket/connectionSlice'
 
 import {
-    SessionData,
+    SessionInfo,
     SessionDescribeData,
     SessionListData,
 } from '@/websocket/websocket-types'
@@ -18,9 +18,12 @@ export default class WSBuiltinHandler {
         dispatch(updateSessionList(data.sessions))
     }
 
-    static updateSession(dispatch: AppDispatch, data: SessionData) {
+    static updateSession(dispatch: AppDispatch, data: SessionInfo) {
         dispatch(updateSession(data.session ?? undefined))
-        localStorage.setItem(LS_SESSION_NAME, data.session ?? '')
+        if (data.session !== null) {
+            console.log(data.session)
+            localStorage.setItem(LS_SESSION_NAME, data.session)
+        }
     }
 
     static updateServerInfo(dispatch: AppDispatch, data: SessionDescribeData) {

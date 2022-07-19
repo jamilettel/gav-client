@@ -4,7 +4,7 @@ export interface Command {
     command: string
 }
 
-export type Service = 'join-or-create' | 'delete' | 'list' | 'info' | 'describe'
+export type Service = 'join-or-create' | 'leave' | 'delete' | 'list' | 'info' | 'describe'
 
 export type CommandHandler = {
     info: string
@@ -24,7 +24,7 @@ export type SessionListData = {
     sessions: string[]
 }
 
-export type SessionData = {
+export type SessionInfo = {
     info: 'session'
     session: string | null
 }
