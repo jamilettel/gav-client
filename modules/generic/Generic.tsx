@@ -1,5 +1,4 @@
 import Button from '@/components/buttons/Button'
-import { GenericProtocolData } from '@/websocket/GenericHandler'
 import { useEffect } from 'react'
 import {
     Chart,
@@ -15,11 +14,11 @@ import { Line } from 'react-chartjs-2'
 import {
     getGenericGeneration,
     getGenericGraphData,
-    GraphData,
 } from '@/modules/generic/genericSlice'
 import { sendCommand } from '@/websocket/websocket'
 import { useAppDispatch } from '@/utils/store'
 import { useSelector } from 'react-redux'
+import NavbarPage from '@/components/layout/NavbarPage'
 
 const colors = [
     {
@@ -112,7 +111,7 @@ export default function Generic() {
     }
 
     return (
-        <div>
+        <NavbarPage>
             <h2>Generations: {generation}</h2>
             <h2>Actions:</h2>
             <Button onClick={runOneGen}>Run one generation</Button>
@@ -131,6 +130,6 @@ export default function Generic() {
                     </div>
                 ))}
             </div>
-        </div>
+        </NavbarPage>
     )
 }

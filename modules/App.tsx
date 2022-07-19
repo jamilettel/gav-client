@@ -40,7 +40,6 @@ export default function App() {
     } else {
         return (
             <div>
-                Protocol: {protocol}
                 {PROTOCOL_PROVIDERS.find(
                     (pp) => pp.protocol === protocol
                 )?.provider() ?? <></>}

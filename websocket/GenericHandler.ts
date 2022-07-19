@@ -18,16 +18,12 @@ export type Setting =
           values?: string[]
       }
 
-export type GenericProtocolData = {
-    generation?: number
-    settings?: {
-        [key: string]: Setting
+export type GenerationStats = {
+    // graph name
+    [key: string]: {
+        // line name & value
+        [key: string]: number
     }
-    generation_stats?: {
-        [key: string]: {
-            [key: string]: number
-        }
-    }[]
 }
 
 export type InfoAllData = {
@@ -35,13 +31,7 @@ export type InfoAllData = {
     data: {
         generation: number
         // each element represents one generation
-        all_stats: {
-            // graph name
-            [key: string]: {
-                // line name & value
-                [key: string]: number
-            }
-        }[]
+        all_stats: GenerationStats[]
         settings: {
             // setting name & value
             [key: string]: Setting
@@ -53,7 +43,7 @@ export type InfoOneGen = {
     info: 'one-gen'
     data: {
         generation: number
-        gen_stats: { [key: string]: { [key: string]: number } }
+        gen_stats: GenerationStats
     }
 }
 

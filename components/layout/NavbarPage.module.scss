@@ -1,0 +1,94 @@
+@import 'base';
+
+.wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background: $foreground;
+    overflow: hidden;
+
+    .navbar {
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 50px;
+        transition: left .3s ease-out;
+
+        .tab {
+            position: absolute;
+            overflow: hidden;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+
+            &::before {
+                position: absolute;
+                backdrop-filter: blur(5px);
+                min-width: 200%;
+                min-height: 110vh;
+                background-color: rgba($background, 0.9);
+                border-radius: 100%;
+                content: ' ';
+                border: solid 2px $foreground-light;
+                box-sizing: border-box;
+                transform: translate(-50%, -4.5%);
+                top: 0;
+                left: 0;
+            }
+
+            &:hover .button {
+                filter: brightness(1.1);
+            }
+
+            .button {
+                width: 35px;
+                height: 170px;
+                border-radius: 100%;
+                position: absolute;
+                right: 9px;
+                top: 50%;
+                background: $background;
+                box-sizing: border-box;
+                border: $foreground-light 1px solid;
+                transform: translateY(-50%);
+                display: flex;
+
+                p {
+                    text-align: center;
+                    margin: auto;
+                    font-size: 24pt;
+                    transition: transform .3s ease-out;
+                }
+            }
+
+        }
+
+        .navbarContent {
+            backdrop-filter: blur(5px);
+            position: absolute;
+            width: 350px;
+            background-color: rgba($background, 0.9);
+            right: 50px;
+            height: 100%;
+        }
+
+    }
+
+    .navbarOpen {
+        left: 350px;
+
+        .tab .button p {
+            transform: rotate(180deg);
+        }
+    }
+
+    .content {
+        padding: 40px 70px;
+        overflow-y: scroll;
+        max-height: 100%;
+        min-width: 100%;
+    }
+
+}

@@ -1,5 +1,6 @@
 import { RootState } from '@/utils/store'
 import {
+    GenerationStats,
     InfoAllData,
     InfoOneGen,
     InfoSettingsUpdate,
@@ -22,13 +23,16 @@ export type GraphData = {
     }
 }
 
-function getStats(data: InfoAllData): GraphData[] {
-    const graphData: GraphData[] = []
-    if (data.data.all_stats.length === 0) return graphData
+function getStats(
+    data: GenerationStats[],
+    graphData: GraphData[] = []
+): GraphData[] {
+    if (data.length === 0) return graphData
 
-    for (const graphName in data.data.all_stats[0])
-        graphData.push({ name: graphName, data: {} })
-    data.data.all_stats.forEach((genStats) => {
+    for (const graphName in data[0])
+        if (!graphData.find((gd) => gd.name === graphName))
+            graphData.push({ name: graphName, data: {} })
+    data.forEach((genStats) => {
         graphData!.forEach((graph) => {
             for (const statName in genStats[graph.name]) {
                 if (graph.data[statName] === undefined)
@@ -48,22 +52,12 @@ const slice = createSlice({
         setAllDataGeneric: (state, action: PayloadAction<InfoAllData>) => {
             state.generation = action.payload.data.generation
             state.settings = action.payload.data.settings
-            state.graphData = getStats(action.payload)
+            state.graphData = getStats(action.payload.data.all_stats)
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
             const data = action.payload.data
             state.generation = data.generation
-            for (const graph of state.graphData ?? [])
-                for (const statName in data.gen_stats[graph.name] ?? {}) {
-                    if (graph.data[statName] === undefined)
-                        graph.data[statName] = [
-                            data.gen_stats[graph.name][statName],
-                        ]
-                    else
-                        graph.data[statName].push(
-                            data.gen_stats[graph.name][statName]
-                        )
-                }
+            state.graphData = getStats([data.gen_stats], state.graphData)
         },
         updateSettingsGeneric: (
             state,
