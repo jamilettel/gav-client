@@ -1,0 +1,24 @@
+@import 'base';
+.content {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .item {
+        width: 30%;
+        display: flex;
+        font-size: 14pt;
+        margin-bottom: 15px;
+
+        h3 {
+            margin: 0 0 0 0;
+        }
+        p {
+            margin: 0 0 0 0;
+            color: $outline;
+            flex-grow: 1;
+            text-align: right;
+        }
+    }
+}

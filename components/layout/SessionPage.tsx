@@ -6,14 +6,17 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import styles from './SessionPage.module.scss'
 
-export default function SessionPage(props: { children?: React.ReactNode }) {
+export default function SessionPage(props: {
+    children?: React.ReactNode,
+    className?: string,
+}) {
     const dispatch = useAppDispatch()
     const title = useSelector(getTitle)
     const session = useSelector(getSession)
     const leaveSession = () => sendBuiltin(dispatch, 'leave')
 
     return (
-        <div>
+        <>
             <div className={styles.header}>
                 <IconButton
                     className={styles.button}
@@ -29,7 +32,9 @@ export default function SessionPage(props: { children?: React.ReactNode }) {
                 </h1>
                 <p>{'@' + session}</p>
             </div>
-            {props.children}
-        </div>
+            <div className={props.className}>
+                {props.children}
+            </div>
+        </>
     )
 }
