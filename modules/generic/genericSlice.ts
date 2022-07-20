@@ -1,5 +1,6 @@
 import { RootState } from '@/utils/store'
 import {
+    GeneralStats,
     GenerationStats,
     InfoAllData,
     InfoOneGen,
@@ -12,6 +13,7 @@ interface GenericInitialState {
     generation?: number
     settings?: { [key: string]: Setting }
     graphData?: GraphData[]
+    generalStats?: GeneralStats
 }
 
 const initialState: GenericInitialState = {}
@@ -50,13 +52,16 @@ const slice = createSlice({
     name: 'generic-protocol',
     reducers: {
         setAllDataGeneric: (state, action: PayloadAction<InfoAllData>) => {
-            state.generation = action.payload.data.generation
-            state.settings = action.payload.data.settings
-            state.graphData = getStats(action.payload.data.all_stats)
+            const data = action.payload.data
+            state.generation = parseInt(data.general_stats.Generation ?? '0')
+            state.generalStats = data.general_stats
+            state.settings = data.settings
+            state.graphData = getStats(data.all_stats)
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
             const data = action.payload.data
-            state.generation = data.generation
+            state.generation = parseInt(data.general_stats.Generation ?? '0')
+            state.generalStats = data.general_stats
             state.graphData = getStats([data.gen_stats], state.graphData)
         },
         updateSettingsGeneric: (
@@ -71,6 +76,9 @@ const slice = createSlice({
 export const getGenericGraphData = (state: RootState) => state.generic.graphData
 export const getGenericGeneration = (state: RootState) =>
     state.generic.generation
+
+export const getGenericGeneralStats = (state: RootState) =>
+    state.generic.generalStats
 
 export const { setAllDataGeneric, addGenDataGeneric, updateSettingsGeneric } =
     slice.actions

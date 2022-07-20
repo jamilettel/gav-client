@@ -1,5 +1,4 @@
-import Button from '@/components/buttons/Button'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Chart,
     LinearScale,
@@ -12,6 +11,7 @@ import {
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
 import {
+    getGenericGeneralStats,
     getGenericGeneration,
     getGenericGraphData,
 } from '@/modules/generic/genericSlice'
@@ -110,18 +110,19 @@ export default function Generic() {
 
     const data = useSelector(getGenericGraphData)
     const generation = useSelector(getGenericGeneration)
+    const stats = useSelector(getGenericGeneralStats)
 
     return (
         <NavbarPage className={styles.navbar}>
             <SessionPage>
-                <h2>Generations: {generation}</h2>
+                <div>{JSON.stringify(stats)}</div>
                 <div>
-                    <h2>Statistics:</h2>
                     {data?.map((stat, i) => (
                         <div key={`${i}-graphs`}>
                             <h3>{stat.name}</h3>
                             <Line
-                                options={options}
+                                updateMode='none'
+                                options={{ ...options }}
                                 data={{
                                     labels: range(generation ?? 0, 1),
                                     datasets: getDatasets(stat.data),

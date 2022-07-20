@@ -26,10 +26,15 @@ export type GenerationStats = {
     }
 }
 
+export type GeneralStats = {
+    Generation: string,
+    [key: string]: string,
+}
+
 export type InfoAllData = {
     info: 'all'
     data: {
-        generation: number
+        general_stats: GeneralStats
         // each element represents one generation
         all_stats: GenerationStats[]
         settings: {
@@ -42,7 +47,7 @@ export type InfoAllData = {
 export type InfoOneGen = {
     info: 'one-gen'
     data: {
-        generation: number
+        general_stats: GeneralStats
         gen_stats: GenerationStats
     }
 }
