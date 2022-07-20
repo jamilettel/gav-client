@@ -1,15 +1,24 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import builtinSlice from '@/websocket/builtinSlice'
-import connectionSlice from '@/websocket/connectionSlice'
+import connectionSlice, { resetWS } from '@/websocket/connectionSlice'
 import genericSlice from '@/modules/generic/genericSlice'
 
+const reducers = combineReducers({
+    connection: connectionSlice,
+    builtin: builtinSlice,
+    generic: genericSlice,
+})
+
+const rootReducer = (state: any, action: PayloadAction<any>) => {
+    if (action.type === resetWS.toString()) {
+        state = undefined
+    }
+    return reducers(state, action)
+}
+
 const store = configureStore({
-    reducer: {
-        connection: connectionSlice,
-        builtin: builtinSlice,
-        generic: genericSlice,
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({ serializableCheck: false })
     },
