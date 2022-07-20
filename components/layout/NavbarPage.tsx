@@ -1,9 +1,13 @@
 import styles from './NavbarPage.module.scss'
 import React, { useState } from 'react'
+import Focusable from '@/components/input/Focusable'
 
 interface Props {
     children: React.ReactNode
     className?: string
+    options?: string[]
+    currentOption?: string
+    onChange?: (str: string) => any
 }
 
 export default function NavbarPage(props: Props) {
@@ -13,15 +17,32 @@ export default function NavbarPage(props: Props) {
     const navbarClass = styles.navbar + (open ? ` ${styles.navbarOpen}` : '')
     const contentClass = `${props.className ?? ''} ${styles.content}`
 
+    const options = props.options?.map((option) => {
+        const className = styles.menu + (props.currentOption === option ? ` ${styles.chosen}` : '')
+        const onClick = () => {
+            if (props.currentOption !== option && props.onChange)
+                props.onChange(option)
+            toggleOpen()
+        }
+
+        return (
+            <Focusable focusable={open} className={className} key={option} onClick={onClick}>
+                {option}
+            </Focusable>
+        )
+    })
+
     return (
         <div className={styles.wrapper}>
             <div className={navbarClass}>
-                <div className={styles.tab} onClick={toggleOpen}>
+                <Focusable className={styles.tab} onClick={toggleOpen}>
                     <div className={styles.button}>
                         <p>{'>'}</p>
                     </div>
+                </Focusable>
+                <div className={styles.navbarContent}>
+                    {options}
                 </div>
-                <div className={styles.navbarContent}></div>
             </div>
             <div className={contentClass}>{props.children}</div>
         </div>
