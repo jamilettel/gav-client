@@ -121,7 +121,6 @@ export default function Generic() {
                         <div key={`${i}-graphs`}>
                             <h3>{stat.name}</h3>
                             <Line
-                                updateMode='none'
                                 options={{ ...options }}
                                 data={{
                                     labels: range(generation ?? 0, 1),
