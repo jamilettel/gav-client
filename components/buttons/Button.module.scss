@@ -11,6 +11,7 @@
     font-size: 18pt;
     font-weight: lighter;
     height: fit-content;
+    transition: 200ms ease-out;
 
     &:hover {
         cursor: pointer;

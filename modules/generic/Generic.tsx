@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
-import {
-    getGenericGeneralStats,
-} from '@/modules/generic/genericSlice'
 import { sendCommand } from '@/websocket/websocket'
 import { useAppDispatch } from '@/utils/store'
-import { useSelector } from 'react-redux'
 import NavmenuPage from '@/components/layout/NavmenuPage'
 import SessionPage from '@/components/layout/SessionPage'
 import ActionBarGeneric from '@/modules/generic/bar/ActionBar'
