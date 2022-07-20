@@ -1,4 +1,4 @@
-import styles from './NavbarPage.module.scss'
+import styles from './NavmenuPage.module.scss'
 import React, { useState } from 'react'
 import Focusable from '@/components/input/Focusable'
 
@@ -10,7 +10,7 @@ interface Props {
     onChange?: (str: string) => any
 }
 
-export default function NavbarPage(props: Props) {
+export default function NavmenuPage(props: Props) {
     const [open, setOpen] = useState(false)
     const toggleOpen = () => setOpen(!open)
 

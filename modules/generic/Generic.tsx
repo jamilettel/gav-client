@@ -5,7 +5,7 @@ import {
 import { sendCommand } from '@/websocket/websocket'
 import { useAppDispatch } from '@/utils/store'
 import { useSelector } from 'react-redux'
-import NavbarPage from '@/components/layout/NavbarPage'
+import NavmenuPage from '@/components/layout/NavmenuPage'
 import SessionPage from '@/components/layout/SessionPage'
 import ActionBarGeneric from '@/modules/generic/bar/ActionBar'
 import styles from './Generic.module.scss'
@@ -28,12 +28,12 @@ export default function Generic() {
     }, [])
 
     return (
-        <NavbarPage className={styles.navbar} options={NAVBAR_OPTIONS} currentOption={navMenu} onChange={setNavMenu}>
+        <NavmenuPage className={styles.navbar} options={NAVBAR_OPTIONS} currentOption={navMenu} onChange={setNavMenu}>
             <SessionPage className={styles.content}>
                 <GenericGraphs />
                 <GenericGeneralStats />
             </SessionPage>
             <ActionBarGeneric />
-        </NavbarPage>
+        </NavmenuPage>
     )
 }
