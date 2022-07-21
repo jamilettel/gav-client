@@ -80,6 +80,9 @@ export const getGenericGeneration = (state: RootState) =>
 export const getGenericGeneralStats = (state: RootState) =>
     state.generic.generalStats
 
+export const getSettings = (state: RootState) =>
+    state.generic.settings
+
 export const { setAllDataGeneric, addGenDataGeneric, updateSettingsGeneric } =
     slice.actions
 export default slice.reducer

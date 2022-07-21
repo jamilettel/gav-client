@@ -11,6 +11,7 @@
     border-top: 2px $foreground-light solid;
     padding-left: 70px;
     display: flex;
+    transition: bottom 200ms ease-in-out;
 
     .button {
         margin: auto 15px auto 0;
@@ -34,5 +35,13 @@
             width: 20px;
             text-align: left;
         }
+    }
+}
+
+.hidden {
+    bottom: -100px;
+
+    .button {
+        display: none;
     }
 }

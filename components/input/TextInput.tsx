@@ -1,4 +1,4 @@
-import styles from './TextInput.module.scss'
+import styles from './Input.module.scss'
 
 export default function TextInput(props: {
     children?: React.ReactNode
