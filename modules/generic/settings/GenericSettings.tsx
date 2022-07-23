@@ -20,7 +20,9 @@ type MenuSettings = {
         )
 }
 
-export default function GenericSettings() {
+export default function GenericSettings(props: {
+    setABContent: (setContent: React.ReactNode | undefined) => any
+}) {
     const settings = useSelector(getSettings) ?? {}
     const [menus, setMenus] = useState({} as MenuSettings)
 
