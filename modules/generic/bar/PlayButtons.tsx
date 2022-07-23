@@ -15,6 +15,7 @@ export default function PlayButtons() {
                 height={45}
                 width={45}
                 onClick={runOneGen}
+                tooltip="Run one generation"
             />
         </div>
     )
