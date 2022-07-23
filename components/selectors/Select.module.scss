@@ -4,19 +4,18 @@
     width: 100%;
     position: relative;
 
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
     .dropdown {
+        display: none;
+
         width: 100%;
         position: absolute;
         flex-direction: column;
-        padding-top: 44px;
+        margin-top: 43px;
+        padding-right: 0;
+        padding-top: 1px;
         top: 0;
         left: 0;
         border-radius: 0 0 10px 10px;
-        display: none;
         overflow-y: scroll;
         max-height: 220px;
         scrollbar-width: none;
@@ -39,8 +38,14 @@
         }
 
         .buttonChosen {
-            filter: brightness(1.1);
+            filter: brightness(1.2);
         }
+
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
     }
 
     .current {
@@ -56,7 +61,7 @@
         border:  1px solid $inactive-outline;
         border-radius: 10px;
         cursor: pointer;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
 
         &::after {
             content: ">";
@@ -86,7 +91,7 @@
         outline: none;
         background: $secondary;
         &:hover {
-            filter: brightness(1.1);
+            filter: brightness(1.2);
         }
 
         font-size: 18pt;
@@ -109,7 +114,6 @@
     .current {
         z-index: 1002;
         border-radius: 10px 10px 0 0;
-        border-bottom: none;
 
         &::after {
             transform: rotate(-90deg);

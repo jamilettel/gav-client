@@ -80,9 +80,18 @@ export default function GenericSettings(props: {
     }
 
     const machin = [
-        new SelectElement('Title', 'title-1'),
+        new SelectElement('Title1', 'title-1'),
         new SelectElement('Title2', 'title-2'),
         new SelectElement('Title3', 'title-3'),
+        new SelectElement('Title4', 'title-4'),
+        new SelectElement('Title5', 'title-5'),
+        new SelectElement('Title6', 'title-6'),
+        new SelectElement('Title7', 'title-7'),
+        new SelectElement('Title8', 'title-8'),
+        new SelectElement('Title9', 'title-9'),
+        new SelectElement('Title10', 'title-10'),
+        new SelectElement('Title11', 'title-11'),
+        new SelectElement('Title12', 'title-12'),
     ]
 
     return (

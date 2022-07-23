@@ -48,6 +48,19 @@ export default function Select(props: Props) {
         setChosenElem(elem)
     }
 
+    const mainButtonKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key !== "ArrowUp" && e.key !== "ArrowDown")
+            return
+        e.preventDefault()
+        let index = props.elements.findIndex((elem) => elem.value === chosenElem.value) ?? 0
+        if (e.key === "ArrowUp")
+            index--
+        else
+            index++
+        if (index >= 0 && index < props.elements.length)
+            setChosenElem(props.elements[index])
+    }
+
     return (
         <>
             <div className={className}>
@@ -61,6 +74,7 @@ export default function Select(props: Props) {
                     onMouseDown={(e) => e.preventDefault()}
                     type="button"
                     title={chosenElem.title}
+                    onKeyDown={mainButtonKeyDown}
                 >
                     {chosenElem.title}
                 </button>
