@@ -1,5 +1,6 @@
 import NumberInput from '@/components/input/NumberInput'
 import TextInput from '@/components/input/TextInput'
+import Select, { SelectElement } from '@/components/selectors/Select'
 import { getSettings } from '@/modules/generic/genericSlice'
 import { Setting } from '@/websocket/GenericHandler'
 import { useEffect, useState } from 'react'
@@ -66,9 +67,7 @@ export default function GenericSettings(props: {
         else
             display.push(
                 <div key={menuName} className={styles.item}>
-                    <h3>
-                        {menuName}:
-                    </h3>
+                    <h3>{menuName}:</h3>
                     <NumberInput
                         value={menu.currentValue}
                         onChange={onchange}
@@ -80,9 +79,16 @@ export default function GenericSettings(props: {
             )
     }
 
+    const machin = [
+        new SelectElement('Title', 'title-1'),
+        new SelectElement('Title2', 'title-2'),
+        new SelectElement('Title3', 'title-3'),
+    ]
+
     return (
         <div className={styles.wrapper}>
             {display}
+            <Select elements={machin} />
         </div>
     )
 }
