@@ -1,5 +1,3 @@
-import { useAppDispatch } from '@/utils/store'
-import { sendCommand } from '@/websocket/websocket'
 import styles from './ActionBar.module.scss'
 
 export default function ActionBarGeneric(props: {

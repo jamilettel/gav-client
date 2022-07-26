@@ -10,7 +10,7 @@
         width: 100%;
         position: absolute;
         flex-direction: column;
-        margin-top: 43px;
+        margin-top: 45px;
         padding-right: 0;
         padding-top: 1px;
         top: 0;
@@ -61,7 +61,6 @@
         border:  1px solid $inactive-outline;
         border-radius: 10px;
         cursor: pointer;
-        transform: translateY(-2px);
 
         &::after {
             content: ">";
@@ -112,7 +111,7 @@
     }
 
     .current {
-        z-index: 1002;
+        z-idnex: 1002;
         border-radius: 10px 10px 0 0;
 
         &::after {

@@ -8,7 +8,20 @@
     display: flex;
     flex-direction: column;
 
-    .navbar {
+    .closeNavmenu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($background, 0.5);
+        backdrop-filter: blur(5px);
+        pointer-events: none;
+        transition: 200ms;
+        opacity: 0;
+    }
+
+    .navmenu {
 
         z-index: 100;
 
@@ -28,10 +41,9 @@
 
             &::before {
                 position: absolute;
-                backdrop-filter: blur(5px);
                 min-width: 200%;
                 min-height: 110vh;
-                background-color: rgba($background, 0.9);
+                background-color: $background;
                 border-radius: 100%;
                 content: ' ';
                 border: solid 2px $foreground-light;
@@ -76,11 +88,10 @@
 
         }
 
-        .navbarContent {
-            backdrop-filter: blur(5px);
+        .navmenuContent {
             position: absolute;
             width: 350px;
-            background-color: rgba($background, 0.9);
+            background-color: $background;
             right: 50px;
             height: 100%;
             padding-top: 70px;
@@ -108,11 +119,16 @@
 
     }
 
-    .navbarOpen {
+    .navmenuOpen {
         left: 350px;
 
         .tab .button p {
             transform: rotate(180deg);
+        }
+
+        .closeNavmenu {
+            opacity: 1;
+            pointer-events: all;
         }
     }
 

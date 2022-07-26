@@ -6,10 +6,22 @@
     .item {
         margin-bottom: 30px;
         padding-right: 15px;
-        width: 600px;
         h3 {
             margin: 10px 0;
             font-size: 16pt;
         }
+
+        .inputWrapper {
+            display: flex;
+
+            .input {
+                width: 600px;
+            }
+
+            .button {
+                margin-left: 10px;
+            }
+        }
     }
+
 }

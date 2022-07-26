@@ -18,6 +18,7 @@ interface Props {
     onChange?: (value: string) => any
     disabled?: boolean
     chosenValue?: string
+    className?: string
 }
 
 export const toSelectElem = (list: string[]) =>
@@ -32,6 +33,7 @@ export default function Select(props: Props) {
     let className = styles.select
     if (props.disabled === true) className += ' ' + styles.selectDisabled
     else if (open) className += ' ' + styles.selectOpen
+    if (props.className) className += ' ' + props.className
 
     if (
         props.chosenValue !== undefined &&

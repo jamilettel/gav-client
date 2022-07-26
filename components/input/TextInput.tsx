@@ -5,10 +5,11 @@ export default function TextInput(props: {
     onChange?: (str: any) => any
     value?: string,
     placeholder?: string,
+    className?: string,
 }) {
     return (
         <input
-            className={styles.input}
+            className={styles.input + ' ' + (props.className ?? '')}
             placeholder={props.placeholder}
             type="text"
             value={props.value}

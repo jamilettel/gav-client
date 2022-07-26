@@ -21,7 +21,6 @@ export default class WSBuiltinHandler {
     static updateSession(dispatch: AppDispatch, data: SessionInfo) {
         dispatch(updateSession(data.session ?? undefined))
         if (data.session !== null) {
-            console.log(data.session)
             localStorage.setItem(LS_SESSION_NAME, data.session)
         }
     }
