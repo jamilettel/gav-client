@@ -1,6 +1,8 @@
 import styles from './NavmenuPage.module.scss'
 import React, { useState } from 'react'
 import Focusable from '@/components/input/Focusable'
+import { useAppDispatch } from '@/utils/store'
+import { sendBuiltin } from '@/websocket/websocket'
 
 interface Props {
     children: React.ReactNode
@@ -11,6 +13,7 @@ interface Props {
 }
 
 export default function NavmenuPage(props: Props) {
+    const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const toggleOpen = () => setOpen(!open)
 
@@ -39,6 +42,8 @@ export default function NavmenuPage(props: Props) {
         )
     })
 
+    const deleteSession = () => sendBuiltin(dispatch, 'delete')
+
     return (
         <div className={styles.wrapper}>
             <div className={navmenuClass}>
@@ -50,7 +55,10 @@ export default function NavmenuPage(props: Props) {
                 </Focusable>
                 <div className={styles.navmenuContent}>
                     {options}
-                    <Focusable className={styles.menu + ' ' + styles.menuDelete}>
+                    <Focusable
+                        className={styles.menu + ' ' + styles.menuDelete}
+                        onClick={deleteSession}
+                    >
                         Delete session
                     </Focusable>
                 </div>
