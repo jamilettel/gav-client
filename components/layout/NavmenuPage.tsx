@@ -48,7 +48,12 @@ export default function NavmenuPage(props: Props) {
                         <p>{'>'}</p>
                     </div>
                 </Focusable>
-                <div className={styles.navmenuContent}>{options}</div>
+                <div className={styles.navmenuContent}>
+                    {options}
+                    <Focusable className={styles.menu + ' ' + styles.menuDelete}>
+                        Delete session
+                    </Focusable>
+                </div>
             </div>
             <div className={contentClass}>{props.children}</div>
         </div>
