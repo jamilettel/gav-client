@@ -25,7 +25,6 @@ export default function NumberInput(props: {
             num = parseFloat(value)
         }
 
-        console.log(num)
         props.onChange(num)
     }, [value])
 

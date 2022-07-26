@@ -1,9 +1,9 @@
 import { getGenericGeneralStats } from '@/modules/generic/genericSlice'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '@/utils/store'
 import styles from './GenericGeneralStats.module.scss'
 
 export default function GenericGeneralStats() {
-    const stats = useSelector(getGenericGeneralStats)
+    const stats = useAppSelector(getGenericGeneralStats)
     let data = []
     for (const stat in stats) {
         data.push(

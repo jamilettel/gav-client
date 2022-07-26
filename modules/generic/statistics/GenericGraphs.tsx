@@ -3,7 +3,6 @@ import {
     getGenericGeneration,
     getGenericGraphData,
 } from '@/modules/generic/genericSlice'
-import { useSelector } from 'react-redux'
 import { Line } from 'react-chartjs-2'
 import {
     Chart,
@@ -15,6 +14,7 @@ import {
     ChartDataset,
     CategoryScale,
 } from 'chart.js'
+import { useAppSelector } from '@/utils/store'
 
 const colors = [
     {
@@ -101,8 +101,8 @@ export default function GenericGraphs() {
         return datasets
     }
 
-    const data = useSelector(getGenericGraphData)
-    const generation = useSelector(getGenericGeneration)
+    const data = useAppSelector(getGenericGraphData)
+    const generation = useAppSelector(getGenericGeneration)
 
     if (!data?.length) {
         return (

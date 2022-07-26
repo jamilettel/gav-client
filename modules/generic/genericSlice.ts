@@ -143,7 +143,7 @@ const slice = createSlice({
             state,
             action: PayloadAction<{ key: string; value: string | number }>
         ) => {
-            if (!state.settings || !state.settings[action.payload.key])
+            if (state.settings == undefined || state.settings[action.payload.key] == undefined)
                 return
             state.settings[action.payload.key].currentValue = action.payload.value
         },

@@ -1,9 +1,8 @@
 import IconButton from '@/components/buttons/IconButton'
-import { useAppDispatch } from '@/utils/store'
+import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { getSession, getTitle } from '@/websocket/builtinSlice'
 import { sendBuiltin } from '@/websocket/websocket'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import styles from './SessionPage.module.scss'
 
 export default function SessionPage(props: {
@@ -11,8 +10,8 @@ export default function SessionPage(props: {
     className?: string,
 }) {
     const dispatch = useAppDispatch()
-    const title = useSelector(getTitle)
-    const session = useSelector(getSession)
+    const title = useAppSelector(getTitle)
+    const session = useAppSelector(getSession)
     const leaveSession = () => sendBuiltin(dispatch, 'leave')
 
     return (

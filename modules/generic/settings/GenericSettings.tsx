@@ -5,20 +5,17 @@ import Select, { toSelectElem } from '@/components/selectors/Select'
 import SaveSettingsBar from '@/modules/generic/bar/SaveSettingsBar'
 import {
     getSettings,
-    resetAllSettingsGeneric,
     setMenuValueGeneric,
 } from '@/modules/generic/genericSlice'
-import { useAppDispatch } from '@/utils/store'
-import { saveSettingsGeneric } from '@/websocket/GenericHandler'
+import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import styles from './GenericSettings.module.scss'
 
 export default function GenericSettings(props: {
     setABContent: (setContent: React.ReactNode | undefined) => any
 }) {
     const dispatch = useAppDispatch()
-    const menus = useSelector(getSettings) ?? {}
+    const menus = useAppSelector(getSettings) ?? {}
     const [requiresSave, setRequiresSave] = useState(false)
 
     useEffect(() => {
@@ -30,24 +27,17 @@ export default function GenericSettings(props: {
     }, [menus])
 
     useEffect(() => {
-        if (requiresSave)
-            props.setABContent(
-                <SaveSettingsBar
-                    onSave={() => saveSettingsGeneric(dispatch, menus)}
-                    onCancel={() => resetEverything()}
-                />
-            )
+        if (requiresSave) props.setABContent(<SaveSettingsBar />)
         else props.setABContent(undefined)
     }, [requiresSave])
-
-    const resetEverything = () => dispatch(resetAllSettingsGeneric())
 
     const display = [] as React.ReactNode[]
     for (const menuName in menus) {
         const menu = menus[menuName]
 
-        const onchange = (value: any) =>
+        const onchange = (value: any) => {
             dispatch(setMenuValueGeneric({ key: menuName, value: value }))
+        }
 
         const resetInput = () =>
             dispatch(
