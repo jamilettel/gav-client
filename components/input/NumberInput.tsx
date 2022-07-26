@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import styles from './Input.module.scss'
 
 export default function NumberInput(props: {
@@ -10,19 +11,31 @@ export default function NumberInput(props: {
     max?: number
     className?: string
 }) {
+    const [value, setValue] = useState(props.value?.toString() ?? '')
+
+    useEffect(() => {
+        if (!props.onChange) return
+        let num: number;
+        if (value == '') {
+            if ((props.min ?? 0) <= 0 && (props.max ?? 0) >= 0)
+                num = 0
+            else
+                num = props.min!
+        } else {
+            num = parseFloat(value)
+        }
+
+        console.log(num)
+        props.onChange(num)
+    }, [value])
+
     return (
         <input
             className={styles.input + ' ' + (props.className ?? '')}
             placeholder={props.placeholder}
             type="number"
-            value={props.value}
-            onChange={(e) => {
-                let value = parseFloat(e.target.value)
-                if ((props.min ?? value) > value) value = props.min!
-                else if ((props.max ?? value) < value) value = props.max!
-
-                if (props.onChange) props.onChange(value)
-            }}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             step={props.minIncrement}
             min={props.min}
             max={props.max}

@@ -1,8 +1,11 @@
 import {
     addGenDataGeneric,
+    MenuSettings,
     setAllDataGeneric,
     updateSettingsGeneric,
 } from '@/modules/generic/genericSlice'
+import { AppDispatch } from '@/utils/store'
+import { sendCommand } from '@/websocket/websocket'
 import { CommandHandler } from '@/websocket/websocket-types'
 
 export type Setting =
@@ -75,5 +78,16 @@ const GenericHandlers: CommandHandler[] = [
         },
     },
 ]
+
+export function saveSettingsGeneric(dispatch: AppDispatch, menus: MenuSettings) {
+    for (const menuName in menus) {
+        const menu = menus[menuName]
+        if (menu.currentValue !== menu.value)
+            sendCommand(dispatch, "set-setting", {
+                setting_name: menuName,
+                setting_value: menu.currentValue,
+            })
+    }
+}
 
 export default GenericHandlers

@@ -3,8 +3,13 @@ import NumberInput from '@/components/input/NumberInput'
 import TextInput from '@/components/input/TextInput'
 import Select, { toSelectElem } from '@/components/selectors/Select'
 import SaveSettingsBar from '@/modules/generic/bar/SaveSettingsBar'
-import { getSettings, resetAllSettingsGeneric, setMenuValueGeneric } from '@/modules/generic/genericSlice'
+import {
+    getSettings,
+    resetAllSettingsGeneric,
+    setMenuValueGeneric,
+} from '@/modules/generic/genericSlice'
 import { useAppDispatch } from '@/utils/store'
+import { saveSettingsGeneric } from '@/websocket/GenericHandler'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styles from './GenericSettings.module.scss'
@@ -28,30 +33,31 @@ export default function GenericSettings(props: {
         if (requiresSave)
             props.setABContent(
                 <SaveSettingsBar
-                    onSave={() => console.log('save')}
+                    onSave={() => saveSettingsGeneric(dispatch, menus)}
                     onCancel={() => resetEverything()}
                 />
             )
         else props.setABContent(undefined)
     }, [requiresSave])
 
-    const resetEverything = () => {
-        dispatch(resetAllSettingsGeneric())
-    }
+    const resetEverything = () => dispatch(resetAllSettingsGeneric())
 
     const display = [] as React.ReactNode[]
     for (const menuName in menus) {
         const menu = menus[menuName]
 
-        const onchange = (value: any) => {
-            dispatch(setMenuValueGeneric({key: menuName, value: value}))
-        }
+        const onchange = (value: any) =>
+            dispatch(setMenuValueGeneric({ key: menuName, value: value }))
 
-        const resetInput = () => {
-            dispatch(setMenuValueGeneric({key: menuName, value: menus[menuName].value}))
-        }
+        const resetInput = () =>
+            dispatch(
+                setMenuValueGeneric({
+                    key: menuName,
+                    value: menus[menuName].value,
+                })
+            )
 
-        let input = <></>
+        let input: React.ReactNode
 
         if (menu.type === 'string') {
             if (menu.values === undefined)
@@ -83,6 +89,7 @@ export default function GenericSettings(props: {
                 />
             )
         }
+
         display.push(
             <div key={menuName} className={styles.item}>
                 <h3>{menuName}</h3>
