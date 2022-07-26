@@ -11,7 +11,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface GenericInitialState {
     generation?: number
-    settings?: { [key: string]: Setting }
+    settings?: MenuSettings
+    settingsRaw?: Settings
     graphData?: GraphData[]
     generalStats?: GeneralStats
 }
@@ -23,6 +24,62 @@ export type GraphData = {
     data: {
         [key: string]: number[]
     }
+}
+
+export type MenuSettings = {
+    [key: string]: Setting &
+        (
+            | {
+                  type: 'string'
+                  currentValue: string
+              }
+            | {
+                  type: 'number'
+                  currentValue: number
+              }
+        )
+}
+
+type Settings = {
+    [key: string]: Setting
+}
+
+function extractSettings(
+    settings: Settings,
+    oldMenus: MenuSettings
+): MenuSettings {
+    const newMenus = {} as MenuSettings
+    for (const settingName in settings) {
+        const setting = settings[settingName]
+        if (setting.type === 'string') {
+            let currentValue = setting.value
+            if (
+                oldMenus[settingName] !== undefined &&
+                oldMenus[settingName].currentValue !==
+                    oldMenus[settingName].value
+            )
+                currentValue = oldMenus[settingName].currentValue as string
+
+            newMenus[settingName] = {
+                ...setting,
+                currentValue,
+            }
+        } else {
+            let currentValue = setting.value
+            if (
+                oldMenus[settingName] !== undefined &&
+                oldMenus[settingName].currentValue !==
+                    oldMenus[settingName].value
+            )
+                currentValue = oldMenus[settingName].currentValue as number
+
+            newMenus[settingName] = {
+                ...setting,
+                currentValue,
+            }
+        }
+    }
+    return newMenus
 }
 
 function getStats(
@@ -55,7 +112,11 @@ const slice = createSlice({
             const data = action.payload.data
             state.generation = parseInt(data.general_stats.Generation ?? '0')
             state.generalStats = data.general_stats
-            state.settings = data.settings
+            state.settingsRaw = data.settings
+            state.settings = extractSettings(
+                state.settingsRaw,
+                state.settings ?? {}
+            )
             state.graphData = getStats(data.all_stats)
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
@@ -68,7 +129,23 @@ const slice = createSlice({
             state,
             action: PayloadAction<InfoSettingsUpdate>
         ) => {
-            state.settings = action.payload.settings
+            state.settingsRaw = action.payload.settings
+            state.settings = extractSettings(
+                state.settingsRaw,
+                state.settings ?? {}
+            )
+        },
+        resetAllSettingsGeneric: (state) => {
+            if (state.settingsRaw)
+                state.settings = extractSettings(state.settingsRaw, {})
+        },
+        setMenuValueGeneric: (
+            state,
+            action: PayloadAction<{ key: string; value: string | number }>
+        ) => {
+            if (!state.settings || !state.settings[action.payload.key])
+                return
+            state.settings[action.payload.key].currentValue = action.payload.value
         },
     },
 })
@@ -80,9 +157,13 @@ export const getGenericGeneration = (state: RootState) =>
 export const getGenericGeneralStats = (state: RootState) =>
     state.generic.generalStats
 
-export const getSettings = (state: RootState) =>
-    state.generic.settings
+export const getSettings = (state: RootState) => state.generic.settings
 
-export const { setAllDataGeneric, addGenDataGeneric, updateSettingsGeneric } =
-    slice.actions
+export const {
+    setAllDataGeneric,
+    addGenDataGeneric,
+    updateSettingsGeneric,
+    resetAllSettingsGeneric,
+    setMenuValueGeneric,
+} = slice.actions
 export default slice.reducer

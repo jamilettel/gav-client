@@ -3,78 +3,18 @@ import NumberInput from '@/components/input/NumberInput'
 import TextInput from '@/components/input/TextInput'
 import Select, { toSelectElem } from '@/components/selectors/Select'
 import SaveSettingsBar from '@/modules/generic/bar/SaveSettingsBar'
-import { getSettings } from '@/modules/generic/genericSlice'
-import { Setting } from '@/websocket/GenericHandler'
+import { getSettings, resetAllSettingsGeneric, setMenuValueGeneric } from '@/modules/generic/genericSlice'
+import { useAppDispatch } from '@/utils/store'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import styles from './GenericSettings.module.scss'
 
-type MenuSettings = {
-    [key: string]: Setting &
-        (
-            | {
-                  type: 'string'
-                  currentValue: string
-              }
-            | {
-                  type: 'number'
-                  currentValue: number
-              }
-        )
-}
-
-type Settings = {
-    [key: string]: Setting
-}
-
-function extractSettings(
-    settings: Settings,
-    oldMenus: MenuSettings
-): MenuSettings {
-    const newMenus = {} as MenuSettings
-    for (const settingName in settings) {
-        const setting = settings[settingName]
-        if (setting.type === 'string') {
-            let currentValue = setting.value
-            if (
-                oldMenus[settingName] !== undefined &&
-                oldMenus[settingName].currentValue !==
-                    oldMenus[settingName].value
-            )
-                currentValue = oldMenus[settingName].currentValue as string
-
-            newMenus[settingName] = {
-                ...setting,
-                currentValue,
-            }
-        } else {
-            let currentValue = setting.value
-            if (
-                oldMenus[settingName] !== undefined &&
-                oldMenus[settingName].currentValue !==
-                    oldMenus[settingName].value
-            )
-                currentValue = oldMenus[settingName].currentValue as number
-
-            newMenus[settingName] = {
-                ...setting,
-                currentValue,
-            }
-        }
-    }
-    return newMenus
-}
-
 export default function GenericSettings(props: {
     setABContent: (setContent: React.ReactNode | undefined) => any
 }) {
-    const settings = useSelector(getSettings) ?? {}
-    const [menus, setMenus] = useState({} as MenuSettings)
+    const dispatch = useAppDispatch()
+    const menus = useSelector(getSettings) ?? {}
     const [requiresSave, setRequiresSave] = useState(false)
-
-    useEffect(() => {
-        setMenus(extractSettings(settings, menus))
-    }, [settings])
 
     useEffect(() => {
         for (const menuName in menus) {
@@ -89,26 +29,26 @@ export default function GenericSettings(props: {
             props.setABContent(
                 <SaveSettingsBar
                     onSave={() => console.log('save')}
-                    onCancel={() => console.log('cancel')}
+                    onCancel={() => resetEverything()}
                 />
             )
         else props.setABContent(undefined)
     }, [requiresSave])
+
+    const resetEverything = () => {
+        dispatch(resetAllSettingsGeneric())
+    }
 
     const display = [] as React.ReactNode[]
     for (const menuName in menus) {
         const menu = menus[menuName]
 
         const onchange = (value: any) => {
-            const newMenus = { ...menus }
-            newMenus[menuName].currentValue = value
-            setMenus(newMenus)
+            dispatch(setMenuValueGeneric({key: menuName, value: value}))
         }
 
         const resetInput = () => {
-            const newMenus = { ...menus }
-            newMenus[menuName].currentValue = newMenus[menuName].value
-            setMenus(newMenus)
+            dispatch(setMenuValueGeneric({key: menuName, value: menus[menuName].value}))
         }
 
         let input = <></>
