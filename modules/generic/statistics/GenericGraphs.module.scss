@@ -5,15 +5,19 @@
     display: flex;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    background: $alternate;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid $secondary;
 
     .wrapper {
-        flex-grow: 1;
         .graph {
         }
     }
 
     &::-webkit-scrollbar {
         height: 8px;
+        border-top: 1px solid $secondary;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -32,4 +36,8 @@
     padding: 150px;
     text-align: center;
     color: $outline;
+    background: $alternate;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: 1px solid $secondary;
 }

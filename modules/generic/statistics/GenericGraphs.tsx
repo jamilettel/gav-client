@@ -122,7 +122,7 @@ export default function GenericGraphs() {
                         className={styles.graph}
                         options={{ ...options }}
                         height={400}
-                        width={885}
+                        width={870}
                         data={{
                             labels: range(generation ?? 0, 1),
                             datasets: getDatasets(stat.data),

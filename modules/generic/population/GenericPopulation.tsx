@@ -32,7 +32,10 @@ export default function GenericPopulation(props: {
                 <div
                     className={styles.chromosomePart}
                     style={{ background: colorsNow[c] }}
-                ></div>
+                    title={c}
+                >
+                    {c}
+                </div>
             )
         })
 
