@@ -8,7 +8,7 @@ import styles from './ChooseSessionForm.module.scss'
 import DisconnectButton from '@/components/buttons/presets/DisconnectButton'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { sendBuiltin } from '@/websocket/websocket'
-import { getWebsocket } from '@/websocket/connectionSlice'
+import { getWebsocket, resetWS } from '@/websocket/connectionSlice'
 import { getProtocol, getTitle } from '@/websocket/builtinSlice'
 
 export default function ChooseSessionForm() {
@@ -28,7 +28,10 @@ export default function ChooseSessionForm() {
             sendBuiltin(dispatch, 'join-or-create', { name: session })
     }
 
-    const disconnect = () => ws?.close()
+    const disconnect = () => {
+        ws?.close()
+        dispatch(resetWS())
+    }
 
     return (
         <SimplePage>

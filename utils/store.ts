@@ -11,9 +11,8 @@ const reducers = combineReducers({
 })
 
 const rootReducer = (state: any, action: PayloadAction<any>) => {
-    if (action.type === resetWS.toString()) {
+    if (action.type === resetWS.toString())
         state = undefined
-    }
     return reducers(state, action)
 }
 

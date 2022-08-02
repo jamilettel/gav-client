@@ -48,9 +48,6 @@ const connectionSlice = createSlice({
             state.status = connected ? 'idle' : 'failed'
             state.connected = connected
         },
-        disconnectWS: (state) => {
-            state.ws?.close()
-        },
         resetWS: () => {
             return initialState
         },
@@ -78,6 +75,5 @@ export const {
     sendWS,
     setConnectionStatus,
     setProtocolWS,
-    disconnectWS,
 } = connectionSlice.actions
 export default connectionSlice.reducer

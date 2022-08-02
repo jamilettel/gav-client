@@ -5,13 +5,11 @@ import NavmenuPage from '@/components/layout/NavmenuPage'
 import SessionPage from '@/components/layout/SessionPage'
 import ActionBarGeneric from '@/modules/generic/bar/ActionBar'
 import styles from './Generic.module.scss'
-import GenericGraphs from '@/modules/generic/statistics/GenericGraphs'
-import GenericGeneralStats from '@/modules/generic/statistics/GenericGeneralStats'
 import GenericSettings from '@/modules/generic/settings/GenericSettings'
-import PlayButtons from '@/modules/generic/bar/PlayButtons'
 import GenericStatistics from '@/modules/generic/statistics/GenericStatistics'
+import GenericPopulation from '@/modules/generic/population/GenericPopulation'
 
-const NAVMENU_OPTIONS = ['Statistics', 'Change Settings']
+const NAVMENU_OPTIONS = ['Statistics', 'Change Settings', 'Population']
 
 type MenuFunction = {
     [key: string]: {
@@ -29,6 +27,11 @@ const MENU_FUNCTIONS: MenuFunction = {
     },
     [NAVMENU_OPTIONS[1]]: {
         handler: (setContent) => <GenericSettings setABContent={setContent} />,
+    },
+    [NAVMENU_OPTIONS[2]]: {
+        handler: (setContent) => (
+            <GenericPopulation setABContent={setContent} />
+        ),
     },
 }
 

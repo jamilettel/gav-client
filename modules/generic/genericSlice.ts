@@ -2,6 +2,7 @@ import { RootState } from '@/utils/store'
 import {
     GeneralStats,
     GenerationStats,
+    Individual,
     InfoAllData,
     InfoOneGen,
     InfoSettingsUpdate,
@@ -15,6 +16,7 @@ interface GenericInitialState {
     settingsRaw?: Settings
     graphData?: GraphData[]
     generalStats?: GeneralStats
+    population?: Individual[]
 }
 
 const initialState: GenericInitialState = {}
@@ -118,12 +120,14 @@ const slice = createSlice({
                 state.settings ?? {}
             )
             state.graphData = getStats(data.all_stats)
+            state.population = data.population
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
             const data = action.payload.data
             state.generation = parseInt(data.general_stats.Generation ?? '0')
             state.generalStats = data.general_stats
             state.graphData = getStats([data.gen_stats], state.graphData)
+            state.population = data.population
         },
         updateSettingsGeneric: (
             state,
@@ -143,9 +147,13 @@ const slice = createSlice({
             state,
             action: PayloadAction<{ key: string; value: string | number }>
         ) => {
-            if (state.settings == undefined || state.settings[action.payload.key] == undefined)
+            if (
+                state.settings == undefined ||
+                state.settings[action.payload.key] == undefined
+            )
                 return
-            state.settings[action.payload.key].currentValue = action.payload.value
+            state.settings[action.payload.key].currentValue =
+                action.payload.value
         },
     },
 })
@@ -158,6 +166,8 @@ export const getGenericGeneralStats = (state: RootState) =>
     state.generic.generalStats
 
 export const getSettings = (state: RootState) => state.generic.settings
+
+export const getGenericPopulation = (state: RootState) => state.generic.population
 
 export const {
     setAllDataGeneric,

@@ -34,12 +34,18 @@ export type GeneralStats = {
     [key: string]: string,
 }
 
+export type Individual = {
+    Chromomose: number[]
+    [key: string]: any
+}
+
 export type InfoAllData = {
     info: 'all'
     data: {
         general_stats: GeneralStats
         // each element represents one generation
         all_stats: GenerationStats[]
+        population: Individual[]
         settings: {
             // setting name & value
             [key: string]: Setting
@@ -52,6 +58,7 @@ export type InfoOneGen = {
     data: {
         general_stats: GeneralStats
         gen_stats: GenerationStats
+        population: Individual[]
     }
 }
 

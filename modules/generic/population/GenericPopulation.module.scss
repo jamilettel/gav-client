@@ -1,0 +1,16 @@
+.content {
+    height: calc(100vh - 275px);
+
+    .table {
+        max-height: 95%;
+
+        .chromosomeCell {
+            display: flex;
+            padding: 0 !important;
+
+            .chromosomePart {
+                flex-grow: 1;
+            }
+        }
+    }
+}
