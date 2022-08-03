@@ -77,6 +77,9 @@ export default function List(props: {
     cellContentProvider?: {
         [columName: string]: (cellData: any) => React.ReactNode
     }
+    columnSort?: {
+        [colName: string]: (data: any[]) => any[]
+    }
 }) {
     const colClass = props.columnClass ?? {}
     const colWidth = props.columnWidths ?? {}

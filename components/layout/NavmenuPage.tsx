@@ -59,6 +59,7 @@ export default function NavmenuPage(props: Props) {
                     <Focusable
                         className={styles.menu + ' ' + styles.menuDelete}
                         onClick={deleteSession}
+                        focusable={open}
                     >
                         Delete session
                     </Focusable>
