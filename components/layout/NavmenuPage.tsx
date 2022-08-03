@@ -16,6 +16,7 @@ export default function NavmenuPage(props: Props) {
     const dispatch = useAppDispatch()
     const [open, setOpen] = useState(false)
     const toggleOpen = () => setOpen(!open)
+    const close = () => setOpen(false)
 
     const navmenuClass = styles.navmenu + (open ? ` ${styles.navmenuOpen}` : '')
     const contentClass = `${props.className ?? ''} ${styles.content}`
@@ -27,7 +28,7 @@ export default function NavmenuPage(props: Props) {
         const onClick = () => {
             if (props.currentOption !== option && props.onChange)
                 props.onChange(option)
-            toggleOpen()
+            close()
         }
 
         return (
@@ -47,7 +48,7 @@ export default function NavmenuPage(props: Props) {
     return (
         <div className={styles.wrapper}>
             <div className={navmenuClass}>
-                <div className={styles.closeNavmenu} onClick={toggleOpen}></div>
+                <div className={styles.closeNavmenu} onClick={close}></div>
                 <Focusable className={styles.tab} onClick={toggleOpen}>
                     <div className={styles.button}>
                         <p>{'>'}</p>
