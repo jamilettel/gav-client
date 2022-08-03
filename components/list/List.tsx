@@ -1,4 +1,5 @@
-import { useRef } from 'react'
+import Focusable from '@/components/input/Focusable'
+import { useEffect, useRef, useState } from 'react'
 import styles from './List.module.scss'
 
 function getHeaders(elem: any): string[] {
@@ -10,7 +11,22 @@ function getHeaders(elem: any): string[] {
 }
 
 let i = 0
-function getHeader(header: string, width: string | number | undefined) {
+function getHeader(
+    header: string,
+    width: string | number | undefined,
+    setSortby: ((col: string) => any) | null = null
+) {
+    if (setSortby)
+        return (
+            <Focusable
+                key={header}
+                className={styles.elem}
+                onClick={() => setSortby(header)}
+                style={{ minWidth: width, maxWidth: width }}
+            >
+                {header}
+            </Focusable>
+        )
     return (
         <div
             key={header}
@@ -64,6 +80,7 @@ function getRow(
 /**
  * List
  * Default width of a column is 200px
+ * Sorting is enabled on all string and number columns
  */
 export default function List(props: {
     data: any[]
@@ -77,25 +94,48 @@ export default function List(props: {
     cellContentProvider?: {
         [columName: string]: (cellData: any) => React.ReactNode
     }
-    columnSort?: {
-        [colName: string]: (data: any[]) => any[]
-    }
 }) {
     const colClass = props.columnClass ?? {}
     const colWidth = props.columnWidths ?? {}
     const cellProvider = props.cellContentProvider ?? {}
     const headerRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
+    const [data, setData] = useState(props.data)
+    const [sortby, setSortBy] = useState(null as string | null)
+    const [sorted, setSorted] = useState(false)
+    const [ascending, setAscending] = useState(true)
+
+    useEffect(() => {
+        setData(props.data)
+        setSorted(false)
+    }, [props.data])
 
     let headers: string[] = []
-    if (props.data.length > 0) headers = getHeaders(props.data[0])
+    if (data.length > 0) headers = getHeaders(data[0])
 
-    const headerElems = headers.map((header) =>
-        getHeader(header, colWidth[header])
-    )
+    const setNewSortCol = (col: string) => {
+        setSorted(false)
+        if (sortby === col) {
+            setAscending(!ascending)
+        } else {
+            setAscending(true)
+            setSortBy(col)
+        }
+    }
+
+    const headerElems = headers.map((header) => {
+        const sortable =
+            typeof data[0][header] === 'string' ||
+            typeof data[0][header] === 'number'
+        return getHeader(
+            header,
+            colWidth[header],
+            sortable ? setNewSortCol : null
+        )
+    })
 
     let row = 0
-    const content = props.data.map((ind) =>
+    const content = data.map((ind) =>
         getRow(ind, row++, headers, cellProvider, colWidth, colClass)
     )
 

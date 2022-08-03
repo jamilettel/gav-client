@@ -1,8 +1,11 @@
+import { CSSProperties } from 'react'
+
 export default function Focusable(props: {
     children?: React.ReactNode
     onClick?: () => any
     focusable?: boolean
     className?: string
+    style?: CSSProperties
 }) {
     const tabIndex = props.focusable ?? true ? 0 : undefined
     const onClick = (e: React.MouseEvent) => {
@@ -23,6 +26,7 @@ export default function Focusable(props: {
             onClick={onClick}
             onKeyDown={onKeyDown}
             onMouseDown={onMouseDown}
+            style={props.style}
         >
             {props.children}
         </div>

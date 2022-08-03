@@ -31,8 +31,14 @@
             max-width: 200px;
             text-align: center;
             font-weight: normal;
+            border: 1px solid transparent;
             border-right: 1px solid $secondary;
             overflow: hidden;
+            outline: none;
+
+            &:focus {
+                border: solid 1px $outline;
+            }
         }
     }
 
@@ -44,7 +50,7 @@
     border-radius: 0 0 10px 10px;
     border: 1px solid $secondary;
     position: relative;
-    margin-top: 44px;
+    margin-top: 47px;
     background: $background;
 
     &::-webkit-scrollbar {
