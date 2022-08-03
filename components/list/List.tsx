@@ -10,6 +10,56 @@ function getHeaders(elem: any): string[] {
 }
 
 let i = 0
+function getHeader(header: string, width: string | number | undefined) {
+    return (
+        <div
+            key={header}
+            className={styles.elem}
+            style={{ minWidth: width, maxWidth: width }}
+        >
+            {header}
+        </div>
+    )
+}
+
+function getRow(
+    ind: any,
+    index: number,
+    headers: string[],
+    cellProvider: {
+        [columnName: string]: (cellData: any) => React.ReactNode
+    } = {},
+    colWidths: {
+        [columName: string]: number | string
+    } = {},
+    colClass: {
+        [columName: string]: string
+    } = {}
+) {
+    const content: React.ReactNode[] = []
+    for (const header of headers) {
+        let width = colWidths ? colWidths[header] : undefined
+        content.push(
+            <div
+                key={header + index.toString()}
+                className={styles.elem + ' ' + (colClass[header] ?? '')}
+                style={{ minWidth: width, maxWidth: width }}
+            >
+                {cellProvider[header]
+                    ? cellProvider[header](ind[header])
+                    : ind[header]}
+            </div>
+        )
+    }
+
+    let className = styles.row
+    if (index % 2 == 1) className += ' ' + styles.alternateRow
+    return (
+        <div className={className} key={index}>
+            {content}
+        </div>
+    )
+}
 
 /**
  * List
@@ -29,6 +79,7 @@ export default function List(props: {
     }
 }) {
     const colClass = props.columnClass ?? {}
+    const colWidth = props.columnWidths ?? {}
     const cellProvider = props.cellContentProvider ?? {}
     const headerRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
@@ -36,47 +87,14 @@ export default function List(props: {
     let headers: string[] = []
     if (props.data.length > 0) headers = getHeaders(props.data[0])
 
-    const headerElems = headers.map((header) => {
-        let width = props.columnWidths ? props.columnWidths[header] : undefined
-        return (
-            <div
-                key={header}
-                className={styles.elem}
-                style={{ minWidth: width, maxWidth: width }}
-            >
-                {header}
-            </div>
-        )
-    })
+    const headerElems = headers.map((header) =>
+        getHeader(header, colWidth[header])
+    )
 
-    let row = -1
-    const content = props.data.map((ind) => {
-        row++
-        const content = []
-        for (const header of headers) {
-            let width = props.columnWidths
-                ? props.columnWidths[header]
-                : undefined
-            content.push(
-                <div
-                    key={row.toString() + header}
-                    className={styles.elem + ' ' + (colClass[header] ?? '')}
-                    style={{ minWidth: width, maxWidth: width }}
-                >
-                    {cellProvider[header] ? cellProvider[header](ind[header]) : ind[header]}
-                </div>
-            )
-        }
-
-        let className = styles.row
-        if (row % 2 == 1) className += ' ' + styles.alternateRow
-
-        return (
-            <div className={className} key={row}>
-                {content}
-            </div>
-        )
-    })
+    let row = 0
+    const content = props.data.map((ind) =>
+        getRow(ind, row++, headers, cellProvider, colWidth, colClass)
+    )
 
     const className =
         styles.table + (props.className ? ` ${props.className}` : '')
