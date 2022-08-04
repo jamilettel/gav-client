@@ -144,7 +144,12 @@ export default function List(props: {
 
     const setNewSortCol = (col: string) => {
         if (sortby?.column === col) {
-            setSortBy({ ascending: !sortby.ascending, column: col })
+            if (sortby.ascending)
+                setSortBy({ ascending: false, column: col })
+            else {
+                setSortBy(null)
+                setData(props.data)
+            }
         } else {
             setSortBy({ ascending: true, column: col })
         }
