@@ -14,19 +14,28 @@ let i = 0
 function getHeader(
     header: string,
     width: string | number | undefined,
-    setSortby: ((col: string) => any) | null = null
+    setSortby: ((col: string) => any) | null,
+    sortby: SortSettings | null
 ) {
-    if (setSortby)
+    if (setSortby) {
+        let className = styles.elemButton
+        if (sortby?.column === header)
+            className +=
+                ' ' +
+                (sortby.ascending
+                    ? styles.sortedAscending
+                    : styles.sortedDescending)
         return (
             <Focusable
                 key={header}
-                className={styles.elem}
+                className={className}
                 onClick={() => setSortby(header)}
                 style={{ minWidth: width, maxWidth: width }}
             >
                 {header}
             </Focusable>
         )
+    }
     return (
         <div
             key={header}
@@ -77,6 +86,11 @@ function getRow(
     )
 }
 
+interface SortSettings {
+    column: string
+    ascending: boolean
+}
+
 /**
  * List
  * Default width of a column is 200px
@@ -101,25 +115,38 @@ export default function List(props: {
     const headerRef = useRef<HTMLDivElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
     const [data, setData] = useState(props.data)
-    const [sortby, setSortBy] = useState(null as string | null)
-    const [sorted, setSorted] = useState(false)
-    const [ascending, setAscending] = useState(true)
+    const [sortby, setSortBy] = useState(null as SortSettings | null)
 
     useEffect(() => {
         setData(props.data)
-        setSorted(false)
+        sortData(props.data)
     }, [props.data])
+
+    useEffect(() => {
+        sortData(data)
+    }, [sortby])
+
+    const sortData = (dataToSort: any) => {
+        if (!sortby) return
+        const dataClone = [...dataToSort]
+        dataClone.sort((a, b) => {
+            if (a[sortby.column] < b[sortby.column]) return -1
+            if (a[sortby.column] == b[sortby.column]) return 0
+            return 1
+        })
+        if (sortby!.ascending == false) dataClone.reverse()
+        console.log(dataClone)
+        setData(dataClone)
+    }
 
     let headers: string[] = []
     if (data.length > 0) headers = getHeaders(data[0])
 
     const setNewSortCol = (col: string) => {
-        setSorted(false)
-        if (sortby === col) {
-            setAscending(!ascending)
+        if (sortby?.column === col) {
+            setSortBy({ ascending: !sortby.ascending, column: col })
         } else {
-            setAscending(true)
-            setSortBy(col)
+            setSortBy({ ascending: true, column: col })
         }
     }
 
@@ -130,7 +157,8 @@ export default function List(props: {
         return getHeader(
             header,
             colWidth[header],
-            sortable ? setNewSortCol : null
+            sortable ? setNewSortCol : null,
+            sortby
         )
     })
 

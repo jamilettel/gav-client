@@ -25,7 +25,7 @@
             display: none;
         }
 
-        .elem {
+        .elem, .elemButton {
             padding: 10px;
             min-width: 200px;
             max-width: 200px;
@@ -38,6 +38,43 @@
 
             &:focus {
                 border: solid 1px $outline;
+            }
+        }
+
+        .elemButton {
+            cursor: pointer;
+            position: relative;
+
+            &::after, &::before {
+                font-size: 12pt;
+                position: absolute;
+                font-weight: bold;
+                right: 15px;
+                color: $secondary;
+
+            }
+
+            &::after {
+                content: '>';
+                top: 21px;
+                transform: rotate(90deg);
+            }
+
+            &::before {
+                content: '<';
+                top: 9px;
+                transform: rotate(90deg);
+            }
+        }
+
+        .sortedAscending {
+            &::before {
+                color: $outline;
+            }
+        }
+        .sortedDescending {
+            &::after {
+                color: $outline;
             }
         }
     }
