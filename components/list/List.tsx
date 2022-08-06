@@ -64,23 +64,31 @@ function getRow(
     const content: React.ReactNode[] = []
     for (const header of headers) {
         let width = colWidths ? colWidths[header] : undefined
+        let value = ind[header]
+        let title = undefined
+        if (!cellProvider[header] && typeof value === 'number' && Number.isInteger(value) === false) {
+            title = value.toString()
+            value = value.toFixed(1)
+        }
         content.push(
             <div
                 key={header + index.toString()}
                 className={styles.elem + ' ' + (colClass[header] ?? '')}
                 style={{ minWidth: width, maxWidth: width }}
+                title={title}
             >
                 {cellProvider[header]
-                    ? cellProvider[header](ind[header])
-                    : ind[header]}
+                ? cellProvider[header](ind[header])
+                : value}
             </div>
         )
+
     }
 
     let className = styles.row
     if (index % 2 == 1) className += ' ' + styles.alternateRow
     return (
-        <div className={className} key={index}>
+        <div className={className} key={`header-${index}`}>
             {content}
         </div>
     )
@@ -116,6 +124,7 @@ export default function List(props: {
     const contentRef = useRef<HTMLDivElement>(null)
     const [data, setData] = useState(props.data)
     const [sortby, setSortBy] = useState(null as SortSettings | null)
+    const [content, setContent] = useState([] as React.ReactNode[])
 
     useEffect(() => {
         setData(props.data)
@@ -126,6 +135,14 @@ export default function List(props: {
         sortData(data)
     }, [sortby])
 
+    useEffect(() => {
+        let row = 0
+        const newContent = data.map((ind) =>
+            getRow(ind, row++, headers, cellProvider, colWidth, colClass)
+        )
+        setContent(newContent)
+    }, [data])
+
     const sortData = (dataToSort: any) => {
         if (!sortby) return
         const dataClone = [...dataToSort]
@@ -135,7 +152,6 @@ export default function List(props: {
             return 1
         })
         if (sortby!.ascending == false) dataClone.reverse()
-        console.log(dataClone)
         setData(dataClone)
     }
 
@@ -166,11 +182,6 @@ export default function List(props: {
             sortby
         )
     })
-
-    let row = 0
-    const content = data.map((ind) =>
-        getRow(ind, row++, headers, cellProvider, colWidth, colClass)
-    )
 
     const className =
         styles.table + (props.className ? ` ${props.className}` : '')

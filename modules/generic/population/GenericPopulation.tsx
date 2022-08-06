@@ -23,13 +23,16 @@ export default function GenericPopulation(props: {
     function ChromosomeCell(data: string[]) {
         let resetColors = false
         const colorsNow = { ...colors }
+        let index = 0
         const cell = data.map((c) => {
+            index++;
             if (colorsNow[c] === undefined) {
                 resetColors = true
                 colorsNow[c] = randomColor()
             }
             return (
                 <div
+                    key={index}
                     className={styles.chromosomePart}
                     style={{ background: colorsNow[c] }}
                     title={c}
