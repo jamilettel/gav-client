@@ -1,21 +1,65 @@
 @import 'base';
 
 .input {
-    border-radius: 10px;
-    padding: 8px;
-    font-size: 18pt;
-    border: 1px solid $inactive-outline;
-    background: $secondary;
-    color: $text;
-    font-family: 'Comfortaa';
-    width: 100%;
-    font-weight: lighter;
+    position: relative;
 
-    &::placeholder {
-        color: rgba($text, 0.5);
+    input {
+        
+        border-radius: 10px;
+        padding: 8px;
+        font-size: 18pt;
+        border: 1px solid $inactive-outline;
+        background: $secondary;
+        color: $text;
+        font-family: 'Comfortaa';
+        width: 100%;
+        font-weight: lighter;
+
+        &::placeholder {
+            color: rgba($text, 0.5);
+        }
+
+        &:focus {
+            outline: solid 1px $outline;
+        }
     }
 
-    &:focus {
-        outline: solid 1px $outline;
+    .suggestions {
+        position: absolute;
+        background: $secondary;
+        width: 100%;
+        font-size: 18pt;
+        margin-top: 1px;
+        border-radius: 0 0 10px 10px;
+        overflow-y: auto;
+        border: 1px solid $inactive-outline;
+        max-height: 200px;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+            border-left: 1px solid $inactive-outline;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $inactive-outline;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: $outline;
+        }
+
+        .item {
+            padding: 8px;
+            border-top: 1px solid $inactive-outline;
+            cursor: pointer;
+        }
+    }
+
+}
+
+.inputSuggestions {
+    input {
+        border-radius: 10px 10px 0 0;
     }
 }

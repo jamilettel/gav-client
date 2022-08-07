@@ -24,7 +24,7 @@ export default function ConnectToServerForm(props: {
 
     return (
         <SimplePage>
-            <h1 className="title">Generic Algorithm Visualizer</h1>
+            <h1 className="title">Genetic Algorithm Visualizer</h1>
             <Form onSubmit={onSubmit} className={styles.form}>
                 <div className={styles.inputWrapper}>
                     <h3>Connect to GA Server</h3>

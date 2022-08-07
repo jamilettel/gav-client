@@ -19,6 +19,7 @@ interface GenericInitialState {
     generalStats?: GeneralStats
     population?: Individual[]
     individual_encoding?: IndividualEncoding
+    sessions?: string[]
 }
 
 const initialState: GenericInitialState = {}

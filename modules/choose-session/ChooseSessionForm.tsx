@@ -9,7 +9,7 @@ import DisconnectButton from '@/components/buttons/presets/DisconnectButton'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { sendBuiltin } from '@/websocket/websocket'
 import { getWebsocket, resetWS } from '@/websocket/connectionSlice'
-import { getProtocol, getTitle } from '@/websocket/builtinSlice'
+import { getProtocol, getSessions, getTitle } from '@/websocket/builtinSlice'
 
 export default function ChooseSessionForm() {
     const dispatch = useAppDispatch()
@@ -17,6 +17,7 @@ export default function ChooseSessionForm() {
     const title = useAppSelector(getTitle)
     const protocol = useAppSelector(getProtocol)
     const [session, setSession] = useState('')
+    const sessions = useAppSelector(getSessions)
 
     useEffect(() => {
         setSession(localStorage.getItem(LS_SESSION_NAME) ?? '')
@@ -43,7 +44,7 @@ export default function ChooseSessionForm() {
                     />
                 </div>
                 <h1 className="title">
-                    {title ?? 'Generic Algorithm Visualizer'}
+                    {title ?? 'Genetic Algorithm Visualizer'}
                 </h1>
                 <div className={styles.separator} />
             </div>
@@ -55,6 +56,7 @@ export default function ChooseSessionForm() {
                         onChange={setSession}
                         value={session}
                         placeholder="Session name"
+                        suggestions={sessions}
                     />
                 </div>
                 <Button primary={true}>Join session</Button>

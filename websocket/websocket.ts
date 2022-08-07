@@ -48,6 +48,7 @@ export function configureWebsocket(
         localStorage.setItem(LS_SERVER_URL, url)
         console.log('connecting to server ' + url)
         sendBuiltin(dispatch, 'describe')
+        sendBuiltin(dispatch, 'list')
         dispatch(setConnectionStatus(true))
     }
 

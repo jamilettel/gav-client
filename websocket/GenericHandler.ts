@@ -94,6 +94,12 @@ const GenericHandlers: CommandHandler[] = [
             dispatch(updateSettingsGeneric(data))
         },
     },
+    {
+        info: 'settings-update',
+        handler: (dispatch, data: InfoSettingsUpdate) => {
+            dispatch(updateSettingsGeneric(data))
+        },
+    },
 ]
 
 export function saveSettingsGeneric(
