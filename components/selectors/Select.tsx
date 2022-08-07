@@ -2,13 +2,13 @@ import { useState } from 'react'
 import styles from './Select.module.scss'
 
 export class SelectElement {
-    title: string
     value: string
+    key: string
 
     /// By default, key takes the value of value
-    constructor(title: string, value?: string) {
-        this.title = title
-        this.value = value ?? title
+    constructor(value: string, key?: string) {
+        this.value = value
+        this.key = key ?? value
     }
 }
 
@@ -37,30 +37,32 @@ export default function Select(props: Props) {
 
     if (
         props.chosenValue !== undefined &&
-        props.chosenValue !== chosenElem.value
+        props.chosenValue !== chosenElem.key
     ) {
         for (const elem of props.elements)
-            if (elem.value === props.chosenValue) setChosenElem(elem)
+            if (elem.key === props.chosenValue) setChosenElem(elem)
     }
 
     const elem = props.elements.find((e) => {
-        return e.value === chosenElem.value
+        return e.key === chosenElem.key
     })
-    if (elem !== undefined && elem.title !== chosenElem.title) {
+    if (elem !== undefined && elem.value !== chosenElem.value) {
         setChosenElem(elem)
     }
 
     const mainButtonKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key !== "ArrowUp" && e.key !== "ArrowDown")
-            return
+        if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
         e.preventDefault()
-        let index = props.elements.findIndex((elem) => elem.value === chosenElem.value) ?? 0
-        if (e.key === "ArrowUp")
-            index--
-        else
-            index++
-        if (index >= 0 && index < props.elements.length)
+        let index =
+            props.elements.findIndex(
+                (elem) => elem.key === chosenElem.key
+            ) ?? 0
+        if (e.key === 'ArrowUp') index--
+        else index++
+        if (index >= 0 && index < props.elements.length) {
+            if (props.onChange) props.onChange(props.elements[index].key)
             setChosenElem(props.elements[index])
+        }
     }
 
     return (
@@ -75,17 +77,17 @@ export default function Select(props: Props) {
                     }}
                     onMouseDown={(e) => e.preventDefault()}
                     type="button"
-                    title={chosenElem.title}
+                    title={chosenElem.value}
                     onKeyDown={mainButtonKeyDown}
                 >
-                    {chosenElem.title}
+                    {chosenElem.value}
                 </button>
                 <div className={styles.dropdown}>
                     {props.elements.map((elem, index) => {
                         let className: string = ''
                         if (index === props.elements.length - 1)
                             className = styles.buttonLast
-                        if (chosenElem.value === elem.value) {
+                        if (chosenElem.key === elem.key) {
                             className += ' ' + styles.buttonChosen
                         }
                         return (
@@ -94,15 +96,15 @@ export default function Select(props: Props) {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     if (props.onChange)
-                                        props.onChange(elem.value)
+                                        props.onChange(elem.key)
                                     setOpen(false)
                                     setChosenElem(elem)
                                 }}
                                 onMouseDown={(e) => e.preventDefault()}
-                                title={elem.title}
-                                key={elem.value}
+                                title={elem.value}
+                                key={elem.key}
                             >
-                                {elem.title}
+                                {elem.value}
                             </button>
                         )
                     })}
