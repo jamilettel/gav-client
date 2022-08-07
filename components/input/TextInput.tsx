@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styles from './Input.module.scss'
 
 export default function TextInput(props: {
@@ -12,13 +12,28 @@ export default function TextInput(props: {
     let suggestions = undefined
     const [focused, setFocused] = useState(false)
     let hasSuggestions: boolean
+    const filteredSuggestions = props.suggestions?.filter((suggestion) =>
+        suggestion.toLowerCase().includes(props.value?.toLowerCase() ?? '')
+    ).sort()
+    let onKeyDown:
+        | ((e: React.KeyboardEvent<HTMLInputElement>) => any)
+        | undefined = undefined
 
-    if (
-        (hasSuggestions =
-            props.suggestions !== undefined && props.suggestions.length > 0)
-    ) {
-        const filteredSuggestions = props.suggestions.filter(suggestion => suggestion.startsWith(props.value ?? ''))
-        const list = filteredSuggestions.map((suggestion, index) => (
+    const ref = useRef<HTMLDivElement>(null)
+
+    if ((hasSuggestions = (filteredSuggestions?.length ?? 0) > 0)) {
+        onKeyDown = (e) => {
+            console.log(e.code)
+            if (
+                e.code !== 'Enter' &&
+                e.code !== 'ArrowDown' &&
+                e.code !== 'ArrowUp'
+            )
+                return
+            e.preventDefault()
+        }
+
+        const list = filteredSuggestions!.map((suggestion, index) => (
             <div
                 key={suggestion + index.toString()}
                 className={styles.item}
@@ -49,6 +64,7 @@ export default function TextInput(props: {
                 }}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
+                onKeyDown={onKeyDown}
             />
             {focused ? suggestions : undefined}
         </div>
