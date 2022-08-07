@@ -12,7 +12,7 @@
     font-weight: lighter;
 
     &::placeholder {
-        color: $inactive-outline;
+        color: rgba($text, 0.5);
     }
 
     &:focus {
