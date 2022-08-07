@@ -16,10 +16,13 @@
         top: 0;
         left: 0;
         border-radius: 0 0 10px 10px;
-        overflow-y: scroll;
+        overflow-y: auto;
         max-height: 220px;
         scrollbar-width: none;
         flex-direction: column;
+
+        background: $secondary;
+        border-bottom: solid $inactive-outline 1px;
 
         button {
             white-space: nowrap;
@@ -34,7 +37,7 @@
         }
 
         .buttonLast {
-            border-radius: 0 0 10px 10px;
+            border-bottom: none;
         }
 
         .buttonChosen {
@@ -43,7 +46,16 @@
 
 
         &::-webkit-scrollbar {
-            display: none;
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $inactive-outline;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: $outline;
         }
 
     }
