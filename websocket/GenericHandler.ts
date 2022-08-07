@@ -30,14 +30,23 @@ export type GenerationStats = {
 }
 
 export type GeneralStats = {
-    Generation: string,
-    [key: string]: string,
+    Generation: string
+    [key: string]: string
 }
 
 export type Individual = {
     Chromomose: number[]
     [key: string]: any
 }
+
+export type IndividualEncoding =
+    | {
+          encoding_type: 'indexes' | 'boolean'
+      }
+    | {
+          encoding_type: 'range'
+          range: [number, number]
+      }
 
 export type InfoAllData = {
     info: 'all'
@@ -46,6 +55,7 @@ export type InfoAllData = {
         // each element represents one generation
         all_stats: GenerationStats[]
         population: Individual[]
+        individual_encoding: IndividualEncoding
         settings: {
             // setting name & value
             [key: string]: Setting
@@ -86,11 +96,14 @@ const GenericHandlers: CommandHandler[] = [
     },
 ]
 
-export function saveSettingsGeneric(dispatch: AppDispatch, menus: MenuSettings) {
+export function saveSettingsGeneric(
+    dispatch: AppDispatch,
+    menus: MenuSettings
+) {
     for (const menuName in menus) {
         const menu = menus[menuName]
         if (menu.currentValue !== menu.value)
-            sendCommand(dispatch, "set-setting", {
+            sendCommand(dispatch, 'set-setting', {
                 setting_name: menuName,
                 setting_value: menu.currentValue,
             })

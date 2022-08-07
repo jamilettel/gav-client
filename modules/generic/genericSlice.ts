@@ -3,6 +3,7 @@ import {
     GeneralStats,
     GenerationStats,
     Individual,
+    IndividualEncoding,
     InfoAllData,
     InfoOneGen,
     InfoSettingsUpdate,
@@ -17,6 +18,7 @@ interface GenericInitialState {
     graphData?: GraphData[]
     generalStats?: GeneralStats
     population?: Individual[]
+    individual_encoding?: IndividualEncoding
 }
 
 const initialState: GenericInitialState = {}
@@ -121,6 +123,7 @@ const slice = createSlice({
             )
             state.graphData = getStats(data.all_stats)
             state.population = data.population
+            state.individual_encoding = data.individual_encoding
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
             const data = action.payload.data
@@ -166,6 +169,8 @@ export const getGenericGeneralStats = (state: RootState) =>
     state.generic.generalStats
 
 export const getSettings = (state: RootState) => state.generic.settings
+
+export const getGenericIndividualEncoding = (state: RootState) => state.generic.individual_encoding
 
 export const getGenericPopulation = (state: RootState) => state.generic.population
 

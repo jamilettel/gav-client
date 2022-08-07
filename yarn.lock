@@ -1598,6 +1598,11 @@ graceful-fs@^4.2.6:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
+gradient-palette@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/gradient-palette/-/gradient-palette-1.1.1.tgz#83d486e6939c703927bd7d8d085f3526d1fa683f"
+  integrity sha512-o0V/HskJUQ8aVWKRsU/xZ5vwVFgQQvPlNIqvQ4/Yj/fGtnNbV4+tgGwR8uc9JHxsNuF/4RAYjx0hEzLgEDRQdw==
+
 har-schema@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-2.0.0.tgz#a94c2224ebcac04782a0d9035521f24735b7ec92"
@@ -3544,6 +3549,11 @@ type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
+
+typescript-color-gradient@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/typescript-color-gradient/-/typescript-color-gradient-2.0.2.tgz#6b8b91e6316ad9157e129381cd5b76f3dd3e8532"
+  integrity sha512-bmqw+hFuDE5YWLGpbm3RfY+xZyOlKAwchXE4E+tQhw1xHRlBZWDTFrSAM+M/bjc2itPNQyqL/FqSjSnWiphoXg==
 
 typescript@4.7.4:
   version "4.7.4"

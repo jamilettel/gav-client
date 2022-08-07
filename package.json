@@ -11,6 +11,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
     "chart.js": "^3.8.0",
+    "gradient-palette": "^1.1.1",
     "net": "^1.0.2",
     "next": "12.2.0",
     "node-sass": "^7.0.1",
@@ -20,7 +21,8 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.0.2",
     "redux-thunk": "^2.4.1",
-    "tls": "^0.0.1"
+    "tls": "^0.0.1",
+    "typescript-color-gradient": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
