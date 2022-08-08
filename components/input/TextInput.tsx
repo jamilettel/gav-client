@@ -8,11 +8,14 @@ export default function TextInput(props: {
     placeholder?: string
     className?: string
     suggestions?: string[]
+    filterSuggestions?: boolean
 }) {
     let suggestions = undefined
     const [focused, setFocused] = useState(false)
-    const filteredSuggestions = props.suggestions
-        ?.filter((suggestion) =>
+    let filteredSuggestions = props.suggestions
+
+    if (props.filterSuggestions)
+        filteredSuggestions = filteredSuggestions?.filter((suggestion) =>
             suggestion.toLowerCase().includes(props.value?.toLowerCase() ?? '')
         )
         .sort()
@@ -61,7 +64,7 @@ export default function TextInput(props: {
                 case 'Enter':
                     refInput.current?.blur()
                     if (
-                        chosenSuggestion > 0 &&
+                        chosenSuggestion >= 0 &&
                         chosenSuggestion < filteredSuggestions!.length
                     )
                         if (props.onChange)

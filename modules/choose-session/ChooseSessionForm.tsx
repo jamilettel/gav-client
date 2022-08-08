@@ -57,6 +57,7 @@ export default function ChooseSessionForm() {
                         value={session}
                         placeholder="Session name"
                         suggestions={sessions}
+                        filterSuggestions
                     />
                 </div>
                 <Button primary={true}>Join session</Button>
