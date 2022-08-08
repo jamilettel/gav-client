@@ -9,16 +9,20 @@ export default function TextInput(props: {
     className?: string
     suggestions?: string[]
     filterSuggestions?: boolean
+    directionUp?: boolean
 }) {
     let suggestions = undefined
     const [focused, setFocused] = useState(false)
     let filteredSuggestions = props.suggestions
 
     if (props.filterSuggestions)
-        filteredSuggestions = filteredSuggestions?.filter((suggestion) =>
-            suggestion.toLowerCase().includes(props.value?.toLowerCase() ?? '')
-        )
-        .sort()
+        filteredSuggestions = filteredSuggestions
+            ?.filter((suggestion) =>
+                suggestion
+                    .toLowerCase()
+                    .includes(props.value?.toLowerCase() ?? '')
+            )
+            .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
     let hasSuggestions: boolean = (filteredSuggestions?.length ?? 0) > 0
     let onKeyDown:
         | ((e: React.KeyboardEvent<HTMLInputElement>) => any)
@@ -43,9 +47,18 @@ export default function TextInput(props: {
         if (pos < 0) {
             refScroll.current!.scrollTop += pos
         } else if (pos + elemPos.height > scrollPos.height) {
-            refScroll.current!.scrollTop += pos + elemPos.height - scrollPos.height
+            refScroll.current!.scrollTop +=
+                pos + elemPos.height - scrollPos.height
         }
     }, [chosenSuggestion])
+
+    const incrChosenSugg = () =>
+        setChosenSuggestion(Math.max(0, chosenSuggestion - 1))
+
+    const decrChosenSugg = () =>
+        setChosenSuggestion(
+            Math.min(filteredSuggestions!.length - 1, chosenSuggestion + 1)
+        )
 
     if (hasSuggestions) {
         onKeyDown = (e) => {
@@ -73,15 +86,10 @@ export default function TextInput(props: {
                             )
                     break
                 case 'ArrowUp':
-                    setChosenSuggestion(Math.max(0, chosenSuggestion - 1))
+                    props.directionUp ? decrChosenSugg() : incrChosenSugg()
                     break
                 case 'ArrowDown':
-                    setChosenSuggestion(
-                        Math.min(
-                            filteredSuggestions!.length - 1,
-                            chosenSuggestion + 1
-                        )
-                    )
+                    props.directionUp ? incrChosenSugg() : decrChosenSugg()
                     break
             }
         }
@@ -113,7 +121,10 @@ export default function TextInput(props: {
         styles.input +
         ' ' +
         (props.className ?? '') +
-        (hasSuggestions && focused ? ' ' + styles.inputSuggestions : '')
+        (hasSuggestions && focused ? ' ' + styles.inputSuggestions : '') +
+        (hasSuggestions && focused && props.directionUp
+            ? ' ' + styles.inputUp
+            : '')
 
     return (
         <div className={classname}>
@@ -125,7 +136,10 @@ export default function TextInput(props: {
                     if (props.onChange) props.onChange(e.target.value)
                 }}
                 onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
+                onBlur={() => {
+                    setFocused(false)
+                    setChosenSuggestion(0)
+                }}
                 onKeyDown={onKeyDown}
                 ref={refInput}
             />
