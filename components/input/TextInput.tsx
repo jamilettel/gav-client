@@ -40,7 +40,6 @@ export default function TextInput(props: {
         if (pos < 0) {
             refScroll.current!.scrollTop += pos
         } else if (pos + elemPos.height > scrollPos.height) {
-            console.log(pos + elemPos.height - scrollPos.height)
             refScroll.current!.scrollTop += pos + elemPos.height - scrollPos.height
         }
     }, [chosenSuggestion])
