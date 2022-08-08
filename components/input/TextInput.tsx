@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './Input.module.scss'
 
 export default function TextInput(props: {
@@ -11,32 +11,88 @@ export default function TextInput(props: {
 }) {
     let suggestions = undefined
     const [focused, setFocused] = useState(false)
-    let hasSuggestions: boolean
-    const filteredSuggestions = props.suggestions?.filter((suggestion) =>
-        suggestion.toLowerCase().includes(props.value?.toLowerCase() ?? '')
-    ).sort()
+    const filteredSuggestions = props.suggestions
+        ?.filter((suggestion) =>
+            suggestion.toLowerCase().includes(props.value?.toLowerCase() ?? '')
+        )
+        .sort()
+    let hasSuggestions: boolean = (filteredSuggestions?.length ?? 0) > 0
     let onKeyDown:
         | ((e: React.KeyboardEvent<HTMLInputElement>) => any)
         | undefined = undefined
+    const [chosenSuggestion, setChosenSuggestion] = useState(0)
 
-    const ref = useRef<HTMLDivElement>(null)
+    const refScroll = useRef<HTMLDivElement>(null)
+    const refInput = useRef<HTMLInputElement>(null)
 
-    if ((hasSuggestions = (filteredSuggestions?.length ?? 0) > 0)) {
+    useEffect(() => {
+        setChosenSuggestion(0)
+    }, [props.value])
+
+    useEffect(() => {
+        if (!hasSuggestions) return
+        let elemPos = refScroll.current?.children
+            .item(chosenSuggestion)
+            ?.getBoundingClientRect()
+        let scrollPos = refScroll.current?.getBoundingClientRect()
+        if (elemPos === undefined || scrollPos === undefined) return
+        let pos = elemPos.top - scrollPos.top
+        if (pos < 0) {
+            refScroll.current!.scrollTop += pos
+        } else if (pos + elemPos.height > scrollPos.height) {
+            console.log(pos + elemPos.height - scrollPos.height)
+            refScroll.current!.scrollTop += pos + elemPos.height - scrollPos.height
+        }
+    }, [chosenSuggestion])
+
+    if (hasSuggestions) {
         onKeyDown = (e) => {
-            console.log(e.code)
             if (
                 e.code !== 'Enter' &&
                 e.code !== 'ArrowDown' &&
-                e.code !== 'ArrowUp'
+                e.code !== 'ArrowUp' &&
+                e.code !== 'Escape'
             )
                 return
             e.preventDefault()
+            switch (e.code) {
+                case 'Escape':
+                    refInput.current?.blur()
+                    break
+                case 'Enter':
+                    refInput.current?.blur()
+                    if (
+                        chosenSuggestion > 0 &&
+                        chosenSuggestion < filteredSuggestions!.length
+                    )
+                        if (props.onChange)
+                            props.onChange(
+                                filteredSuggestions![chosenSuggestion]
+                            )
+                    break
+                case 'ArrowUp':
+                    setChosenSuggestion(Math.max(0, chosenSuggestion - 1))
+                    break
+                case 'ArrowDown':
+                    setChosenSuggestion(
+                        Math.min(
+                            filteredSuggestions!.length - 1,
+                            chosenSuggestion + 1
+                        )
+                    )
+                    break
+            }
         }
 
         const list = filteredSuggestions!.map((suggestion, index) => (
             <div
                 key={suggestion + index.toString()}
-                className={styles.item}
+                className={
+                    styles.item +
+                    (chosenSuggestion === index
+                        ? ' ' + styles.itemHighlight
+                        : '')
+                }
                 onMouseDown={() => {
                     if (props.onChange) props.onChange(suggestion)
                 }}
@@ -44,7 +100,11 @@ export default function TextInput(props: {
                 {suggestion}
             </div>
         ))
-        suggestions = <div className={styles.suggestions}>{list}</div>
+        suggestions = (
+            <div className={styles.suggestions} ref={refScroll}>
+                {list}
+            </div>
+        )
     }
 
     let classname =
@@ -65,6 +125,7 @@ export default function TextInput(props: {
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 onKeyDown={onKeyDown}
+                ref={refInput}
             />
             {focused ? suggestions : undefined}
         </div>

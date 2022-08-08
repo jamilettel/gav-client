@@ -34,6 +34,7 @@
         overflow-y: auto;
         border: 1px solid $inactive-outline;
         max-height: 200px;
+        z-index: 10;
 
         &::-webkit-scrollbar {
             width: 8px;
@@ -53,6 +54,11 @@
             padding: 8px;
             border-top: 1px solid $inactive-outline;
             cursor: pointer;
+            background: $secondary;
+        }
+
+        .itemHighlight, .item:hover {
+            filter: brightness(1.2);
         }
     }
 
