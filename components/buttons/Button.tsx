@@ -7,18 +7,20 @@ export interface ButtonProps {
     primary?: boolean
     onClick?: () => void
     tooltip?: string
+    disabled?: boolean
 }
 
 export default function Button(props: ButtonProps) {
     let className = styles.button + ' ' + props.className ?? ''
     if (props.primary === true) className += ' ' + styles.primary
+    if (props.disabled) className += ' ' + styles.disabled
 
     const onMouseDown = (e: React.MouseEvent) => e.preventDefault()
 
     return (
         <button
             className={className}
-            onClick={props.onClick}
+            onClick={props.disabled ? undefined : props.onClick}
             onMouseDown={onMouseDown}
             title={props.tooltip}
         >

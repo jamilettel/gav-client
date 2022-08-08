@@ -34,6 +34,8 @@ export default function ChooseSessionForm() {
         dispatch(resetWS())
     }
 
+    const sessionExists = sessions.includes(session)
+
     return (
         <SimplePage>
             <div className={styles.header}>
@@ -60,7 +62,9 @@ export default function ChooseSessionForm() {
                         filterSuggestions
                     />
                 </div>
-                <Button primary={true}>Join session</Button>
+                <Button primary={true} disabled={session.length === 0}>
+                    {sessionExists ? 'Join session' : 'Create session'}
+                </Button>
             </Form>
         </SimplePage>
     )

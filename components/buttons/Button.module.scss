@@ -12,9 +12,9 @@
     font-weight: lighter;
     height: fit-content;
     transition: 200ms ease-out;
+    cursor: pointer;
 
     &:hover {
-        cursor: pointer;
         filter: brightness(1.1);
     }
 
@@ -32,4 +32,9 @@
 .primary {
     background: $primary;
     border: none;
+}
+
+.disabled, .disabled:hover {
+    filter: grayscale(1) brightness(0.9);
+    cursor: not-allowed;
 }
