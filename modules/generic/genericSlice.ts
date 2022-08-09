@@ -45,7 +45,7 @@ export type MenuSettings = {
         )
 }
 
-type Settings = {
+export type Settings = {
     [key: string]: Setting
 }
 

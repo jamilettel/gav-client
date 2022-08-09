@@ -5,12 +5,16 @@ import {
     getSettings,
     resetAllSettingsGeneric,
 } from '@/modules/generic/genericSlice'
+import { deletePreset, getPresetList, loadPreset, savePreset } from '@/utils/presets'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
+import { getTitle } from '@/websocket/builtinSlice'
 import { saveSettingsGeneric } from '@/websocket/GenericHandler'
 import { useEffect, useState } from 'react'
 import styles from './ActionBar.module.scss'
 
 export default function SaveSettingsBar() {
+    const settings = useAppSelector(getSettings)
+    const title = useAppSelector(getTitle)
     const dispatch = useAppDispatch()
     const menus = useAppSelector(getSettings) ?? {}
     let buttonClass =
@@ -20,6 +24,8 @@ export default function SaveSettingsBar() {
     const onCancel = () => dispatch(resetAllSettingsGeneric())
     const [requiresSave, setRequiresSave] = useState(false)
     const [preset, setPreset] = useState('')
+    const [presetList, setPresetList] = useState(getPresetList(title))
+    const presetExists = presetList.includes(preset)
 
     if (!requiresSave) {
         cancelButton += ' ' + styles.translateRight
@@ -44,7 +50,8 @@ export default function SaveSettingsBar() {
             primary
             className={styles.centerH}
             invert
-            tooltip='Save preset'
+            tooltip="Save preset"
+            onClick={() => savePreset(title, preset, settings ?? {})}
         />
     )
 
@@ -56,12 +63,40 @@ export default function SaveSettingsBar() {
             primary
             className={styles.centerH}
             invert
-            tooltip='Load preset'
+            tooltip="Load preset"
+            onClick={() => loadPreset(title, preset, dispatch)} 
         />
     )
 
+    const buttonRemovePreset = (
+        <Button
+            disabled={preset === ''}
+            primary
+            className={
+                styles.centerH + ' ' + styles.charButton + ' ' + styles.red
+            }
+            tooltip="Delete preset"
+            onClick={() => {
+                deletePreset(title, preset)
+                setPresetList(getPresetList(title))
+                setPreset('')
+            }}
+        >
+            -
+        </Button>
+    )
+
     const buttonAddPreset = (
-        <Button disabled={preset === ''} primary className={styles.centerH + ' ' + styles.charButton} tooltip='Create preset'>
+        <Button
+            disabled={preset === ''}
+            className={styles.centerH + ' ' + styles.charButton}
+            tooltip="Create preset"
+            primary
+            onClick={() => {
+                savePreset(title, preset, settings ?? {})
+                setPresetList(getPresetList(title))
+            }}
+        >
             +
         </Button>
     )
@@ -72,14 +107,14 @@ export default function SaveSettingsBar() {
             <TextInput
                 className={styles.centerH + ' ' + styles.presetInput}
                 directionUp
-                suggestions={['Jeoff', 'Jeoffroy', 'Joe froid', 'Jeffrey']}
-                filterSuggestions
+                suggestions={presetList}
                 value={preset}
                 onChange={setPreset}
             />
-            {buttonAddPreset}
-            {buttonImportPreset}
-            {buttonSavePreset}
+            {!presetExists && buttonAddPreset}
+            {presetExists && buttonSavePreset}
+            {presetExists && buttonImportPreset}
+            {presetExists && buttonRemovePreset}
             <Button
                 disabled={!requiresSave}
                 primary
