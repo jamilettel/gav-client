@@ -32,8 +32,13 @@ export default function TextInput(props: {
     const refScroll = useRef<HTMLDivElement>(null)
     const refInput = useRef<HTMLInputElement>(null)
 
+    const getDefaultSuggestionIndex = () => {
+        const index = filteredSuggestions?.findIndex((sugg) => sugg === props.value) ?? 0
+        return index === -1 ? 0 : index
+    }
+
     useEffect(() => {
-        setChosenSuggestion(0)
+        setChosenSuggestion(getDefaultSuggestionIndex())
     }, [props.value])
 
     useEffect(() => {
@@ -138,7 +143,7 @@ export default function TextInput(props: {
                 onFocus={() => setFocused(true)}
                 onBlur={() => {
                     setFocused(false)
-                    setChosenSuggestion(0)
+                    setChosenSuggestion(getDefaultSuggestionIndex())
                 }}
                 onKeyDown={onKeyDown}
                 ref={refInput}
