@@ -79,8 +79,8 @@ export default function GenericSettings(props: {
                         <IconButton
                             className={styles.button}
                             iconUrl="/icons/undo.svg"
-                            width={20}
-                            height={20}
+                            width={19}
+                            height={19}
                             onClick={resetInput}
                             tooltip="Reset value"
                         />

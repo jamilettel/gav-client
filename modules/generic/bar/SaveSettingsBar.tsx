@@ -45,7 +45,10 @@ export default function SaveSettingsBar() {
         setRequiresSave(false)
     }, [menus])
 
-    useEffect(() => {}, [requiresSave])
+    useEffect(() => {
+        if (presetList.includes(preset))
+            loadPreset(title, preset, dispatch)
+    }, [preset])
 
     const buttonSavePreset = (
         <IconButton
