@@ -13,13 +13,13 @@
     display: flex;
     transition: bottom 200ms ease-in-out;
 
-    .button {
+    .centerH, .button {
         margin: auto 15px auto 0;
+    }
+
+    .button {
         background: $background;
         border: 1px $foreground-light solid;
-        &:hover {
-            filter: brightness(1.2);
-        }
     }
 
     .primary {
@@ -47,12 +47,21 @@
         margin-left: auto;
     }
 
-    .cancelButton {
+    .charButton {
         font-size: 32pt;
         padding: 0;
         width: 53px;
         height: 53px;
     }
+
+    .translateRight {
+        transform: translateX(250px);
+    }
+
+    .presetInput {
+        width: 500px;
+    }
+
 }
 
 .hidden {

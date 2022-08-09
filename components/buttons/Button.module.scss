@@ -15,11 +15,11 @@
     cursor: pointer;
 
     &:hover {
-        filter: brightness(1.1);
+        filter: brightness(1.2);
     }
 
     &:focus {
-        filter: brightness(1.1);
+        filter: brightness(1.2);
         outline: solid 1px $outline;
     }
 }
@@ -37,4 +37,8 @@
 .disabled, .disabled:hover {
     filter: grayscale(1) brightness(0.9);
     cursor: not-allowed;
+}
+
+.invert {
+    filter: invert(1);
 }

@@ -19,6 +19,7 @@ export default function Button(props: ButtonProps) {
 
     return (
         <button
+            tabIndex={props.disabled ? -1 : undefined}
             className={className}
             onClick={props.disabled ? undefined : props.onClick}
             onMouseDown={onMouseDown}

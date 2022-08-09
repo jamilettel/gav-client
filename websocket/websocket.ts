@@ -54,7 +54,6 @@ export function configureWebsocket(
 
     ws.onclose = () => {
         console.log('CLOSE')
-        dispatch(resetWS())
     }
 
     ws.onerror = () => {

@@ -9,6 +9,7 @@ export default function IconButton(
         height?: number
         width?: number
         layout?: 'fill' | 'fixed' | 'intrinsic' | 'responsive'
+        invert?: boolean
     }
 ) {
     let className = `${styles.button} ${styles.iconButton} ${props.className ?? ''}`
@@ -28,6 +29,7 @@ export default function IconButton(
                 layout={props.layout ?? 'fixed'}
                 height={props.height}
                 width={props.width}
+                className={props.invert ? styles.invert : undefined}
             />
         </button>
     )

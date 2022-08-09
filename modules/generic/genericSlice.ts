@@ -159,6 +159,7 @@ const slice = createSlice({
             state.settings[action.payload.key].currentValue =
                 action.payload.value
         },
+        resetGeneric: () => initialState,
     },
 })
 
@@ -171,9 +172,11 @@ export const getGenericGeneralStats = (state: RootState) =>
 
 export const getSettings = (state: RootState) => state.generic.settings
 
-export const getGenericIndividualEncoding = (state: RootState) => state.generic.individual_encoding
+export const getGenericIndividualEncoding = (state: RootState) =>
+    state.generic.individual_encoding
 
-export const getGenericPopulation = (state: RootState) => state.generic.population
+export const getGenericPopulation = (state: RootState) =>
+    state.generic.population
 
 export const {
     setAllDataGeneric,
@@ -181,5 +184,6 @@ export const {
     updateSettingsGeneric,
     resetAllSettingsGeneric,
     setMenuValueGeneric,
+    resetGeneric,
 } = slice.actions
 export default slice.reducer

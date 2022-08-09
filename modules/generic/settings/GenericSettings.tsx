@@ -8,7 +8,7 @@ import {
     setMenuValueGeneric,
 } from '@/modules/generic/genericSlice'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styles from './GenericSettings.module.scss'
 
 export default function GenericSettings(props: {
@@ -16,20 +16,10 @@ export default function GenericSettings(props: {
 }) {
     const dispatch = useAppDispatch()
     const menus = useAppSelector(getSettings) ?? {}
-    const [requiresSave, setRequiresSave] = useState(false)
 
     useEffect(() => {
-        for (const menuName in menus) {
-            if (menus[menuName].value !== menus[menuName].currentValue)
-                return setRequiresSave(true)
-        }
-        setRequiresSave(false)
-    }, [menus])
-
-    useEffect(() => {
-        if (requiresSave) props.setABContent(<SaveSettingsBar />)
-        else props.setABContent(undefined)
-    }, [requiresSave])
+        props.setABContent(<SaveSettingsBar />)
+    }, [])
 
     const display = [] as React.ReactNode[]
     for (const menuName in menus) {

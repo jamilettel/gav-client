@@ -8,6 +8,7 @@ import styles from './Generic.module.scss'
 import GenericSettings from '@/modules/generic/settings/GenericSettings'
 import GenericStatistics from '@/modules/generic/statistics/GenericStatistics'
 import GenericPopulation from '@/modules/generic/population/GenericPopulation'
+import { resetGeneric } from '@/modules/generic/genericSlice'
 
 const NAVMENU_OPTIONS = ['Statistics', 'Change Settings', 'Population']
 
@@ -45,6 +46,7 @@ export default function Generic() {
     )
 
     useEffect(() => {
+        dispatch(resetGeneric())
         sendCommand(dispatch, 'info')
     }, [])
 
