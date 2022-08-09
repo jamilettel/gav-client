@@ -62,7 +62,6 @@ function getLocalStoragePresets(): LocalStoragePresets {
 }
 
 export function presetHasChanged(title: string, name: string, menus: MenuSettings): boolean {
-    console.log('test')
     const preset = getLocalStoragePresets()[title]?.find(p => p.name === name)
     if (!preset)
         return true
@@ -149,5 +148,23 @@ export function loadPreset(
             setMenuValueGeneric({ key: settingName, value: setting.value })
         )
     }
+    setUsedPreset(problemTitle, name)
     return true
+}
+
+export function getLastUsedPreset(title: string): string | undefined {
+    let presets: {[title: string]: string} = {}
+    try {
+        presets = JSON.parse(localStorage.getItem('presetsUsed') ?? '{}')
+    } catch {}
+    return typeof presets[title] === 'string' ? presets[title] : undefined
+}
+
+function setUsedPreset(title: string, preset: string) {
+    let presets: {[title: string]: string} = {}
+    try {
+        presets = JSON.parse(localStorage.getItem('presetsUsed') ?? '{}')
+    } catch {}
+    presets[title] = preset
+    localStorage.setItem('presetsUsed', JSON.stringify(presets))
 }

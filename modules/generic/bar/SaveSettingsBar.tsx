@@ -7,6 +7,7 @@ import {
 } from '@/modules/generic/genericSlice'
 import {
     deletePreset,
+    getLastUsedPreset,
     getPresetList,
     loadPreset,
     presetHasChanged,
@@ -49,10 +50,14 @@ export default function SaveSettingsBar() {
     }, [menus])
 
     useEffect(() => {
-        if (presetList.includes(preset)) {
+        if (presetList.includes(preset))
             loadPreset(title, preset, dispatch)
-        }
-    }, [preset])
+        setPresetChanged(presetHasChanged(title, preset, menus))
+    }, [preset, presetList])
+
+    useEffect(() => {
+        setPreset(getLastUsedPreset(title) ?? '')
+    }, [title])
 
     const buttonSavePreset = (
         <IconButton
