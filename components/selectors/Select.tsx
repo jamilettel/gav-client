@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './Select.module.scss'
 
 export class SelectElement {
@@ -31,6 +31,11 @@ export default function Select(props: Props) {
     const [chosenElem, setChosenElem] = useState(
         new SelectElement(props.defaultTitle || 'Choose value...', '')
     )
+
+    useEffect(() => {
+        if (props.disabled && document.activeElement == refButton.current)
+            refButton.current?.blur()
+    }, [props.disabled])
 
     let className = styles.select
     if (props.disabled === true) className += ' ' + styles.selectDisabled
@@ -99,6 +104,7 @@ export default function Select(props: Props) {
                     onKeyDown={mainButtonKeyDown}
                     onBlur={() => setOpen(false)}
                     onFocus={() => setOpen(true)}
+                    tabIndex={props.disabled ? -1 : undefined}
                 >
                     {chosenElem.value}
                 </button>

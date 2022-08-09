@@ -120,6 +120,7 @@
     .dropdown {
         display: flex;
         z-index: 1001;
+        min-height: 15px;
     }
 
     .current {
@@ -139,8 +140,9 @@
 }
 
 .selectDisabled {
-    .current {
-        background: #f0f0f0;
+    filter: brightness(0.5);
+    button:hover {
         cursor: not-allowed;
+        filter: none;
     }
 }

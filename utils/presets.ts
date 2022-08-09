@@ -4,6 +4,7 @@ import {
     Settings,
 } from '@/modules/generic/genericSlice'
 import { AppDispatch } from '@/utils/store'
+import { sendCommand } from '@/websocket/websocket'
 
 export type Preset = {
     name: string
@@ -61,10 +62,13 @@ function getLocalStoragePresets(): LocalStoragePresets {
     return {}
 }
 
-export function presetHasChanged(title: string, name: string, menus: MenuSettings): boolean {
-    const preset = getLocalStoragePresets()[title]?.find(p => p.name === name)
-    if (!preset)
-        return true
+export function presetHasChanged(
+    title: string,
+    name: string,
+    menus: MenuSettings
+): boolean {
+    const preset = getLocalStoragePresets()[title]?.find((p) => p.name === name)
+    if (!preset) return true
     for (const menuName in menus) {
         const menu = menus[menuName]
         const presetValue = preset.settings[menuName]
@@ -133,7 +137,7 @@ export function deletePreset(problemTitle: string, name: string) {
     localStorage.setItem('presets', JSON.stringify(preset))
 }
 
-export function loadPreset(
+export function loadPresetGeneric(
     problemTitle: string,
     name: string,
     dispatch: AppDispatch
@@ -153,18 +157,37 @@ export function loadPreset(
 }
 
 export function getLastUsedPreset(title: string): string | undefined {
-    let presets: {[title: string]: string} = {}
+    let presets: { [title: string]: string } = {}
     try {
         presets = JSON.parse(localStorage.getItem('presetsUsed') ?? '{}')
     } catch {}
     return typeof presets[title] === 'string' ? presets[title] : undefined
 }
 
-function setUsedPreset(title: string, preset: string) {
-    let presets: {[title: string]: string} = {}
+export function setUsedPreset(title: string, preset: string) {
+    let presets: { [title: string]: string } = {}
     try {
         presets = JSON.parse(localStorage.getItem('presetsUsed') ?? '{}')
     } catch {}
     presets[title] = preset
     localStorage.setItem('presetsUsed', JSON.stringify(presets))
+}
+
+export function setSettingsGenericPreset(
+    title: string,
+    name: string,
+    dispatch: AppDispatch
+) {
+    const preset = getLocalStoragePresets()[title]?.find(
+        (preset) => preset.name === name
+    )
+    if (!preset) return
+    let settings: {
+        [setting_name: string]: string | number
+    } = {}
+
+    for (const setting in preset.settings)
+        settings[setting] = preset.settings[setting].value
+
+    sendCommand(dispatch, 'set-setting', { settings })
 }

@@ -9,7 +9,21 @@ import DisconnectButton from '@/components/buttons/presets/DisconnectButton'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { sendBuiltin } from '@/websocket/websocket'
 import { getWebsocket, resetWS } from '@/websocket/connectionSlice'
-import { getProtocol, getSessions, getTitle } from '@/websocket/builtinSlice'
+import {
+    getProtocol,
+    getSessions,
+    getTitle,
+    setCreatedSession,
+} from '@/websocket/builtinSlice'
+import {
+    getLastUsedPreset,
+    getPresetList,
+    setUsedPreset,
+} from '@/utils/presets'
+import Select, {
+    SelectElement,
+    toSelectElem,
+} from '@/components/selectors/Select'
 
 export default function ChooseSessionForm() {
     const dispatch = useAppDispatch()
@@ -18,23 +32,36 @@ export default function ChooseSessionForm() {
     const protocol = useAppSelector(getProtocol)
     const [session, setSession] = useState('')
     const sessions = useAppSelector(getSessions)
+    const [presetList, setPresetList] = useState([] as string[])
+    const [preset, setPreset] = useState(undefined as string | undefined)
+    const sessionExists = sessions.includes(session)
 
     useEffect(() => {
         setSession(localStorage.getItem(LS_SESSION_NAME) ?? '')
+        dispatch(setCreatedSession(false))
     }, [])
+
+    useEffect(() => {
+        setPresetList(getPresetList(title))
+        setPreset(getLastUsedPreset(title) ?? '')
+    }, [title])
+
+    useEffect(() => {
+        if (preset !== undefined) setUsedPreset(title, preset)
+    }, [preset])
 
     const onSubmit = () => {
         const name = session.trim()
-        if (name.length > 0)
+        if (name.length > 0) {
             sendBuiltin(dispatch, 'join-or-create', { name: session })
+            dispatch(setCreatedSession(sessionExists === false))
+        }
     }
 
     const disconnect = () => {
         ws?.close()
         dispatch(resetWS())
     }
-
-    const sessionExists = sessions.includes(session)
 
     return (
         <SimplePage>
@@ -61,7 +88,18 @@ export default function ChooseSessionForm() {
                         suggestions={sessions}
                         filterSuggestions
                     />
+                    <h3>Preset</h3>
+                    <Select
+                        elements={[
+                            new SelectElement('None', ''),
+                            ...toSelectElem(presetList),
+                        ]}
+                        chosenValue={preset}
+                        onChange={setPreset}
+                        disabled={sessionExists}
+                    />
                 </div>
+
                 <Button primary={true} disabled={session.length === 0}>
                     {sessionExists ? 'Join session' : 'Create session'}
                 </Button>

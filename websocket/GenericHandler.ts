@@ -118,10 +118,7 @@ export function saveSettingsGeneric(
         }
     }
 
-    if (!empty)
-        sendCommand(dispatch, 'set-setting', {
-            settings,
-        })
+    if (!empty) sendCommand(dispatch, 'set-setting', { settings })
 }
 
 export default GenericHandlers

@@ -9,7 +9,7 @@ import {
     deletePreset,
     getLastUsedPreset,
     getPresetList,
-    loadPreset,
+    loadPresetGeneric,
     presetHasChanged,
     savePreset,
 } from '@/utils/presets'
@@ -51,7 +51,7 @@ export default function SaveSettingsBar() {
 
     useEffect(() => {
         if (presetList.includes(preset))
-            loadPreset(title, preset, dispatch)
+            loadPresetGeneric(title, preset, dispatch)
         setPresetChanged(presetHasChanged(title, preset, menus))
     }, [preset, presetList])
 
@@ -68,7 +68,10 @@ export default function SaveSettingsBar() {
             className={styles.centerH}
             white
             tooltip="Save preset"
-            onClick={() => savePreset(title, preset, settings ?? {})}
+            onClick={() => {
+                savePreset(title, preset, settings ?? {})
+                setPresetChanged(false)
+            }}
             disabled={!presetChanged}
         />
     )
@@ -82,7 +85,7 @@ export default function SaveSettingsBar() {
             className={styles.centerH}
             white
             tooltip="Load preset"
-            onClick={() => loadPreset(title, preset, dispatch)}
+            onClick={() => loadPresetGeneric(title, preset, dispatch)}
             disabled={!presetChanged}
         />
     )
@@ -129,6 +132,7 @@ export default function SaveSettingsBar() {
                 suggestions={presetList}
                 value={preset}
                 onChange={setPreset}
+                placeholder="Choose preset..."
             />
             {!presetExists && buttonAddPreset}
             {presetExists && buttonSavePreset}
