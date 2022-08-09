@@ -106,14 +106,22 @@ export function saveSettingsGeneric(
     dispatch: AppDispatch,
     menus: MenuSettings
 ) {
+    let settings: {
+        [setting_name: string]: string | number
+    } = {}
+    let empty = true
+
     for (const menuName in menus) {
-        const menu = menus[menuName]
-        if (menu.currentValue !== menu.value)
-            sendCommand(dispatch, 'set-setting', {
-                setting_name: menuName,
-                setting_value: menu.currentValue,
-            })
+        if (menus[menuName].currentValue !== menus[menuName].value) {
+            settings[menuName] = menus[menuName].currentValue
+            empty = false
+        }
     }
+
+    if (!empty)
+        sendCommand(dispatch, 'set-setting', {
+            settings,
+        })
 }
 
 export default GenericHandlers

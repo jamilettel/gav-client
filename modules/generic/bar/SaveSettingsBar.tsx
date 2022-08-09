@@ -5,7 +5,12 @@ import {
     getSettings,
     resetAllSettingsGeneric,
 } from '@/modules/generic/genericSlice'
-import { deletePreset, getPresetList, loadPreset, savePreset } from '@/utils/presets'
+import {
+    deletePreset,
+    getPresetList,
+    loadPreset,
+    savePreset,
+} from '@/utils/presets'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { getTitle } from '@/websocket/builtinSlice'
 import { saveSettingsGeneric } from '@/websocket/GenericHandler'
@@ -64,7 +69,7 @@ export default function SaveSettingsBar() {
             className={styles.centerH}
             invert
             tooltip="Load preset"
-            onClick={() => loadPreset(title, preset, dispatch)} 
+            onClick={() => loadPreset(title, preset, dispatch)}
         />
     )
 
