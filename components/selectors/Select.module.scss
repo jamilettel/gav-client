@@ -108,7 +108,7 @@
         font-size: 18pt;
 
         &:focus {
-            border: 1px solid $outline;
+            outline: 1px solid $outline;
             z-index: 2000;
         }
     }
