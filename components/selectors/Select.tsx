@@ -54,9 +54,7 @@ export default function Select(props: Props) {
         if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
         e.preventDefault()
         let index =
-            props.elements.findIndex(
-                (elem) => elem.key === chosenElem.key
-            ) ?? 0
+            props.elements.findIndex((elem) => elem.key === chosenElem.key) ?? 0
         if (e.key === 'ArrowUp') index--
         else index++
         if (index >= 0 && index < props.elements.length) {
@@ -70,15 +68,21 @@ export default function Select(props: Props) {
             <div className={className}>
                 <button
                     className={styles.current}
-                    onClick={(e) => {
-                        e.preventDefault()
-                        if (props.disabled === true) return
-                        setOpen(!open)
+                    onMouseDown={(e) => {
+                        if (props.disabled) {
+                            e.preventDefault()
+                            return
+                        }
+                        if (e.currentTarget == document.activeElement && open) {
+                            e.preventDefault()
+                            e.currentTarget.blur()
+                        }
                     }}
-                    onMouseDown={(e) => e.preventDefault()}
                     type="button"
                     title={chosenElem.value}
                     onKeyDown={mainButtonKeyDown}
+                    onBlur={() => setOpen(false)}
+                    onFocus={() => setOpen(true)}
                 >
                     {chosenElem.value}
                 </button>
@@ -93,30 +97,20 @@ export default function Select(props: Props) {
                         return (
                             <button
                                 className={className}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    if (props.onChange)
-                                        props.onChange(elem.key)
+                                onMouseDown={() => {
+                                    if (props.onChange) props.onChange(elem.key)
                                     setOpen(false)
                                     setChosenElem(elem)
                                 }}
-                                onMouseDown={(e) => e.preventDefault()}
                                 title={elem.value}
                                 key={elem.key}
+                                tabIndex={-1}
                             >
                                 {elem.value}
                             </button>
                         )
                     })}
                 </div>
-                <button
-                    className={styles.closeButton}
-                    onClick={() => {
-                        setOpen(false)
-                    }}
-                    tabIndex={-1}
-                    onMouseDown={(e) => e.preventDefault()}
-                />
             </div>
         </>
     )
