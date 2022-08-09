@@ -27,7 +27,7 @@ export default function TextInput(props: {
     let onKeyDown:
         | ((e: React.KeyboardEvent<HTMLInputElement>) => any)
         | undefined = undefined
-    const [chosenSuggestion, setChosenSuggestion] = useState(0)
+    const [chosenSuggestion, setChosenSuggestion] = useState(-1)
 
     const refScroll = useRef<HTMLDivElement>(null)
     const refInput = useRef<HTMLInputElement>(null)
@@ -58,7 +58,7 @@ export default function TextInput(props: {
     }, [chosenSuggestion])
 
     const incrChosenSugg = () =>
-        setChosenSuggestion(Math.max(0, chosenSuggestion - 1))
+        setChosenSuggestion(Math.max(-1, chosenSuggestion - 1))
 
     const decrChosenSugg = () =>
         setChosenSuggestion(
@@ -131,12 +131,16 @@ export default function TextInput(props: {
             ? ' ' + styles.inputUp
             : '')
 
+    let shownValue = props.value
+    if (chosenSuggestion >= 0 && filteredSuggestions?.at(chosenSuggestion))
+        shownValue = filteredSuggestions[chosenSuggestion]
+
     return (
         <div className={classname}>
             <input
                 placeholder={props.placeholder}
                 type="text"
-                value={props.value}
+                value={shownValue}
                 onChange={(e) => {
                     if (props.onChange) props.onChange(e.target.value)
                 }}
