@@ -25,6 +25,7 @@ export const toSelectElem = (list: string[]) =>
     list.map((str) => new SelectElement(str))
 
 export default function Select(props: Props) {
+    const refButton = useRef<HTMLButtonElement>(null)
     const refDropdown = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
     const [chosenElem, setChosenElem] = useState(
@@ -52,6 +53,7 @@ export default function Select(props: Props) {
     }
 
     const mainButtonKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') refButton.current?.blur()
         if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
         e.preventDefault()
         let index =
@@ -62,10 +64,11 @@ export default function Select(props: Props) {
             if (props.onChange) props.onChange(props.elements[index].key)
             setChosenElem(props.elements[index])
         }
-        let elemPos = refDropdown.current?.children.item(index)?.getBoundingClientRect()
+        let elemPos = refDropdown.current?.children
+            .item(index)
+            ?.getBoundingClientRect()
         let scrollPos = refDropdown.current?.getBoundingClientRect()
-        if (!elemPos || !scrollPos)
-            return
+        if (!elemPos || !scrollPos) return
         let pos = elemPos.top - scrollPos.top
         if (pos < 0) {
             refDropdown.current!.scrollTop += pos
@@ -79,6 +82,7 @@ export default function Select(props: Props) {
         <>
             <div className={className}>
                 <button
+                    ref={refButton}
                     className={styles.current}
                     onMouseDown={(e) => {
                         if (props.disabled) {
