@@ -57,7 +57,7 @@ export default function SaveSettingsBar() {
             width={30}
             primary
             className={styles.centerH}
-            invert
+            white
             tooltip="Save preset"
             onClick={() => savePreset(title, preset, settings ?? {})}
         />
@@ -70,7 +70,7 @@ export default function SaveSettingsBar() {
             width={30}
             primary
             className={styles.centerH}
-            invert
+            white
             tooltip="Load preset"
             onClick={() => loadPreset(title, preset, dispatch)}
         />

@@ -39,6 +39,6 @@
     cursor: not-allowed;
 }
 
-.invert {
-    filter: invert(1);
+.white {
+    filter: contrast(0) brightness(2);
 }
