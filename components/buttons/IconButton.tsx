@@ -1,6 +1,6 @@
 import { ButtonProps } from '@/components/buttons/Button'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styles from './Button.module.scss'
 
 export default function IconButton(
@@ -16,6 +16,12 @@ export default function IconButton(
     let className = `${styles.button} ${styles.iconButton} ${props.className ?? ''}`
     if (props.primary === true) className += ' ' + styles.primary
     if (props.disabled) className += ' ' + styles.disabled
+    const ref = useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (props.disabled && document.activeElement == ref.current)
+            ref.current?.blur()
+    }, [props.disabled])
 
     const onMouseDown = (e: React.MouseEvent) => props.disabled ? e.preventDefault() : {}
 
@@ -26,6 +32,7 @@ export default function IconButton(
             onMouseDown={onMouseDown}
             title={props.tooltip}
             tabIndex={props.disabled ? -1 : undefined}
+            ref={ref}
         >
             <Image
                 src={props.iconUrl}
