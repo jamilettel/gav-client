@@ -9,6 +9,7 @@ import {
     deletePreset,
     getPresetList,
     loadPreset,
+    presetHasChanged,
     savePreset,
 } from '@/utils/presets'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
@@ -30,6 +31,7 @@ export default function SaveSettingsBar() {
     const [requiresSave, setRequiresSave] = useState(false)
     const [preset, setPreset] = useState('')
     const [presetList, setPresetList] = useState(getPresetList(title))
+    const [presetChanged, setPresetChanged] = useState(false)
     const presetExists = presetList.includes(preset)
 
     if (!requiresSave) {
@@ -38,6 +40,7 @@ export default function SaveSettingsBar() {
     }
 
     useEffect(() => {
+        setPresetChanged(presetHasChanged(title, preset, menus))
         for (const menuName in menus) {
             if (menus[menuName].value !== menus[menuName].currentValue)
                 return setRequiresSave(true)
@@ -46,8 +49,9 @@ export default function SaveSettingsBar() {
     }, [menus])
 
     useEffect(() => {
-        if (presetList.includes(preset))
+        if (presetList.includes(preset)) {
             loadPreset(title, preset, dispatch)
+        }
     }, [preset])
 
     const buttonSavePreset = (
@@ -60,6 +64,7 @@ export default function SaveSettingsBar() {
             white
             tooltip="Save preset"
             onClick={() => savePreset(title, preset, settings ?? {})}
+            disabled={!presetChanged}
         />
     )
 
@@ -73,6 +78,7 @@ export default function SaveSettingsBar() {
             white
             tooltip="Load preset"
             onClick={() => loadPreset(title, preset, dispatch)}
+            disabled={!presetChanged}
         />
     )
 
@@ -81,7 +87,7 @@ export default function SaveSettingsBar() {
             disabled={preset === ''}
             primary
             className={
-                styles.centerH + ' ' + styles.charButton + ' ' + styles.red
+            styles.centerH + ' ' + styles.charButton + ' ' + styles.red
             }
             tooltip="Delete preset"
             onClick={() => {

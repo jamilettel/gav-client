@@ -61,6 +61,21 @@ function getLocalStoragePresets(): LocalStoragePresets {
     return {}
 }
 
+export function presetHasChanged(title: string, name: string, menus: MenuSettings): boolean {
+    console.log('test')
+    const preset = getLocalStoragePresets()[title]?.find(p => p.name === name)
+    if (!preset)
+        return true
+    for (const menuName in menus) {
+        const menu = menus[menuName]
+        const presetValue = preset.settings[menuName]
+        if (!presetValue || presetValue.value !== menu.currentValue) {
+            return true
+        }
+    }
+    return false
+}
+
 export function getPresetList(problemTitle: string): string[] {
     const presets = getLocalStoragePresets()
     const names: string[] = []

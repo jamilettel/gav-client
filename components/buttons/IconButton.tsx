@@ -25,6 +25,7 @@ export default function IconButton(
             onClick={props.disabled ? undefined : props.onClick}
             onMouseDown={onMouseDown}
             title={props.tooltip}
+            tabIndex={props.disabled ? -1 : undefined}
         >
             <Image
                 src={props.iconUrl}
