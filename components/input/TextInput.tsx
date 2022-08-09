@@ -34,7 +34,7 @@ export default function TextInput(props: {
 
     const getDefaultSuggestionIndex = () => {
         const index = filteredSuggestions?.findIndex((sugg) => sugg === props.value) ?? 0
-        return index === -1 ? 0 : index
+        return index
     }
 
     useEffect(() => {
