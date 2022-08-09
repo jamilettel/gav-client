@@ -7,12 +7,11 @@ export default function Focusable(props: {
     className?: string
     style?: CSSProperties
 }) {
-    const tabIndex = props.focusable ?? true ? 0 : undefined
-    const onClick = (e: React.MouseEvent) => {
+    const tabIndex = props.focusable ?? true ? 0 : -1
+    const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (props.onClick) props.onClick()
-    }
-    const onMouseDown = (e: React.MouseEvent) => {
-        e.preventDefault()
+        if (props.focusable)
+            e.currentTarget.focus()
     }
     const onKeyDown = (e: React.KeyboardEvent) => {
         if (props.onClick && (e.key === 'Enter' || e.key === ' '))
@@ -25,7 +24,6 @@ export default function Focusable(props: {
             tabIndex={tabIndex}
             onClick={onClick}
             onKeyDown={onKeyDown}
-            onMouseDown={onMouseDown}
             style={props.style}
         >
             {props.children}

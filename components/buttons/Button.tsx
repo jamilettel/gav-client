@@ -15,7 +15,9 @@ export default function Button(props: ButtonProps) {
     if (props.primary === true) className += ' ' + styles.primary
     if (props.disabled) className += ' ' + styles.disabled
 
-    const onMouseDown = (e: React.MouseEvent) => e.preventDefault()
+    const onMouseDown = (e: React.MouseEvent) => {
+        if (props.disabled) e.preventDefault()
+    }
 
     return (
         <button

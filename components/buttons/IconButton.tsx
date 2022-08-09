@@ -10,17 +10,19 @@ export default function IconButton(
         width?: number
         layout?: 'fill' | 'fixed' | 'intrinsic' | 'responsive'
         invert?: boolean
+        disabled?: boolean
     }
 ) {
     let className = `${styles.button} ${styles.iconButton} ${props.className ?? ''}`
     if (props.primary === true) className += ' ' + styles.primary
+    if (props.disabled) className += ' ' + styles.disabled
 
-    const onMouseDown = (e: React.MouseEvent) => e.preventDefault()
+    const onMouseDown = (e: React.MouseEvent) => props.disabled ? e.preventDefault() : {}
 
     return (
         <button
             className={className}
-            onClick={props.onClick}
+            onClick={props.disabled ? undefined : props.onClick}
             onMouseDown={onMouseDown}
             title={props.tooltip}
         >
