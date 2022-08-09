@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styles from './Select.module.scss'
 
 export class SelectElement {
@@ -25,6 +25,7 @@ export const toSelectElem = (list: string[]) =>
     list.map((str) => new SelectElement(str))
 
 export default function Select(props: Props) {
+    const refDropdown = useRef<HTMLDivElement>(null)
     const [open, setOpen] = useState(false)
     const [chosenElem, setChosenElem] = useState(
         new SelectElement(props.defaultTitle || 'Choose value...', '')
@@ -61,6 +62,17 @@ export default function Select(props: Props) {
             if (props.onChange) props.onChange(props.elements[index].key)
             setChosenElem(props.elements[index])
         }
+        let elemPos = refDropdown.current?.children.item(index)?.getBoundingClientRect()
+        let scrollPos = refDropdown.current?.getBoundingClientRect()
+        if (!elemPos || !scrollPos)
+            return
+        let pos = elemPos.top - scrollPos.top
+        if (pos < 0) {
+            refDropdown.current!.scrollTop += pos
+        } else if (pos + elemPos.height > scrollPos.height) {
+            refDropdown.current!.scrollTop +=
+                pos + elemPos.height - scrollPos.height
+        }
     }
 
     return (
@@ -86,7 +98,7 @@ export default function Select(props: Props) {
                 >
                     {chosenElem.value}
                 </button>
-                <div className={styles.dropdown}>
+                <div ref={refDropdown} className={styles.dropdown}>
                     {props.elements.map((elem, index) => {
                         let className: string = ''
                         if (index === props.elements.length - 1)
