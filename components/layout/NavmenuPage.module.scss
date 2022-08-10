@@ -59,14 +59,13 @@
 
             .button {
                 width: 35px;
-                height: 170px;
-                border-radius: 100%;
+                border-radius: 10px;
                 position: absolute;
                 right: 9px;
                 top: 50%;
-                background: $background;
+                background: none;
                 box-sizing: border-box;
-                border: $foreground-light 1px solid;
+                // border: $foreground-light 1px solid;
                 transform: translateY(-50%);
                 display: flex;
 
@@ -79,11 +78,10 @@
             }
 
             &:focus {
-                outline: none;
-
-                .button {
-                    border-color: $outline;
+                &::before {
+                    border-color: $inactive-outline;
                 }
+                outline: none;
             }
 
         }
