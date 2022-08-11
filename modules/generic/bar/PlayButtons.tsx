@@ -38,6 +38,7 @@ export default function PlayButtons() {
 
     return (
         <>
+            <h2 className={stylesAction.centerV}>Status</h2>
             <h2 className={stylesAction.centerV + ' ' + styles.status}>
                 {status.charAt(0).toUpperCase() + status.slice(1)}
             </h2>
@@ -57,6 +58,7 @@ export default function PlayButtons() {
                     iconUrl="/icons/play.svg"
                     height={45}
                     width={45}
+                    tooltip={`Run ${multiGenValue} generations`}
                 />
                 <NumberInput
                     min={0}
