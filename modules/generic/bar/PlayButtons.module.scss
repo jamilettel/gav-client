@@ -27,3 +27,13 @@
         -moz-appearance: textfield;
     }
 }
+
+.status {
+    height: 71px;
+    width: 200px;
+    padding: 0.5em;
+    font-size: 24pt;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid $foreground-light;
+}

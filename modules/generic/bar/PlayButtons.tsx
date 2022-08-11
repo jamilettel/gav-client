@@ -1,6 +1,7 @@
 import IconButton from '@/components/buttons/IconButton'
 import NumberInput from '@/components/input/NumberInput'
-import { useAppDispatch } from '@/utils/store'
+import { getGenericStatus } from '@/modules/generic/genericSlice'
+import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { sendCommand } from '@/websocket/websocket'
 import { useEffect, useState } from 'react'
 import stylesAction from './ActionBar.module.scss'
@@ -16,20 +17,30 @@ function getMultiRunValue() {
 
 export default function PlayButtons() {
     const dispatch = useAppDispatch()
+    const [multiGenValue, setMultiGenValue] = useState(getMultiRunValue())
+    const status = useAppSelector(getGenericStatus) ?? 'idle'
+
     const runOneGen = () => sendCommand(dispatch, 'run-one-gen')
-    const [multiRunValue, setMultiRunValue] = useState(getMultiRunValue())
+
+    const runNGen = () =>
+        sendCommand(dispatch, 'run-n-gen', {
+            generations: multiGenValue,
+        })
 
     useEffect(() => {
-        let value = multiRunValue
-        if (multiRunValue < 0 || multiRunValue > 100) {
-            value = Math.max(0, Math.min(multiRunValue, 100))
-            setMultiRunValue(value)
+        let value = multiGenValue
+        if (multiGenValue < 0 || multiGenValue > 100) {
+            value = Math.max(0, Math.min(multiGenValue, 100))
+            setMultiGenValue(value)
         }
         localStorage.setItem('genericMultiRunValue', value.toString())
-    }, [multiRunValue])
+    }, [multiGenValue])
 
     return (
         <>
+            <h2 className={stylesAction.centerV + ' ' + styles.status}>
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+            </h2>
             <div className={stylesAction.buttonOne}>
                 <IconButton
                     className={stylesAction.button}
@@ -41,12 +52,17 @@ export default function PlayButtons() {
                 />
             </div>
             <div className={stylesAction.centerV + ' ' + styles.multiPlay}>
-                <IconButton iconUrl="/icons/play.svg" height={45} width={45} />
+                <IconButton
+                    onClick={runNGen}
+                    iconUrl="/icons/play.svg"
+                    height={45}
+                    width={45}
+                />
                 <NumberInput
                     min={0}
                     max={100}
-                    value={multiRunValue}
-                    onChange={setMultiRunValue}
+                    value={multiGenValue}
+                    onChange={setMultiGenValue}
                     title="Number of generations"
                 />
             </div>

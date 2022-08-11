@@ -3,10 +3,13 @@ import {
     MenuSettings,
     setAllDataGeneric,
     updateSettingsGeneric,
+    updateStatusGeneric,
 } from '@/modules/generic/genericSlice'
 import { AppDispatch } from '@/utils/store'
 import { sendCommand } from '@/websocket/websocket'
 import { CommandHandler } from '@/websocket/websocket-types'
+
+export type Status = 'working' | 'idle'
 
 export type Setting =
     | {
@@ -52,6 +55,7 @@ export type InfoAllData = {
     info: 'all'
     data: {
         general_stats: GeneralStats
+        status: Status
         // each element represents one generation
         all_stats: GenerationStats[]
         population: Individual[]
@@ -77,6 +81,11 @@ export type InfoSettingsUpdate = {
     settings: { [key: string]: Setting }
 }
 
+export type InfoStatus = {
+    info: 'status'
+    status: Status
+}
+
 const GenericHandlers: CommandHandler[] = [
     {
         info: 'all',
@@ -100,6 +109,12 @@ const GenericHandlers: CommandHandler[] = [
             dispatch(updateSettingsGeneric(data))
         },
     },
+    {
+        info: 'status',
+        handler: (dispatch, data: InfoStatus) => {
+            dispatch(updateStatusGeneric(data))
+        }
+    }
 ]
 
 export function saveSettingsGeneric(
