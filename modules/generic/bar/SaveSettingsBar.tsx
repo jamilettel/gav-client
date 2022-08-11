@@ -65,7 +65,7 @@ export default function SaveSettingsBar() {
             height={30}
             width={30}
             primary
-            className={styles.centerH}
+            className={styles.centerV}
             white
             tooltip="Save preset"
             onClick={() => {
@@ -82,7 +82,7 @@ export default function SaveSettingsBar() {
             height={30}
             width={30}
             primary
-            className={styles.centerH}
+            className={styles.centerV}
             white
             tooltip="Load preset"
             onClick={() => loadPresetGeneric(title, preset, dispatch)}
@@ -95,7 +95,7 @@ export default function SaveSettingsBar() {
             disabled={preset === ''}
             primary
             className={
-            styles.centerH + ' ' + styles.charButton + ' ' + styles.red
+            styles.centerV + ' ' + styles.charButton + ' ' + styles.red
             }
             tooltip="Delete preset"
             onClick={() => {
@@ -111,7 +111,7 @@ export default function SaveSettingsBar() {
     const buttonAddPreset = (
         <Button
             disabled={preset === ''}
-            className={styles.centerH + ' ' + styles.charButton}
+            className={styles.centerV + ' ' + styles.charButton}
             tooltip="Create preset"
             primary
             onClick={() => {
@@ -125,9 +125,9 @@ export default function SaveSettingsBar() {
 
     return (
         <>
-            <h2 className={styles.centerH}>Preset</h2>
+            <h2 className={styles.centerV}>Preset</h2>
             <TextInput
-                className={styles.centerH + ' ' + styles.presetInput}
+                className={styles.centerV + ' ' + styles.presetInput}
                 directionUp
                 suggestions={presetList}
                 value={preset}

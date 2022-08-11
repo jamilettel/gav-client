@@ -26,6 +26,7 @@ export default function NumberInput(props: {
     min?: number
     max?: number
     className?: string
+    title?: string
 }) {
     const [value, setValue] = useState(props.value?.toString() ?? '')
 
@@ -50,6 +51,7 @@ export default function NumberInput(props: {
                 step={props.minIncrement}
                 min={props.min}
                 max={props.max}
+                title={props.title}
             />
         </div>
     )
