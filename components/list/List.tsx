@@ -32,7 +32,7 @@ function getHeader(
                 onClick={() => setSortby(header)}
                 style={{ minWidth: width, maxWidth: width }}
             >
-                {header}
+                {header.charAt(0).toUpperCase() + header.slice(1)}
             </Focusable>
         )
     }
@@ -42,7 +42,7 @@ function getHeader(
             className={styles.elem}
             style={{ minWidth: width, maxWidth: width }}
         >
-            {header}
+            {header.charAt(0).toUpperCase() + header.slice(1)}
         </div>
     )
 }
@@ -147,6 +147,8 @@ export default function List(props: {
         if (!sortby) return
         const dataClone = [...dataToSort]
         dataClone.sort((a, b) => {
+            if (typeof a[sortby.column] !== typeof b[sortby.column])
+                return typeof a[sortby.column] < typeof b[sortby.column] ? -1 : 0
             if (a[sortby.column] < b[sortby.column]) return -1
             if (a[sortby.column] == b[sortby.column]) return 0
             return 1

@@ -16,11 +16,11 @@ import {
 } from '@/websocket/builtinSlice'
 import {
     getLastUsedPreset,
-    loadPresetGeneric,
     setSettingsGenericPreset,
 } from '@/utils/presets'
+import SettingsChangelog from '@/modules/generic/settings-changelog/SettingsChangelog'
 
-const NAVMENU_OPTIONS = ['Statistics', 'Change Settings', 'Population']
+const NAVMENU_OPTIONS = ['Statistics', 'Change Settings', 'Population', 'Settings Changelog']
 
 type MenuFunction = {
     [key: string]: {
@@ -42,6 +42,11 @@ const MENU_FUNCTIONS: MenuFunction = {
     [NAVMENU_OPTIONS[2]]: {
         handler: (setContent) => (
             <GenericPopulation setABContent={setContent} />
+        ),
+    },
+    [NAVMENU_OPTIONS[3]]: {
+        handler: (setContent) => (
+            <SettingsChangelog setABContent={setContent} />
         ),
     },
 }

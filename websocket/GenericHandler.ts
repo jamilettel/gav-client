@@ -2,6 +2,7 @@ import {
     addGenDataGeneric,
     MenuSettings,
     setAllDataGeneric,
+    updateSettingsChangelogGeneric,
     updateSettingsGeneric,
     updateStatusGeneric,
 } from '@/modules/generic/genericSlice'
@@ -51,6 +52,12 @@ export type IndividualEncoding =
           range: [number, number]
       }
 
+export type SettingChangelog = {
+    generation: number
+    setting: string
+    value: number | string
+}
+
 export type InfoAllData = {
     info: 'all'
     data: {
@@ -64,6 +71,7 @@ export type InfoAllData = {
             // setting name & value
             [key: string]: Setting
         }
+        settings_changelog: SettingChangelog[]
     }
 }
 
@@ -84,6 +92,11 @@ export type InfoSettingsUpdate = {
 export type InfoStatus = {
     info: 'status'
     status: Status
+}
+
+export type InfoSettingsChangelog = {
+    info: 'setting-changelog'
+    settings_changelog: SettingChangelog[]
 }
 
 const GenericHandlers: CommandHandler[] = [
@@ -113,8 +126,14 @@ const GenericHandlers: CommandHandler[] = [
         info: 'status',
         handler: (dispatch, data: InfoStatus) => {
             dispatch(updateStatusGeneric(data))
-        }
-    }
+        },
+    },
+    {
+        info: 'settings-changelog',
+        handler: (dispatch, data: InfoSettingsChangelog) => {
+            dispatch(updateSettingsChangelogGeneric(data))
+        },
+    },
 ]
 
 export function saveSettingsGeneric(

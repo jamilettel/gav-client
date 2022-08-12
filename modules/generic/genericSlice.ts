@@ -6,9 +6,11 @@ import {
     IndividualEncoding,
     InfoAllData,
     InfoOneGen,
+    InfoSettingsChangelog,
     InfoSettingsUpdate,
     InfoStatus,
     Setting,
+    SettingChangelog,
     Status,
 } from '@/websocket/GenericHandler'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -22,7 +24,7 @@ interface GenericInitialState {
     population?: Individual[]
     individual_encoding?: IndividualEncoding
     status?: Status
-    sessions?: string[]
+    settings_changelog?: SettingChangelog[]
 }
 
 const initialState: GenericInitialState = {}
@@ -129,6 +131,7 @@ const slice = createSlice({
             state.population = data.population
             state.individual_encoding = data.individual_encoding
             state.status = action.payload.data.status
+            state.settings_changelog = action.payload.data.settings_changelog
         },
         addGenDataGeneric: (state, action: PayloadAction<InfoOneGen>) => {
             const data = action.payload.data
@@ -163,11 +166,14 @@ const slice = createSlice({
             state.settings[action.payload.key].currentValue =
                 action.payload.value
         },
-        updateStatusGeneric: (
-            state,
-            action: PayloadAction<InfoStatus>
-        ) => {
+        updateStatusGeneric: (state, action: PayloadAction<InfoStatus>) => {
             state.status = action.payload.status
+        },
+        updateSettingsChangelogGeneric: (
+            state,
+            action: PayloadAction<InfoSettingsChangelog>
+        ) => {
+            state.settings_changelog = action.payload.settings_changelog
         },
         resetGeneric: () => initialState,
     },
@@ -188,8 +194,10 @@ export const getGenericIndividualEncoding = (state: RootState) =>
 export const getGenericPopulation = (state: RootState) =>
     state.generic.population
 
-export const getGenericStatus = (state: RootState) =>
-    state.generic.status
+export const getGenericStatus = (state: RootState) => state.generic.status
+
+export const getGenericSettingsChangelog = (state: RootState) =>
+    state.generic.settings_changelog
 
 export const {
     setAllDataGeneric,
@@ -199,5 +207,6 @@ export const {
     setMenuValueGeneric,
     resetGeneric,
     updateStatusGeneric,
+    updateSettingsChangelogGeneric,
 } = slice.actions
 export default slice.reducer

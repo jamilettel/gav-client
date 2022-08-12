@@ -1,6 +1,8 @@
 @import 'base';
+$navmenuWidth: 400px;
 
 .wrapper {
+
     position: relative;
     width: 100%;
     min-height: 100vh;
@@ -88,7 +90,7 @@
 
         .navmenuContent {
             position: absolute;
-            width: 350px;
+            width: $navmenuWidth;
             background-color: $background;
             right: 50px;
             height: 100%;
@@ -126,7 +128,7 @@
     }
 
     .navmenuOpen {
-        left: 350px;
+        left: $navmenuWidth;
 
         .tab .button p {
             transform: rotate(180deg);
