@@ -65,7 +65,7 @@ export type InfoAllData = {
         status: Status
         // each element represents one generation
         all_stats: GenerationStats[]
-        population: Individual[]
+        populations: Individual[][]
         individual_encoding: IndividualEncoding
         settings: {
             // setting name & value

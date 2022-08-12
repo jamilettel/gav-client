@@ -8,6 +8,7 @@
         border-radius: 10px 0 0 10px;
         &:focus {
             z-index: 10;
+            outline-color: $secondary;
         }
     }
     input {

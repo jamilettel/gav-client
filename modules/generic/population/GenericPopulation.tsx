@@ -1,19 +1,20 @@
 import List from '@/components/list/List'
-import PlayButtons from '@/modules/generic/bar/PlayButtons'
 import { CSSProperties, useEffect, useState } from 'react'
 import {
     getGenericIndividualEncoding,
-    getGenericPopulation,
+    getGenericPopulations,
 } from '@/modules/generic/genericSlice'
 import { useAppSelector } from '@/utils/store'
 import styles from './GenericPopulation.module.scss'
 import randomColor from 'randomcolor'
 import { Gradient } from 'typescript-color-gradient'
+import GenerationNavigation from '@/modules/generic/bar/GenerationNavigation'
 
 export default function GenericPopulation(props: {
     setABContent: (setContent: React.ReactNode | undefined) => any
 }) {
-    const pop = useAppSelector(getGenericPopulation)
+    const pops = useAppSelector(getGenericPopulations)
+    const [index, setIndex] = useState((pops?.length ?? 1) - 1)
     const indEnc = useAppSelector(getGenericIndividualEncoding)
     const [gradient] = useState(new Gradient())
     const [colors, setColors] = useState(
@@ -23,11 +24,20 @@ export default function GenericPopulation(props: {
     )
 
     useEffect(() => {
-        props.setABContent(<PlayButtons />)
         gradient.setGradient('#3e2a8d', '#ed4037')
         gradient.setNumberOfColors(100)
     }, [])
 
+    useEffect(() => {
+        props.setABContent(
+            <GenerationNavigation
+                max={(pops?.length ?? 1) - 1}
+                onIndexChange={setIndex}
+                index={index}
+            />
+        )
+    }, [index])
+    
     const colorsNow = { ...colors }
 
     const getStyle = (c: number): [boolean, CSSProperties] => {
@@ -71,7 +81,7 @@ export default function GenericPopulation(props: {
         const cell = data.map((c) => {
             let [reset, cssProperties] = getStyle(c)
             resetColors = reset || resetColors
-            index++;
+            index++
             let value = c.toString()
             if (typeof c === 'number' && !Number.isInteger(c))
                 value = c.toFixed(2)
@@ -95,7 +105,7 @@ export default function GenericPopulation(props: {
     return (
         <div className={styles.content}>
             <List
-                data={pop ?? []}
+                data={pops?.at(index) ?? []}
                 columnWidths={{ Chromosome: 800 }}
                 columnClass={{ Chromosome: styles.chromosomeCell }}
                 cellContentProvider={{ Chromosome: ChromosomeCell }}

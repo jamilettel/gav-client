@@ -20,10 +20,18 @@
     .button {
         background: $background;
         border: 1px $foreground-light solid;
+
+        &:focus {
+            outline-color: $inactive-outline;
+        }
     }
 
     .primary {
         background: $primary;
+
+        &:focus {
+            outline-color: $outline;
+        }
     }
 
     .buttonOne {

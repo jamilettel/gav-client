@@ -10,6 +10,7 @@ export default function SettingsChangelog(props: {
     const settingsChangelog = useAppSelector(getGenericSettingsChangelog)
 
     useEffect(() => props.setABContent(undefined), [])
+
     return (
         <div className={styles.content}>
             <List

@@ -21,7 +21,7 @@ interface GenericInitialState {
     settingsRaw?: Settings
     graphData?: GraphData[]
     generalStats?: GeneralStats
-    population?: Individual[]
+    populations?: Individual[][]
     individual_encoding?: IndividualEncoding
     status?: Status
     settings_changelog?: SettingChangelog[]
@@ -128,7 +128,7 @@ const slice = createSlice({
                 state.settings ?? {}
             )
             state.graphData = getStats(data.all_stats)
-            state.population = data.population
+            state.populations = data.populations
             state.individual_encoding = data.individual_encoding
             state.status = action.payload.data.status
             state.settings_changelog = action.payload.data.settings_changelog
@@ -138,7 +138,7 @@ const slice = createSlice({
             state.generation = parseInt(data.general_stats.Generation ?? '0')
             state.generalStats = data.general_stats
             state.graphData = getStats([data.gen_stats], state.graphData)
-            state.population = data.population
+            state.populations?.push(data.population)
         },
         updateSettingsGeneric: (
             state,
@@ -191,8 +191,8 @@ export const getSettings = (state: RootState) => state.generic.settings
 export const getGenericIndividualEncoding = (state: RootState) =>
     state.generic.individual_encoding
 
-export const getGenericPopulation = (state: RootState) =>
-    state.generic.population
+export const getGenericPopulations = (state: RootState) =>
+    state.generic.populations
 
 export const getGenericStatus = (state: RootState) => state.generic.status
 
