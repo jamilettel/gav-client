@@ -3,6 +3,7 @@ import { CSSProperties, useEffect, useState } from 'react'
 import {
     getGenericIndividualEncoding,
     getGenericPopulations,
+    getShownGenericPop,
 } from '@/modules/generic/genericSlice'
 import { useAppSelector } from '@/utils/store'
 import styles from './GenericPopulation.module.scss'
@@ -13,8 +14,8 @@ import GenerationNavigation from '@/modules/generic/bar/GenerationNavigation'
 export default function GenericPopulation(props: {
     setABContent: (setContent: React.ReactNode | undefined) => any
 }) {
+    const shownGeneration = useAppSelector(getShownGenericPop)
     const pops = useAppSelector(getGenericPopulations)
-    const [index, setIndex] = useState((pops?.length ?? 1) - 1)
     const indEnc = useAppSelector(getGenericIndividualEncoding)
     const [gradient] = useState(new Gradient())
     const [colors, setColors] = useState(
@@ -26,18 +27,11 @@ export default function GenericPopulation(props: {
     useEffect(() => {
         gradient.setGradient('#3e2a8d', '#ed4037')
         gradient.setNumberOfColors(100)
+        props.setABContent(
+            <GenerationNavigation/>
+        )
     }, [])
 
-    useEffect(() => {
-        props.setABContent(
-            <GenerationNavigation
-                max={(pops?.length ?? 1) - 1}
-                onIndexChange={setIndex}
-                index={index}
-            />
-        )
-    }, [index])
-    
     const colorsNow = { ...colors }
 
     const getStyle = (c: number): [boolean, CSSProperties] => {
@@ -105,7 +99,7 @@ export default function GenericPopulation(props: {
     return (
         <div className={styles.content}>
             <List
-                data={pops?.at(index) ?? []}
+                data={pops?.at(shownGeneration) ?? []}
                 columnWidths={{ Chromosome: 800 }}
                 columnClass={{ Chromosome: styles.chromosomeCell }}
                 cellContentProvider={{ Chromosome: ChromosomeCell }}

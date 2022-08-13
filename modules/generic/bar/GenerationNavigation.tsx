@@ -1,18 +1,14 @@
 import IconButton from '@/components/buttons/IconButton'
 import NumberInput from '@/components/input/NumberInput'
+import { getGenericPopulations, getShownGenericPop, setShownGenericPop, showFirstGenericPop, showLastGenericPop, showNextGenericPop, showPreviousGenericPop } from '@/modules/generic/genericSlice'
+import { useAppDispatch, useAppSelector } from '@/utils/store'
 import styles from './GenerationNavigation.module.scss'
 
-export default function GenerationNavigation(props: {
-    index: number
-    onIndexChange: (index: number) => any
-    max: number
-}) {
-
-    const onChange = (num: number) => {
-        let newNum = Math.max(0, Math.min(num, props.max))
-        console.log(newNum)
-        props.onIndexChange(newNum)
-    }
+export default function GenerationNavigation() {
+    const dispatch = useAppDispatch()
+    const pops = useAppSelector(getGenericPopulations)
+    const shownGeneration = useAppSelector(getShownGenericPop)
+    const max = (pops?.length ?? 1) - 1
 
     return (
         <div className={styles.center}>
@@ -21,25 +17,23 @@ export default function GenerationNavigation(props: {
                 iconUrl="/icons/last.svg"
                 height={45}
                 width={45}
-                onClick={() => props.onIndexChange(0)}
+                onClick={() => dispatch(showFirstGenericPop())}
             />
             <IconButton
                 className={styles.button}
                 iconUrl="/icons/next.svg"
                 height={45}
                 width={45}
-                onClick={() =>
-                    props.onIndexChange(Math.max(0, props.index - 1))
-                }
+                onClick={() => dispatch(showPreviousGenericPop())}
             />
             <div className={styles.generationIndex}>
                 <NumberInput
-                    value={props.index}
-                    onChange={onChange}
-                    max={props.max}
+                    value={shownGeneration}
+                    onChange={(num: number) => dispatch(setShownGenericPop(num))}
+                    max={max}
                     min={0}
                 />
-                <div className={styles.max}>{props.max}</div>
+                <div className={styles.max}>{max}</div>
             </div>
             <IconButton
                 className={
@@ -48,16 +42,14 @@ export default function GenerationNavigation(props: {
                 iconUrl="/icons/next.svg"
                 height={45}
                 width={45}
-                onClick={() =>
-                    props.onIndexChange(Math.min(props.max, props.index + 1))
-                }
+                onClick={() => dispatch(showNextGenericPop())}
             />
             <IconButton
                 className={styles.button + ' ' + styles.reverse}
                 iconUrl="/icons/last.svg"
                 height={45}
                 width={45}
-                onClick={() => props.onIndexChange(props.max)}
+                onClick={() => dispatch(showLastGenericPop())}
             />
         </div>
     )

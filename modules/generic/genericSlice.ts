@@ -25,9 +25,12 @@ interface GenericInitialState {
     individual_encoding?: IndividualEncoding
     status?: Status
     settings_changelog?: SettingChangelog[]
+    shownGenerationPop: number
 }
 
-const initialState: GenericInitialState = {}
+const initialState: GenericInitialState = {
+    shownGenerationPop: 0,
+}
 
 export type GraphData = {
     name: string
@@ -176,6 +179,29 @@ const slice = createSlice({
             state.settings_changelog = action.payload.settings_changelog
         },
         resetGeneric: () => initialState,
+        showLastGenericPop: (state) => {
+            state.shownGenerationPop = (state.populations?.length ?? 1) - 1
+        },
+        showFirstGenericPop: (state) => {
+            state.shownGenerationPop = 0
+        },
+        showNextGenericPop: (state) => {
+            const max = (state.populations?.length ?? 1) - 1
+            state.shownGenerationPop = Math.min(
+                max,
+                state.shownGenerationPop + 1
+            )
+        },
+        showPreviousGenericPop: (state) => {
+            state.shownGenerationPop = Math.max(0, state.shownGenerationPop - 1)
+        },
+        setShownGenericPop: (state, action: PayloadAction<number>) => {
+            const max = (state.populations?.length ?? 1) - 1
+            state.shownGenerationPop = Math.max(
+                0,
+                Math.min(max, Math.floor(action.payload))
+            )
+        },
     },
 })
 
@@ -199,6 +225,9 @@ export const getGenericStatus = (state: RootState) => state.generic.status
 export const getGenericSettingsChangelog = (state: RootState) =>
     state.generic.settings_changelog
 
+export const getShownGenericPop = (state: RootState) =>
+    state.generic.shownGenerationPop
+
 export const {
     setAllDataGeneric,
     addGenDataGeneric,
@@ -208,5 +237,10 @@ export const {
     resetGeneric,
     updateStatusGeneric,
     updateSettingsChangelogGeneric,
+    setShownGenericPop,
+    showFirstGenericPop,
+    showLastGenericPop,
+    showNextGenericPop,
+    showPreviousGenericPop,
 } = slice.actions
 export default slice.reducer
