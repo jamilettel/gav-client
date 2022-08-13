@@ -14,6 +14,7 @@ export default function SettingsChangelog(props: {
     return (
         <div className={styles.content}>
             <List
+                className={styles.table}
                 cellContentProvider={{
                     generation: (data: number) => data >= 0 ? data : 'Init'
                 }}
