@@ -1,152 +1,160 @@
 @import 'base';
 
-.headerWrapper {
-    position: relative;
-    width: 100%;
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
-    .header {
-        padding-right: 8px;
-        border: solid 1px $secondary;
-        border-radius: 10px 10px 0 0;
-        background: $alternate;
-        white-space: nowrap;
-        display: flex;
-        font-size: 16pt;
-        width: max-content;
-        min-width: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        z-index: 10;
-        max-width: 100%;
-        overflow-x: auto;
+    .headerWrapper {
+        position: relative;
+        width: 100%;
 
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        .elem, .elemButton {
-            padding: 10px;
-            min-width: 200px;
-            max-width: 200px;
-            text-align: center;
-            font-weight: normal;
-            border: 1px solid transparent;
-            border-right: 1px solid $secondary;
-            overflow: hidden;
-            outline: none;
-
-            &:focus {
-                border: solid 1px $outline;
-            }
-        }
-
-        .elemButton {
-            cursor: pointer;
-            position: relative;
-            padding-right: 20px;
-
-            &::after, &::before {
-                font-size: 12pt;
-                position: absolute;
-                font-weight: bold;
-                right: 15px;
-                color: $secondary;
-
-            }
-
-            &::after {
-                content: '>';
-                top: 21px;
-                transform: rotate(90deg);
-            }
-
-            &::before {
-                content: '<';
-                top: 9px;
-                transform: rotate(90deg);
-            }
-        }
-
-        .sortedAscending {
-            &::before {
-                color: $outline;
-            }
-        }
-        .sortedDescending {
-            &::after {
-                color: $outline;
-            }
-        }
-    }
-
-}
-
-.table {
-    overflow-x: auto;
-    overflow-y: scroll;
-    border-radius: 0 0 10px 10px;
-    border: 1px solid $secondary;
-    position: relative;
-    margin-top: 47px;
-    background: $background;
-
-    &::-webkit-scrollbar {
-        height: 8px;
-        width: 8px;
-    }
-
-    &::-webkit-scrollbar:vertical {
-        border-left: 1px solid $secondary;
-    }
-
-    &::-webkit-scrollbar:horizontal {
-        border-top: 1px solid $secondary;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: $foreground-light;
-        border-radius: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background: $secondary;
-    }
-
-    &::-webkit-scrollbar-corner {
-        border-left: 1px solid $secondary;
-        background: none;
-    }
-
-    .content {
-        margin-bottom: 1px;
-        font-size: 16pt;
-        width: max-content;
-        min-width: 100%;
-        min-height: calc(100% - 1px);
-
-        .row {
-            background: $background;
+        .header {
+            padding-right: 8px;
+            border: solid 1px $secondary;
+            border-radius: 10px 10px 0 0;
+            background: $alternate;
+            white-space: nowrap;
             display: flex;
-            height: 2em;
-            align-content: center;
-            .elem {
-                height: 100%;
+            font-size: 16pt;
+            width: max-content;
+            min-width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 10;
+            max-width: 100%;
+            overflow-x: auto;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .elem, .elemButton {
+                padding: 10px;
                 min-width: 200px;
-                padding: 0.5em 5px;
                 max-width: 200px;
                 text-align: center;
-                align-self: center;
+                font-weight: normal;
+                border: 1px solid transparent;
                 border-right: 1px solid $secondary;
-                padding: auto;
-                text-overflow: ellipsis;
-                white-space: nowrap;
                 overflow: hidden;
+                outline: none;
+
+                &:focus {
+                    border: solid 1px $outline;
+                }
+            }
+
+            .elemButton {
+                cursor: pointer;
+                position: relative;
+                padding-right: 20px;
+
+                &::after, &::before {
+                    font-size: 12pt;
+                    position: absolute;
+                    font-weight: bold;
+                    right: 15px;
+                    color: $secondary;
+
+                }
+
+                &::after {
+                    content: '>';
+                    top: 21px;
+                    transform: rotate(90deg);
+                }
+
+                &::before {
+                    content: '<';
+                    top: 9px;
+                    transform: rotate(90deg);
+                }
+            }
+
+            .sortedAscending {
+                &::before {
+                    color: $outline;
+                }
+            }
+            .sortedDescending {
+                &::after {
+                    color: $outline;
+                }
             }
         }
 
-        .alternateRow {
-            background: $alternate;
+    }
+
+    .table {
+        overflow-x: auto;
+        overflow-y: scroll;
+        border-radius: 0 0 10px 10px;
+        border: 1px solid $secondary;
+        position: relative;
+        margin-top: 47px;
+        background: $background;
+        height: calc(100% - 50px);
+
+        &::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar:vertical {
+            border-left: 1px solid $secondary;
+        }
+
+        &::-webkit-scrollbar:horizontal {
+            border-top: 1px solid $secondary;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $foreground-light;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: $secondary;
+        }
+
+        &::-webkit-scrollbar-corner {
+            border-left: 1px solid $secondary;
+            border-top: 1px solid $secondary;
+            background: none;
+        }
+
+        .content {
+            margin-bottom: 1px;
+            font-size: 16pt;
+            width: max-content;
+            min-width: 100%;
+            min-height: calc(100% - 1px);
+
+            .row {
+                background: $background;
+                display: flex;
+                height: 2em;
+                align-content: center;
+                .elem {
+                    height: 100%;
+                    min-width: 200px;
+                    padding: 0.5em 5px;
+                    max-width: 200px;
+                    text-align: center;
+                    align-self: center;
+                    border-right: 1px solid $secondary;
+                    padding: auto;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+
+            .alternateRow {
+                background: $alternate;
+            }
         }
     }
 }

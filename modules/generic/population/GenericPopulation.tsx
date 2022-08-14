@@ -96,6 +96,9 @@ export default function GenericPopulation(props: {
 
     return (
         <div className={styles.content}>
+            <h4>
+                Click on a row for more details.
+            </h4>
             <List
                 data={pops?.at(shownGeneration) ?? []}
                 columnWidths={{ id: 100, chromosome: 800, age: 100 }}

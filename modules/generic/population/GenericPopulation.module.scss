@@ -1,8 +1,16 @@
+@import 'base';
+
 .content {
     height: calc(100vh - 275px);
 
+    h4 {
+        font-weight: lighter;
+        color: rgba($text, 0.5);
+        margin: 10px 0;
+    }
+
     .table {
-        max-height: 95%;
+        max-height: 90%;
 
         .chromosomeCell {
             display: flex;

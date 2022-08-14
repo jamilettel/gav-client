@@ -197,7 +197,7 @@ export default function List(props: {
     }
 
     return (
-        <>
+        <div className={styles.wrapper}>
             <div className={styles.headerWrapper}>
                 <div
                     className={styles.header}
@@ -214,6 +214,6 @@ export default function List(props: {
             >
                 <div className={styles.content}>{content}</div>
             </div>
-        </>
+        </div>
     )
 }
