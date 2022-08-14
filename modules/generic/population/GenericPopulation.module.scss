@@ -12,6 +12,11 @@
     .table {
         max-height: 90%;
 
+        .rowClass:hover {
+            background: $foreground-light;
+            cursor: pointer;
+        }
+
         .chromosomeCell {
             display: flex;
             padding: 0 !important;

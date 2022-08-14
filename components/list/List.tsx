@@ -59,14 +59,19 @@ function getRow(
     } = {},
     colClass: {
         [columName: string]: string
-    } = {}
+    } = {},
+    rowClass: string | undefined
 ) {
     const content: React.ReactNode[] = []
     for (const header of headers) {
         let width = colWidths ? colWidths[header] : undefined
         let value = ind[header]
         let title = undefined
-        if (!cellProvider[header] && typeof value === 'number' && Number.isInteger(value) === false) {
+        if (
+            !cellProvider[header] &&
+            typeof value === 'number' &&
+            Number.isInteger(value) === false
+        ) {
             title = value.toString()
             value = value.toFixed(1)
         }
@@ -78,15 +83,15 @@ function getRow(
                 title={title}
             >
                 {cellProvider[header]
-                ? cellProvider[header](ind[header])
-                : value}
+                    ? cellProvider[header](ind[header])
+                    : value}
             </div>
         )
-
     }
 
     let className = styles.row
     if (index % 2 == 1) className += ' ' + styles.alternateRow
+    if (rowClass) className += ' ' + rowClass
     return (
         <div className={className} key={`header-${index}`}>
             {content}
@@ -116,6 +121,7 @@ export default function List(props: {
     cellContentProvider?: {
         [columName: string]: (cellData: any) => React.ReactNode
     }
+    rowClass?: string
 }) {
     const colClass = props.columnClass ?? {}
     const colWidth = props.columnWidths ?? {}
@@ -138,7 +144,15 @@ export default function List(props: {
     useEffect(() => {
         let row = 0
         const newContent = data.map((ind) =>
-            getRow(ind, row++, headers, cellProvider, colWidth, colClass)
+            getRow(
+                ind,
+                row++,
+                headers,
+                cellProvider,
+                colWidth,
+                colClass,
+                props.rowClass
+            )
         )
         setContent(newContent)
     }, [data])
@@ -148,7 +162,9 @@ export default function List(props: {
         const dataClone = [...dataToSort]
         dataClone.sort((a, b) => {
             if (typeof a[sortby.column] !== typeof b[sortby.column])
-                return typeof a[sortby.column] < typeof b[sortby.column] ? -1 : 0
+                return typeof a[sortby.column] < typeof b[sortby.column]
+                    ? -1
+                    : 0
             if (a[sortby.column] < b[sortby.column]) return -1
             if (a[sortby.column] == b[sortby.column]) return 0
             return 1
@@ -162,8 +178,7 @@ export default function List(props: {
 
     const setNewSortCol = (col: string) => {
         if (sortby?.column === col) {
-            if (sortby.ascending)
-                setSortBy({ ascending: false, column: col })
+            if (sortby.ascending) setSortBy({ ascending: false, column: col })
             else {
                 setSortBy(null)
                 setData(props.data)

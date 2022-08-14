@@ -111,6 +111,7 @@ export default function GenericPopulation(props: {
                     parent2_id: (mutated) => mutated === -1 ? "None" : mutated
                 }}
                 className={styles.table}
+                rowClass={styles.rowClass}
             />
         </div>
     )
