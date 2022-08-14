@@ -3,11 +3,13 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import builtinSlice from '@/websocket/builtinSlice'
 import connectionSlice, { resetWS } from '@/websocket/connectionSlice'
 import genericSlice from '@/modules/generic/genericSlice'
+import slice from '@/modules/generic/population/colorsSlice'
 
 const reducers = combineReducers({
     connection: connectionSlice,
     builtin: builtinSlice,
     generic: genericSlice,
+    colors: slice,
 })
 
 const rootReducer = (state: any, action: PayloadAction<any>) => {

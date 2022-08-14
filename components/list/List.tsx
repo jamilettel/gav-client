@@ -10,7 +10,6 @@ function getHeaders(elem: any): string[] {
     return headers
 }
 
-let i = 0
 function getHeader(
     header: string,
     width: string | number | undefined,
@@ -60,7 +59,9 @@ function getRow(
     colClass: {
         [columName: string]: string
     } = {},
-    rowClass: string | undefined
+    rowClass: string | undefined,
+    onClickRow: ((rowData: any) => any) | undefined,
+    last: boolean,
 ) {
     const content: React.ReactNode[] = []
     for (const header of headers) {
@@ -92,8 +93,13 @@ function getRow(
     let className = styles.row
     if (index % 2 == 1) className += ' ' + styles.alternateRow
     if (rowClass) className += ' ' + rowClass
+    if (last) className += ' ' + styles.lastRow
     return (
-        <div className={className} key={`header-${index}`}>
+        <div
+            onMouseDown={() => (onClickRow ? onClickRow(ind) : {})}
+            className={className}
+            key={`header-${index}`}
+        >
             {content}
         </div>
     )
@@ -122,6 +128,7 @@ export default function List(props: {
         [columName: string]: (cellData: any) => React.ReactNode
     }
     rowClass?: string
+    onClickRow?: (rowData: any) => any
 }) {
     const colClass = props.columnClass ?? {}
     const colWidth = props.columnWidths ?? {}
@@ -142,16 +149,17 @@ export default function List(props: {
     }, [sortby])
 
     useEffect(() => {
-        let row = 0
-        const newContent = data.map((ind) =>
+        const newContent = data.map((ind, index) =>
             getRow(
                 ind,
-                row++,
+                index,
                 headers,
                 cellProvider,
                 colWidth,
                 colClass,
-                props.rowClass
+                props.rowClass,
+                props.onClickRow,
+                index === (data.length - 1)
             )
         )
         setContent(newContent)
@@ -204,11 +212,11 @@ export default function List(props: {
         styles.table + (props.className ? ` ${props.className}` : '')
 
     const onScrollHeaders = (e: React.UIEvent) => {
-        if (i++ % 2) contentRef.current!.scrollLeft = e.currentTarget.scrollLeft
+        contentRef.current!.scrollLeft = e.currentTarget.scrollLeft
     }
 
     const onScrollContent = (e: React.UIEvent) => {
-        if (i++ % 2) headerRef.current!.scrollLeft = e.currentTarget.scrollLeft
+        headerRef.current!.scrollLeft = e.currentTarget.scrollLeft
     }
 
     return (

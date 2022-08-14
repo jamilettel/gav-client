@@ -9,22 +9,66 @@
         margin: 10px 0;
     }
 
+    .chromosomeCell {
+        display: flex;
+        padding: 0 !important;
+
+        .chromosomePart {
+            width: 100%;
+            padding: 0.5em 0;
+        }
+    }
+
     .table {
         max-height: 90%;
 
-        .rowClass:hover {
-            background: $foreground-light;
-            cursor: pointer;
-        }
+        .rowClass {
+            
+            &:hover {
+                background: $foreground-light;
+                cursor: pointer;
 
-        .chromosomeCell {
-            display: flex;
-            padding: 0 !important;
-
-            .chromosomePart {
-                width: 100%;
-                padding: 0.5em 0;
+                .chromosomeCell {
+                    filter: brightness(1.1);
+                }
             }
         }
     }
+
+    .popup {
+        z-index: 1000;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($background, 0.5);
+        backdrop-filter: blur(5px);
+
+        .popupClose {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .contentPopup {
+            position: absolute;
+            padding: 50px;
+            background: $foreground;
+            height: 80vh;
+            width: 1200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            border-radius: 10px;
+            border: solid 1px $inactive-outline;
+
+        }
+
+
+    }
+
 }

@@ -88,18 +88,17 @@
     }
 
     .table {
-        overflow-x: auto;
-        overflow-y: scroll;
+        overflow: auto;
         border-radius: 0 0 10px 10px;
         border: 1px solid $secondary;
         position: relative;
         margin-top: 47px;
-        background: $background;
         height: calc(100% - 50px);
 
         &::-webkit-scrollbar {
             height: 8px;
             width: 8px;
+            background: $background;
         }
 
         &::-webkit-scrollbar:vertical {
@@ -154,6 +153,10 @@
 
             .alternateRow {
                 background: $alternate;
+            }
+
+            .lastRow {
+                border-bottom: 1px solid $secondary;
             }
         }
     }
