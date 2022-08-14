@@ -39,7 +39,13 @@ export type GeneralStats = {
 }
 
 export type Individual = {
-    Chromomose: number[]
+    chromosome: number[]
+    fitness: number
+    id: number
+    age: number
+    mutated_from: number
+    parent1_id: number
+    parent2_id: number
     [key: string]: any
 }
 

@@ -27,9 +27,7 @@ export default function GenericPopulation(props: {
     useEffect(() => {
         gradient.setGradient('#3e2a8d', '#ed4037')
         gradient.setNumberOfColors(100)
-        props.setABContent(
-            <GenerationNavigation/>
-        )
+        props.setABContent(<GenerationNavigation />)
     }, [])
 
     const colorsNow = { ...colors }
@@ -100,9 +98,15 @@ export default function GenericPopulation(props: {
         <div className={styles.content}>
             <List
                 data={pops?.at(shownGeneration) ?? []}
-                columnWidths={{ Chromosome: 800 }}
-                columnClass={{ Chromosome: styles.chromosomeCell }}
-                cellContentProvider={{ Chromosome: ChromosomeCell }}
+                columnWidths={{ id: 100, chromosome: 800, age: 100 }}
+                columnClass={{ chromosome: styles.chromosomeCell }}
+                cellContentProvider={{
+                    chromosome: ChromosomeCell,
+                    fitness: (fitness) => (fitness != null ? fitness : 'N/A'),
+                    mutated_from: (mutated) => mutated === -1 ? "None" : mutated,
+                    parent1_id: (mutated) => mutated === -1 ? "None" : mutated,
+                    parent2_id: (mutated) => mutated === -1 ? "None" : mutated
+                }}
                 className={styles.table}
             />
         </div>
