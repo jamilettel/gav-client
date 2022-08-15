@@ -10,6 +10,7 @@ import {
 } from '@/modules/generic/population/colorsSlice'
 import { useAppDispatch, useAppSelector } from '@/utils/store'
 import { Individual } from '@/websocket/GenericHandler'
+import { useState } from 'react'
 import styles from './GenericPopulation.module.scss'
 
 function displayChromsomeInfo(ind: Individual, generation: number) {
@@ -62,6 +63,16 @@ export default function IndividualViewPopup(props: {
     const gradient = useAppSelector(getGradient)
     const colors = useAppSelector(getColors)
     const dispatch = useAppDispatch()
+    const [ind, setInd] = useState(null as null | Individual)
+
+    if (ind !== null)
+        return (
+            <IndividualViewPopup
+                close={() => setInd(null)}
+                generation={props.generation - props.ind.age - 1}
+                ind={ind}
+            />
+        )
 
     let chromosomeFct = ChromosomeCellDecorator(
         dispatch,
@@ -79,7 +90,9 @@ export default function IndividualViewPopup(props: {
                     <p>Self mutation</p>
                 </div>
                 <div className={styles.chromosomeView}>
-                    {chromosomeFct(props.ind.before_mutation ?? [])}
+                    <span>
+                        {chromosomeFct(props.ind.before_mutation ?? [])}
+                    </span>
                 </div>
             </div>
         )
@@ -99,7 +112,14 @@ export default function IndividualViewPopup(props: {
                     </div>
                     <div className={styles.chromosomeView}>
                         <div className={styles.chromosomeView}>
-                            {chromosomeFct(mutFrom.chromosome)}
+                            <span>{chromosomeFct(mutFrom.chromosome)}</span>
+                            <IconButton
+                                className={styles.btnBack}
+                                iconUrl="/icons/view.svg"
+                                height={20}
+                                width={20}
+                                onClick={() => setInd(mutFrom ?? null)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -123,19 +143,33 @@ export default function IndividualViewPopup(props: {
                 <div key="parents">
                     <h2>&uarr;</h2>
                     <div className={styles.chromosomeView}>
-                        {chromosomeFct(parent1.chromosome)}
+                        <span>{chromosomeFct(parent1.chromosome)}</span>
+                        <IconButton
+                            className={styles.btnBack}
+                            iconUrl="/icons/view.svg"
+                            height={20}
+                            width={20}
+                            onClick={() => setInd(parent1 ?? null)}
+                        />
                     </div>
                     <div className={styles.descriptionCrossover}>
                         <h2>×</h2>
                         <div className={styles.left}>
-                            &uarr; Parent 1: Chromosome {parent1.id}
+                &uarr; Parent 1: Chromosome {parent1.id}
                         </div>
                         <div className={styles.right}>
                             Parent 2: Chromosome {parent2.id} &darr;
                         </div>
                     </div>
                     <div className={styles.chromosomeView}>
-                        {chromosomeFct(parent2.chromosome)}
+                        <span>{chromosomeFct(parent2.chromosome)}</span>
+                        <IconButton
+                            className={styles.btnBack}
+                            iconUrl="/icons/view.svg"
+                            height={20}
+                            width={20}
+                            onClick={() => setInd(parent2 ?? null)}
+                        />
                     </div>
                 </div>
             )
@@ -144,7 +178,7 @@ export default function IndividualViewPopup(props: {
     return (
         <div className={styles.contentPopup}>
             <IconButton
-                iconUrl='/icons/next.svg'
+                iconUrl="/icons/next.svg"
                 height={35}
                 width={35}
                 className={styles.backButton}
@@ -152,7 +186,7 @@ export default function IndividualViewPopup(props: {
             />
             <h2>Chromosome {props.ind.id}</h2>
             <div className={styles.chromosomeView}>
-                {chromosomeFct(props.ind.chromosome)}
+                <span>{chromosomeFct(props.ind.chromosome)}</span>
             </div>
             {others}
             {displayChromsomeInfo(props.ind, props.generation)}

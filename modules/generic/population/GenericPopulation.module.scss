@@ -9,7 +9,7 @@
         margin: 10px 0;
     }
 
-    .chromosomeCell, .chromosomeView {
+    .chromosomeCell, .chromosomeView span {
         display: flex;
         padding: 0 !important;
         text-align: center;
@@ -21,12 +21,26 @@
     }
 
     .chromosomeView {
-        width: 900px;
+        position: relative;
+        width: fit-content;
         margin: auto;
-        text-align: center;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-bottom: 20px;
+
+        span {
+            
+            width: 900px;
+            margin: auto;
+            text-align: center;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .btnBack {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(calc(100% + 20px), -50%);
+        }
     }
 
     .table {
