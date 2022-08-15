@@ -50,8 +50,6 @@ export default function SaveSettingsBar() {
     }, [menus])
 
     useEffect(() => {
-        if (presetList.includes(preset))
-            loadPresetGeneric(title, preset, dispatch)
         setPresetChanged(presetHasChanged(title, preset, menus))
     }, [preset, presetList])
 
@@ -131,7 +129,11 @@ export default function SaveSettingsBar() {
                 directionUp
                 suggestions={presetList}
                 value={preset}
-                onChange={setPreset}
+                onChange={(input) => {
+                    setPreset(input)
+                    if (presetList.includes(input))
+                        loadPresetGeneric(title, input, dispatch)
+                }}
                 placeholder="Choose preset..."
             />
             {!presetExists && buttonAddPreset}
