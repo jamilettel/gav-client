@@ -9,14 +9,24 @@
         margin: 10px 0;
     }
 
-    .chromosomeCell {
+    .chromosomeCell, .chromosomeView {
         display: flex;
         padding: 0 !important;
+        text-align: center;
 
         .chromosomePart {
             width: 100%;
             padding: 0.5em 0;
         }
+    }
+
+    .chromosomeView {
+        width: 900px;
+        margin: auto;
+        text-align: center;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 20px;
     }
 
     .table {
@@ -44,6 +54,8 @@
         height: 100%;
         background: rgba($background, 0.5);
         backdrop-filter: blur(5px);
+        display: flex;
+        flex-direction: column;
 
         .popupClose {
             position: absolute;
@@ -58,13 +70,65 @@
             position: absolute;
             padding: 50px;
             background: $foreground;
-            height: 80vh;
             width: 1200px;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
             border-radius: 10px;
             border: solid 1px $inactive-outline;
+            display: flex;
+            flex-direction: column;
+
+            h2 {
+                margin-top: 0;
+                text-align: center;
+            }
+
+            .descriptionMutation {
+                position: relative;
+                p {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(40px,-50%);
+                    margin: 0;
+                }
+            }
+
+            .descriptionCrossover {
+                position: relative;
+                .left {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(calc(-100% - 40px), -50%);
+                }
+                .right {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(40px,-50%);
+                }
+            }
+
+            .info {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                margin-top: auto;
+
+                p {
+                    font-size: 14pt;
+                    width: 45%;
+                    display: flex;
+                    margin: 5px 0;
+                    
+                    span {
+                        margin-left: auto;
+                        color: $outline;
+                    }
+                }
+            }
 
         }
 

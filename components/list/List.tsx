@@ -31,7 +31,7 @@ function getHeader(
                 onClick={() => setSortby(header)}
                 style={{ minWidth: width, maxWidth: width }}
             >
-                {header.charAt(0).toUpperCase() + header.slice(1)}
+                {header.charAt(0).toUpperCase() + header.slice(1).replaceAll('_', ' ')}
             </Focusable>
         )
     }

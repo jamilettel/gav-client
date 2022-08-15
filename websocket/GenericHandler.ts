@@ -40,10 +40,11 @@ export type GeneralStats = {
 
 export type Individual = {
     chromosome: number[]
-    fitness: number
+    fitness: number | null
     id: number
     age: number
     mutated_from: number
+    before_mutation: null | number[]
     parent1_id: number
     parent2_id: number
     [key: string]: any
