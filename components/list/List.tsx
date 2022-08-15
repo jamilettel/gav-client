@@ -2,9 +2,14 @@ import Focusable from '@/components/input/Focusable'
 import { useEffect, useRef, useState } from 'react'
 import styles from './List.module.scss'
 
-function getHeaders(elem: any): string[] {
+function getHeaders(
+    elem: any,
+    mapper: ((any: any) => any) | undefined
+): string[] {
     const headers = []
-    for (const field in elem) {
+    let usedElem = elem
+    if (mapper) usedElem = mapper(elem)
+    for (const field in usedElem) {
         headers.push(field)
     }
     return headers
@@ -31,7 +36,8 @@ function getHeader(
                 onClick={() => setSortby(header)}
                 style={{ minWidth: width, maxWidth: width }}
             >
-                {header.charAt(0).toUpperCase() + header.slice(1).replaceAll('_', ' ')}
+                {header.charAt(0).toUpperCase() +
+                    header.slice(1).replaceAll('_', ' ')}
             </Focusable>
         )
     }
@@ -47,7 +53,7 @@ function getHeader(
 }
 
 function getRow(
-    ind: any,
+    data: any,
     index: number,
     headers: string[],
     cellProvider: {
@@ -62,11 +68,13 @@ function getRow(
     rowClass: string | undefined,
     onClickRow: ((rowData: any) => any) | undefined,
     last: boolean,
+    mapper: ((any: any) => any) | undefined
 ) {
     const content: React.ReactNode[] = []
+    const rowData = mapper ? mapper(data) : data
     for (const header of headers) {
         let width = colWidths ? colWidths[header] : undefined
-        let value = ind[header]
+        let value = rowData[header]
         let title = undefined
         if (
             !cellProvider[header] &&
@@ -84,7 +92,7 @@ function getRow(
                 title={title}
             >
                 {cellProvider[header]
-                    ? cellProvider[header](ind[header])
+                    ? cellProvider[header](rowData[header])
                     : value}
             </div>
         )
@@ -96,7 +104,7 @@ function getRow(
     if (last) className += ' ' + styles.lastRow
     return (
         <div
-            onMouseDown={() => (onClickRow ? onClickRow(ind) : {})}
+            onMouseDown={() => (onClickRow ? onClickRow(data) : {})}
             className={className}
             key={`header-${index}`}
         >
@@ -129,6 +137,7 @@ export default function List(props: {
     }
     rowClass?: string
     onClickRow?: (rowData: any) => any
+    mapper?: (row: any) => any
 }) {
     const colClass = props.columnClass ?? {}
     const colWidth = props.columnWidths ?? {}
@@ -159,7 +168,8 @@ export default function List(props: {
                 colClass,
                 props.rowClass,
                 props.onClickRow,
-                index === (data.length - 1)
+                index === data.length - 1,
+                props.mapper
             )
         )
         setContent(newContent)
@@ -181,8 +191,10 @@ export default function List(props: {
         setData(dataClone)
     }
 
+    const firstElem = props.mapper ? props.mapper(data[0]) : data[0]
+
     let headers: string[] = []
-    if (data.length > 0) headers = getHeaders(data[0])
+    if (data.length > 0) headers = getHeaders(firstElem, props.mapper)
 
     const setNewSortCol = (col: string) => {
         if (sortby?.column === col) {
@@ -198,8 +210,8 @@ export default function List(props: {
 
     const headerElems = headers.map((header) => {
         const sortable =
-            typeof data[0][header] === 'string' ||
-            typeof data[0][header] === 'number'
+            typeof firstElem[header] === 'string' ||
+            typeof firstElem[header] === 'number'
         return getHeader(
             header,
             colWidth[header],

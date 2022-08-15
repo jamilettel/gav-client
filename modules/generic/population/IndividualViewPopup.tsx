@@ -1,3 +1,4 @@
+import IconButton from '@/components/buttons/IconButton'
 import {
     getGenericIndividualEncoding,
     getGenericPopulations,
@@ -52,6 +53,7 @@ function getIndFromPops(
 export default function IndividualViewPopup(props: {
     ind: Individual
     generation: number
+    close: () => any
 }) {
     const pops = useAppSelector(getGenericPopulations)
     const indEnc = useAppSelector(getGenericIndividualEncoding) || {
@@ -141,6 +143,13 @@ export default function IndividualViewPopup(props: {
 
     return (
         <div className={styles.contentPopup}>
+            <IconButton
+                iconUrl='/icons/next.svg'
+                height={35}
+                width={35}
+                className={styles.backButton}
+                onClick={props.close}
+            />
             <h2>Chromosome {props.ind.id}</h2>
             <div className={styles.chromosomeView}>
                 {chromosomeFct(props.ind.chromosome)}

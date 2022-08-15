@@ -13,6 +13,20 @@ import IndividualViewPopup from '@/modules/generic/population/IndividualViewPopu
 import ChromosomeCellDecorator from '@/modules/generic/population/ChromosomeCell'
 import { getColors, getGradient } from '@/modules/generic/population/colorsSlice'
 
+function indMapper(ind: Individual) {
+    let newInd: any = {...ind}
+    delete newInd.mutated_from
+    delete newInd.parent1_id
+    delete newInd.parent2_id
+    delete newInd.before_mutation
+    let creationType = 'Randomly Generated'
+    if (ind.mutated_from > -1 && ind.parent1_id === -1) creationType = 'Mutated'
+    else if (ind.mutated_from > -1) creationType = 'Crossover & Mutation'
+    else if (ind.parent1_id > -1) creationType = 'Crossover'
+    newInd['created_from'] = creationType
+    return newInd
+}
+
 export default function GenericPopulation(props: {
     setABContent: (setContent: React.ReactNode | undefined) => any
 }) {
@@ -34,17 +48,11 @@ export default function GenericPopulation(props: {
             <h4>Click on a row for more details</h4>
             <List
                 data={pops?.at(shownGeneration) ?? []}
-                columnWidths={{ id: 100, chromosome: 800, age: 100 }}
+                columnWidths={{ id: 100, chromosome: 800, age: 100, created_from: 300 }}
                 columnClass={{ chromosome: styles.chromosomeCell }}
                 cellContentProvider={{
                     chromosome: ChromosomeCellDecorator(dispatch, indEnc, gradient, colors),
                     fitness: (fitness) => (fitness != null ? fitness : 'N/A'),
-                    mutated_from: (mutated) =>
-                        mutated === -1 ? 'None' : mutated,
-                    parent1_id: (mutated) =>
-                        mutated === -1 ? 'None' : mutated,
-                    parent2_id: (mutated) =>
-                        mutated === -1 ? 'None' : mutated,
                 }}
                 className={styles.table}
                 rowClass={styles.rowClass}
@@ -52,6 +60,7 @@ export default function GenericPopulation(props: {
                     setInd(ind)
                     setIndGen(shownGeneration)
                 }}
+                mapper={indMapper}
             />
             {ind !== null && (
                 <div className={styles.popup}>
@@ -59,7 +68,7 @@ export default function GenericPopulation(props: {
                         className={styles.popupClose}
                         onMouseDown={() => setInd(null)}
                     />
-                    <IndividualViewPopup generation={indGen!} ind={ind} />
+                    <IndividualViewPopup generation={indGen!} ind={ind} close={() => setInd(null) } />
                 </div>
             )}
         </div>
