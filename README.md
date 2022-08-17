@@ -79,3 +79,19 @@ In the settings changelog, you can at what generation every settings was changed
 
 You can delete the session when you are done using it.
 It will remove it from the server, and you won't be able to access it again.
+
+
+## Implementing a new protocol into the client
+
+This project's aim is to make it possible to implement different protocols in the client. 
+This can be done in the [App.tsx](./modules/App.tsx) file, by adding your protocol handler there.
+The protocol UI handler is the single biggest part of this project, fortunately for you (if you're trying to 
+implement a new protocol), the current UI is built in such a way as to allow the reuse of certain
+elements. So please do take a look at the current code, and especially in the [components](./components) folder.
+
+In addition to this, you will also want to add your handler for the data coming from the websocket connection.
+You will have to edit the [websocket.ts](./websocket/websocket.ts) file and add your handler to the
+`PROTOCOL_HANDLERS` constant.
+
+After completing these two steps, this client should be able to handle both the Generic protocol, and the
+protocol that you have freshly implemented.

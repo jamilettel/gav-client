@@ -1,5 +1,5 @@
 import { LS_SERVER_URL } from '@/utils/constants'
-import { AppDispatch, useAppDispatch } from '@/utils/store'
+import { AppDispatch } from '@/utils/store'
 import {
     resetWS,
     sendWS,
