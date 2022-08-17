@@ -60,7 +60,6 @@ export default function ChooseSessionForm() {
 
     const disconnect = () => {
         ws?.close()
-        dispatch(resetWS())
     }
 
     return (
